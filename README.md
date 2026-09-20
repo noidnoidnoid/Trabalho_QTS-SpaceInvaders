@@ -12,7 +12,7 @@
 | Integrante | Matrícula | Responsabilidade Principal | Classe Complexa Atribuída ($\text{CC} \ge 10$) |
 | :--- | :--- | :--- | :--- |
 | **Breno Carvalho** | 123083015 | `Testador` | `Level2State` |
-| **Erick Bessa** | 122083063 | `Testador` | `Level1State` |
+| **Erick Bessa** | 122083063 | `Testador e fazer os slides` | `Level1State` |
 | **Leon Stevans** | 123083047 | `Projetista de Teste/ Testador` | `Game` |
 | **Luiz Eduardo** | 123083019 | `Testador` | `Ship` |
 | **Roger Egito** | 220083118 | `Testador` | `AudioPlayer` |
