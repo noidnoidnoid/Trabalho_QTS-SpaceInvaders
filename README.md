@@ -32,7 +32,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
 ### Documentação Geral e Logs
 * **Plano de Teste:** [Docs](https://docs.google.com/document/d/1kktI82aWBj7p4GrCMSzNBMWDEArWQh54ub-EJuK4X20/edit?usp=sharing)
 * **Registro de Uso de IA:** [AI-LOG](docs/ai/AI-LOG.md)
-* **Slides de Apresentação:** [Slides](docs/slides/)
+* **Slides de Apresentação:** [Slides]([docs/slides/](https://docs.google.com/presentation/d/1qsA4xxGPf2P7VD_Pt7r_hr5ZSvUkgkzlxxyO3kw0Bk0/edit?slide=id.p1#slide=id.p1))
 
 ---
 
