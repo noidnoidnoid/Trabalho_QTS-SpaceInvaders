@@ -40,11 +40,17 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
 * [x] **Descrição do Escopo:** Incluído no documento do [Plano de Teste](https://docs.google.com/document/d/1kktI82aWBj7p4GrCMSzNBMWDEArWQh54ub-EJuK4X20/edit?usp=sharing).
 * [x] **Código-fonte Original:** Preservado na estrutura inicial do repositório.
 * [ ] **Casos de Teste Unitários Iniciais:** Localizados em [`src/test/java/`](src/test/java/)
-  * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação
-  * [ ] `Game` · [ ] `AudioPlayer` · [ ] `Level1State` · [ ] `Level2State`
+  * [ ] `Game`
+  * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação  
+  * [ ] `AudioPlayer` 
+  * [ ] `Level1State` 
+  * [ ] `Level2State`
 * [ ] **Casos de Testes Manuais:**
-  * [x] Cenário exportado do **TestLink**: [`PDF`](docs/manual-tests/CT01-GameLoop-TestLink.pdf)
+  * [x] Cenário exportado do **TestLink** da classe `Game`: [`PDF`](docs/manual-tests/CT01-GameLoop-TestLink.pdf)
   * [x] Caso de teste de sistema da classe `Ship`: [`PDF`](docs/manual-tests/CT02-Ship-CasoDeTesteSistema.pdf) — 20 passos executados em 20/09/2026, 19 passaram e 1 falhou
+  * [ ] Caso de teste de sistema da classe `AudioPlayer`
+  * [ ] Caso de teste de sistema da classe `Level1State`
+  * [ ] Caso de teste de sistema da classe `Level2State`
 * [x] **Registro de Bugs / Bugs Tracking:** [Aba Issues do Repositório](../../issues?q=is%3Aissue)
 
 ---
