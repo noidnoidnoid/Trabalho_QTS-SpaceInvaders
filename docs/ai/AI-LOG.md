@@ -49,6 +49,22 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Aceito com alterações.** Corrigidos dois defeitos de configuração do build (exclusão do `junit` transitivo do `jlayer` e uso de `@{argLine}` no JaCoCo) e reforçada a suíte em duas iterações: cobertura de linhas de 90% para 100% e escore de mutação de 83% para 89%. Os dois mutantes restantes são **equivalentes por construção** em `limits()`, onde o valor de correção coincide com o de fronteira, de modo que nenhum teste pode distingui-los.
 * **Validação:** `mvn clean test` com 32 testes e 0 falhas, reexecutado em ordem aleatória para comprovar o isolamento entre os casos. JaCoCo: **100% de arestas** em `Ship`, contra 4% do projeto inteiro. PIT: **89%**, acima do limiar de 80% exigido na Entrega 2. `git status src/br` não acusa modificação, confirmando a preservação do código original. A execução do jogo revelou um defeito pré-existente que impede a inicialização em máquina sem placa de som, registrado nas Issues.
 
+### Interação #004 — Suíte Unitária da Classe `Level2State` e Validação Real do Build
+* **Data:** 21/09/2026
+* **Responsável:** Breno Carvalho
+* **Atividade:** Criação dos casos de teste unitários da classe `Level2State` (Passo 2, Entrega 1) e execução real do build Maven do projeto, até então nunca rodado de fato nesta máquina.
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:** Sessão iterativa. Um primeiro rascunho do SUT ajustado (`Level2State.java` com os campos `ship`/`shots`/`aliens`/`victory`/`gameOver` rebaixados de `private` para acesso de pacote, no mesmo padrão de testabilidade do `ShipTest`), da suíte `Level2StateTest.java` e do roteiro de teste de sistema `CT03-Level2State-CasoDeTesteSistema.md` havia sido produzido numa conversa anterior, sem que o Maven fosse instalado ou o build fosse de fato executado naquele momento. Nesta sessão, a instrução foi:
+  1. Rodar `mvn clean test` e confirmar que `Level2StateTest` passa de verdade.
+  2. Corrigir e explicar qualquer falha encontrada.
+  3. Não avançar para isolamento de dependências, mutação (PIT) ou cobertura de 80% — escopo da Entrega 2.
+* **Resultado:**
+  1. `src/test/java/br/states/Level2StateTest.java` com 11 casos, cobrindo `init()` (criação e posicionamento dos 8 aliens, estado inicial de `victory`/`gameOver`, compartilhamento da lista de tiros com a nave), `update()` (movimento via teclas A/D, disparo via space, ausência de efeito sem teclas) e `checarColisoes()` via `render()` (derrota por colisão nave-alien, colisão tiro-alien, vitória sem aliens restantes).
+  2. Constatação de que nem o JDK 17 nem o Maven estavam instalados na máquina usada para validar — o ambiente só tinha um JRE 8 antigo — e que a rede local faz inspeção SSL, o que impedia o Maven de baixar dependências do Maven Central mesmo depois do JDK 17 instalado (`PKIX path building failed`).
+  3. Passo a passo de instalação do JDK 17 (Temurin) e do Maven, e da importação do certificado raiz da rede no `cacerts` do JDK 17 via `keytool`, para viabilizar o download das dependências.
+* **Decisão:** **Aceito sem alterações no SUT.** O build real não acusou nenhuma falha nos 11 casos de `Level2State` nem nos 32 já existentes de `Ship` — não foi necessário corrigir nada no código de teste ou no SUT além do que já havia sido feito no rascunho anterior.
+* **Validação:** `mvn clean test` executado de fato (não apenas planejado) após a correção do ambiente: **BUILD SUCCESS**, `Tests run: 43, Failures: 0, Errors: 0, Skipped: 0` (32 de `ShipTest` + 11 de `Level2StateTest`). Isso substitui e corrige o registro da conversa anterior, que havia deixado o Passo 2 da classe `Level2State` como "sem execução real de Maven" — a suíte agora está validada por execução real do build, e não apenas por inspeção de código.
+
 ---
 
 ## Modelo para Novas Entradas (Template)

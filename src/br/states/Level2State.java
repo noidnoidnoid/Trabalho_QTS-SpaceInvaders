@@ -14,13 +14,18 @@ import br.input.KeyManager;
 
 public class Level2State implements State {
 
-	private Ship ship;
-	private List<Shot> shots;
-	private List<Alien> aliens;
+	// Campos de acesso de pacote (sem "private") por decisao de testabilidade:
+	// Level2StateTest.java fica de proposito no pacote br.states para ler e
+	// manipular este estado direto nos testes, sem getters novos na API
+	// publica e sem reflection. Mesma logica ja usada em Ship.x (protected em
+	// Character), documentada no cabecalho de ShipTest.java.
+	Ship ship;
+	List<Shot> shots;
+	List<Alien> aliens;
 	private Background background;
-	
-	private boolean victory;
-	private boolean gameOver;
+
+	boolean victory;
+	boolean gameOver;
 
 	@Override
 	public void init() {

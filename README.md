@@ -44,13 +44,13 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação  
   * [ ] `AudioPlayer` 
   * [ ] `Level1State` 
-  * [ ] `Level2State`
+  * [x] `Level2State` — [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java) · 11 casos (`init()`, `update()`, `checarColisoes()` via `render()`) · cobertura/mutação: Entrega 2
 * [ ] **Casos de Testes Manuais:**
   * [x] Cenário exportado do **TestLink** da classe `Game`: [`PDF`](docs/manual-tests/CT01-GameLoop-TestLink.pdf)
   * [x] Caso de teste de sistema da classe `Ship`: [`PDF`](docs/manual-tests/CT02-Ship-CasoDeTesteSistema.pdf) — 20 passos executados em 20/09/2026, 19 passaram e 1 falhou
   * [ ] Caso de teste de sistema da classe `AudioPlayer`
   * [ ] Caso de teste de sistema da classe `Level1State`
-  * [ ] Caso de teste de sistema da classe `Level2State`
+  * [x] Caso de teste de sistema da classe `Level2State`: [`PDF`](docs/manual-tests/CT03-Level2State-CasoDeTesteSistema.pdf) — 7 passos executados em 21/09/2026, todos passaram
 * [x] **Registro de Bugs / Bugs Tracking:** [Aba Issues do Repositório](../../issues?q=is%3Aissue)
 
 ---
