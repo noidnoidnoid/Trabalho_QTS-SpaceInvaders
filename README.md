@@ -12,8 +12,8 @@
 | Integrante | Matrícula | Responsabilidade Principal | Classe Complexa Atribuída ($\text{CC} \ge 10$) |
 | :--- | :--- | :--- | :--- |
 | **Breno Carvalho** | 123083015 | `Testador` | `Level2State` |
-| **Erick Bessa** | 122083063 | `Testador e fazer os slides` | `Level1State` |
-| **Leon Stevans** | 123083047 | `Projetista de Teste/ Testador` | `Game` |
+| **Erick Bessa** | 122083063 | `Testador/Realizador dos slides` | `Level1State` |
+| **Leon Stevans** | 123083047 | `Projetista de Teste/Testador` | `Game` |
 | **Luiz Eduardo** | 123083019 | `Testador` | `Ship` |
 | **Roger Egito** | 220083118 | `Testador` | `AudioPlayer` |
 
@@ -40,7 +40,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
 * [x] **Descrição do Escopo:** Incluído no documento do [Plano de Teste](https://docs.google.com/document/d/1kktI82aWBj7p4GrCMSzNBMWDEArWQh54ub-EJuK4X20/edit?usp=sharing).
 * [x] **Código-fonte Original:** Preservado na estrutura inicial do repositório.
 * [ ] **Casos de Teste Unitários Iniciais:** Localizados em [`src/test/java/`](src/test/java/)
-  * [ ] `Game`
+  * [x] `Game` - [`GameTest`](src/test/java/br/GameTest.java) · 5 casos (`start()`, `stop()`, `run()` e controle de thread via Reflection)
   * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação  
   * [ ] `AudioPlayer` 
   * [ ] `Level1State` 

@@ -65,6 +65,17 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Aceito sem alterações no SUT.** O build real não acusou nenhuma falha nos 11 casos de `Level2State` nem nos 32 já existentes de `Ship` — não foi necessário corrigir nada no código de teste ou no SUT além do que já havia sido feito no rascunho anterior.
 * **Validação:** `mvn clean test` executado de fato (não apenas planejado) após a correção do ambiente: **BUILD SUCCESS**, `Tests run: 43, Failures: 0, Errors: 0, Skipped: 0` (32 de `ShipTest` + 11 de `Level2StateTest`). Isso substitui e corrige o registro da conversa anterior, que havia deixado o Passo 2 da classe `Level2State` como "sem execução real de Maven" — a suíte agora está validada por execução real do build, e não apenas por inspeção de código.
 
+### Interação #005 — Suíte Unitária da Classe Game com Reflexão
+* **Data:** 21/09/2026
+* **Responsável:** Leon Stevans
+* **Atividade:** Criação dos casos de teste unitários da classe `Game` utilizando JUnit 5 e Java Reflection.
+* **Ferramenta:** Gemini
+* **Prompt/Instrução Utilizada:**
+  > *"Eu quero fazer o caso de teste unitário da classe Game."*
+* **Resultado:** Geração da suíte `src/test/java/br/GameTest.java`. Foram testados os ciclos de controle de Thread (`start()` e `stop()`), bem como a lógica de `return` caso a thread já estivesse rodando. Para testar o Game Loop de 60FPS (`run()`), foi criada uma estratégia assíncrona (thread desarmadora) para evitar *deadlocks* do Test Runner e utilizar a anotação `@Timeout(2)`. 
+* **Decisão:** Aceito sem alterações. Diferente da classe Ship e Level2State em que foi modificado o SUT para abrir acessos *package-private*, a decisão de design de testes dessa vez foi usar *Java Reflection* (`Field.setAccessible(true)`), mantendo todas as variáveis (`thread`, `running`) como `private` no SUT sem ferir o encapsulamento, garantindo total isolamento da lógica testada.
+* **Validação:** Rodado via `mvn clean test` com sucesso, resultando no *BUILD SUCCESS* de toda a suíte somada as outras já em operação (agora incluindo Game, Ship e Level2State).
+
 ---
 
 ## Modelo para Novas Entradas (Template)
