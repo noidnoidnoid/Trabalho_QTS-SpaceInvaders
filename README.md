@@ -39,7 +39,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
 ### Entrega 1 (Peso 3) — *Prazo: 21/09/2026*
 * [x] **Descrição do Escopo:** Incluído no documento do [Plano de Teste](https://docs.google.com/document/d/1kktI82aWBj7p4GrCMSzNBMWDEArWQh54ub-EJuK4X20/edit?usp=sharing).
 * [x] **Código-fonte Original:** Preservado na estrutura inicial do repositório.
-* [ ] **Casos de Teste Unitários Iniciais:** Localizados em [`src/test/java/`](src/test/java/)
+* [x] **Casos de Teste Unitários Iniciais:** Localizados em [`src/test/java/`](src/test/java/)
   * [x] `Game` - [`GameTest`](src/test/java/br/GameTest.java) · 5 casos (`start()`, `stop()`, `run()` e controle de thread via Reflection)
   * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação  
   * [x] `AudioPlayer`- [`AudioPlayerTest`](src/test/java/br/audio/AudioPlayerTest.java) · 5 casos (`play()`, `stop()` e isolamento da API Sound via Mock/Reflection)
