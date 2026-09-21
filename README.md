@@ -42,7 +42,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
 * [ ] **Casos de Teste Unitários Iniciais:** Localizados em [`src/test/java/`](src/test/java/)
   * [x] `Game` - [`GameTest`](src/test/java/br/GameTest.java) · 5 casos (`start()`, `stop()`, `run()` e controle de thread via Reflection)
   * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação  
-  * [ ] `AudioPlayer` 
+  * [x] `AudioPlayer`- [`AudioPlayerTest`](src/test/java/br/audio/AudioPlayerTest.java) · 5 casos (`play()`, `stop()` e isolamento da API Sound via Mock/Reflection)
   * [ ] `Level1State` 
   * [x] `Level2State` — [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java) · 11 casos (`init()`, `update()`, `checarColisoes()` via `render()`) · cobertura/mutação: Entrega 2
 * [ ] **Casos de Testes Manuais:**

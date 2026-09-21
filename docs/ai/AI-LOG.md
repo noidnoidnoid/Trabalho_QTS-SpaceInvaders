@@ -76,6 +76,17 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** Aceito sem alterações. Diferente da classe Ship e Level2State em que foi modificado o SUT para abrir acessos *package-private*, a decisão de design de testes dessa vez foi usar *Java Reflection* (`Field.setAccessible(true)`), mantendo todas as variáveis (`thread`, `running`) como `private` no SUT sem ferir o encapsulamento, garantindo total isolamento da lógica testada.
 * **Validação:** Rodado via `mvn clean test` com sucesso, resultando no *BUILD SUCCESS* de toda a suíte somada as outras já em operação (agora incluindo Game, Ship e Level2State).
 
+### Interação #006 — Suíte Unitária da Classe AudioPlayer
+* **Data:** 21/09/2026
+* **Responsável:** Leon Stevans
+* **Atividade:** Desenvolvimento dos testes unitários das classes `AudioPlayer`.
+* **Ferramenta:** Gemini
+* **Prompt/Instrução Utilizada:**
+  > *"Agora falta os testes unitários do AudioPlayer"*
+* **Resultado:** `AudioPlayerTest.java`: Criado usando *Reflection* para injetar um *Mock* da classe `Clip` nativa da API Java Sound, permitindo cobertura sem depender de arquivos físicos ou hardware de áudio.
+* **Decisão:** Aceito integralmente. As estratégias de `mock` e *Reflection* protegem o SUT de refatorações proibidas nesta fase do trabalho.
+* **Validação:** Compilado e testado pelo grupo. Testes manuais formatados para PDF e salvos em `docs/manual-tests/`. Todos os 5 integrantes agora possuem suas classes complexas analisadas e com casos de teste gerados, cumprindo os critérios absolutos da Entrega 1 da disciplina.
+
 ---
 
 ## Modelo para Novas Entradas (Template)
