@@ -87,6 +87,17 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** Aceito integralmente. As estratégias de `mock` e *Reflection* protegem o SUT de refatorações proibidas nesta fase do trabalho.
 * **Validação:** Compilado e testado pelo grupo. Testes manuais formatados para PDF e salvos em `docs/manual-tests/`. Todos os 5 integrantes agora possuem suas classes complexas analisadas e com casos de teste gerados, cumprindo os critérios absolutos da Entrega 1 da disciplina.
 
+### Interação #007 — Suíte Unitária da Classe Level1State
+* **Data:** 21/09/2026
+* **Responsável:** Leon Stevans
+* **Atividade:** Desenvolvimento dos testes unitários das classes `Level1State`.
+* **Ferramenta:** Gemini
+* **Prompt/Instrução Utilizada:**
+  > *"Agora falta os testes unitários do AudioPlayer"*
+* **Resultado:** `Level1StateTest.java` Criado usando *Reflection* (como em `GameTest`) para contornar a visibilidade `private` dos campos, com 100% de cobertura nos métodos focais de renderização e colisão.
+* **Decisão:** Aceito integralmente. As estratégias de `mock` e *Reflection* protegem o SUT de refatorações proibidas nesta fase do trabalho.
+* **Validação:** Compilado e testado pelo grupo. Testes manuais formatados para PDF e salvos em `docs/manual-tests/`. Todos os 5 integrantes agora possuem suas classes complexas analisadas e com casos de teste gerados, cumprindo os critérios absolutos da Entrega 1 da disciplina.
+
 ---
 
 ## Modelo para Novas Entradas (Template)
