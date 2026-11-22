@@ -217,12 +217,14 @@
             <param>br.characters.Ship</param>
             <param>br.audio.AudioPlayer</param>
             <param>br.states.MenuState</param>
+            <param>br.Game</param>
           </targetClasses>
           <targetTests>
             <param>br.characters.ShipTest</param>
             <!-- The trailing * includes the @Nested inner classes (AudioPlayerTest$PlayAndStop...). -->
             <param>br.audio.AudioPlayerTest*</param>
             <param>br.states.MenuStateTest*</param>
+            <param>br.GameTest*</param>
           </targetTests>
           <outputFormats>
             <param>HTML</param>

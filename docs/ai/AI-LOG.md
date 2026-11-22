@@ -151,6 +151,20 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Aceito sem alterações.** O código de produção (`src/br/Game.java`) permaneceu intacto e o encoding `ISO-8859-1` do projeto foi preservado.
 * **Validação:** Execução de `mvn test -Dtest=GameTest` concluída com `BUILD SUCCESS` (`Tests run: 5, Failures: 0, Errors: 0, Skipped: 0`).
 
+### Interação #013 — Evolução da Suíte `GameTest` (Funcional, Estrutural e Mutação)
+* **Data:** 22/11/2026
+* **Responsável:** Leon Stevans
+* **Atividade:** Expansão dos casos de teste de `br.Game` para cobrir as técnicas funcional, estrutural ($\ge 80\%$ todas-arestas) e baseada em defeitos ($\ge 80\%$ de mutação no PIT)[cite: 14, 18].
+* **Ferramenta:** Gemini
+* **Prompt/Instrução Utilizada:**
+  > *"Analise os relatórios do JaCoCo e do PIT gerados para a classe br.Game e indique quais asserções adicionar em GameTest.java para superar 80% de cobertura de mutação sem alterar o SUT."*
+* **Resultado:**
+  1. Cobertura estrutural no JaCoCo alcançou **100% de instruções (154/154)** e **100% de arestas/branches (14/14)** cobrindo `Game()`, `start()`, `stop()`, `run()`, `update()` e `render()`.
+  2. Configuração de `br.Game` e `br.GameTest*` no `pitest-maven` dentro do `pom.xml`.
+  3. Reforço das asserções para registro dos dois `KeyListener` (`sm` e `km`), chamada de `render()` e `stop()` no game loop, `join()` e tratamento de `InterruptedException`, elevando o escore de mutação de `br.Game` de 77% (23/30) para **93% (28/30)**[cite: 21, 23, 24].
+* **Decisão:** **Aceito sem alterações.** O único mutante remanescente (`changed conditional boundary` em `delta >= 1` na linha 46) foi classificado como equivalente/não determinístico em aritmética contínua de nanossegundos (`System.nanoTime()`).
+* **Validação:** Execução de `mvn clean test jacoco:report` (100% branches) e `mvn test-compile org.pitest:pitest-maven:mutationCoverage` (93% mutação em `br.Game`, 89% no projeto geral).
+
 ---
 
 ## Modelo para Novas Entradas (Template)
