@@ -1,0 +1,2 @@
+This file is plain text, not audio. AudioPlayerTest uses it to check that
+loadClip() rejects a resource the installed audio decoders cannot parse.
