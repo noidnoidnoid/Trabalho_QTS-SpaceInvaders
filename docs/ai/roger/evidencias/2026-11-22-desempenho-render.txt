@@ -1,0 +1,15 @@
+# Custo por frame do caminho de render, medido em 2026-11-22 (JDK 20, maquina do Roger)
+# Fonte: docs/ai/roger/evidencias/bench/RenderBench.java, 200 repeticoes apos 30 de aquecimento, headless
+# E uma medicao de bancada simples (System.nanoTime), nao um benchmark JMH: serve de ordem de grandeza.
+
+new Background() (le src/fundo.png do disco): 15.16 ms
+Background.print() sozinho:                   0.83 ms
+new Alien() (le o PNG do alien):               3.50 ms
+Level2State.render(), frame completo:          16.63 ms
+
+Orcamento de um frame a 60 FPS: 16.7 ms.
+Todos os estados fazem 'background = new Background()' dentro de render(), entao o jogo
+rele um PNG de 450 KB a cada frame e gasta quase todo o orcamento nisso.
+
+Medicao na versao web (GET /state, campo fps e slowestFrameMs, sem navegador aberto):
+fps entre 53 e 57, frame mais lento entre 20 e 34 ms, no MENU.

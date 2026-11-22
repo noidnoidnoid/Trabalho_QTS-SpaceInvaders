@@ -1,0 +1,26 @@
+# PIT em br.audio.AudioPlayer, 2026-11-22
+
+## Suite herdada (Entrega 1, gerada com Gemini)
+Nao executa: os 5 testes dao erro no @BeforeEach (ver 2026-11-22-baseline-mvn-test.txt).
+O PIT exige suite verde antes de gerar mutantes, entao o escore e indefinido (efetivamente 0 casos validos).
+
+## Suite nova (rascunho Claude, rodada 1)
+14 mutantes, 11 mortos, 3 sobreviventes = 78,6%
+Sobreviventes: remocao das chamadas println/printStackTrace nos ramos de falha (linhas 30, 52, 57).
+Leitura: nenhum teste verificava se o jogo avisa por que ficou sem som.
+
+## Suite nova (rodada 2, apos verificar a mensagem em System.err)
+13 mutantes, 13 mortos = 100.0%
+  KILLED linha 42 - Replaced integer multiplication with division
+  KILLED linha 29 - negated conditional
+  KILLED linha 30 - removed call to java/io/PrintStream::println
+  KILLED linha 48 - removed call to javax/sound/sampled/Clip::open
+  KILLED linha 55 - removed call to java/io/PrintStream::println
+  KILLED linha 49 - replaced return value with null for br/audio/AudioPlayer::loadClip
+  KILLED linha 61 - negated conditional
+  KILLED linha 62 - removed call to br/audio/AudioPlayer::stop
+  KILLED linha 63 - removed call to javax/sound/sampled/Clip::setFramePosition
+  KILLED linha 64 - removed call to javax/sound/sampled/Clip::start
+  KILLED linha 68 - negated conditional
+  KILLED linha 69 - negated conditional
+  KILLED linha 70 - removed call to javax/sound/sampled/Clip::stop

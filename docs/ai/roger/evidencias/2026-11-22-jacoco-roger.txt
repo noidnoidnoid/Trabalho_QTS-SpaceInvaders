@@ -1,0 +1,8 @@
+# JaCoCo (mvn test -Dtest=MenuStateTest,AudioPlayerTest), 2026-11-22
+# Colunas do jacoco.csv: BRANCH = arestas (criterio todas-arestas), COMPLEXITY = complexidade ciclomatica
+
+MenuState: arestas 26/26 (100%), linhas 62/64, complexidade ciclomatica 24
+AudioPlayer: arestas 8/8 (100%), linhas 33/33, complexidade ciclomatica 9
+
+Linhas nao cobertas em MenuState: o construtor publico e o lambda () -> System.exit(0).
+Os testes usam o construtor package-private. O construtor publico e exercitado pelos testes de integracao e de sistema.

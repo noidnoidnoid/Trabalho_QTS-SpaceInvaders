@@ -1,0 +1,11 @@
+# Testes de defeito D1-D3 executados contra o AudioPlayer ORIGINAL (commit bbb57f3), 2026-11-22
+# Comando: mvn test -Dtest=AudioPlayerTest
+
+CASO: missingAudioDeviceDoesNotThrow
+  FALHOU: Unexpected exception thrown: java.lang.IllegalArgumentException: No line matching interface Clip is supported.
+CASO: stopWithoutClipDoesNotThrow
+  FALHOU: Unexpected exception thrown: java.lang.NullPointerException: Cannot invoke &quot;javax.sound.sampled.Clip.isRunning()&quot; because &quot;this.clip&quot; is null
+CASO: missingResourceDoesNotThrow
+  FALHOU: Unexpected exception thrown: java.lang.NullPointerException
+
+Tests run: 3, Failures: 3

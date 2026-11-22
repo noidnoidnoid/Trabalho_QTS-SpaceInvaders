@@ -1,0 +1,66 @@
+# PIT em br.states.MenuState, 2026-11-22
+
+## Rodada 1 (rascunho Claude): 48 mutantes, 45 mortos, 2 sobreviventes, 1 sem cobertura = 93,8%
+Sobreviventes: remocao de g.setFont() nas linhas 85 e 91. Nenhum teste verificava o tamanho da fonte do titulo e das opcoes.
+
+## Rodada 2 (apos verificar a fonte usada em cada drawString)
+48 mutantes, 47 mortos = 97.9%
+  KILLED linha 117 - changed conditional boundary
+  KILLED linha 123 - changed conditional boundary
+  KILLED linha 116 - Replaced integer subtraction with addition
+  KILLED linha 118 - Replaced integer subtraction with addition
+  KILLED linha 122 - Replaced integer addition with subtraction
+  KILLED linha 123 - Replaced integer subtraction with addition
+  KILLED linha 115 - negated conditional
+  KILLED linha 117 - negated conditional
+  KILLED linha 121 - negated conditional
+  KILLED linha 123 - negated conditional
+  KILLED linha 127 - negated conditional
+  KILLED linha 128 - removed call to br/states/MenuState::select
+  KILLED linha 46 - removed call to br/audio/AudioPlayer::play
+  NO_COVERAGE linha 31 - removed call to java/lang/System::exit
+  KILLED linha 62 - changed conditional boundary
+  KILLED linha 66 - changed conditional boundary
+  KILLED linha 70 - changed conditional boundary
+  KILLED linha 74 - changed conditional boundary
+  KILLED linha 62 - Replaced integer addition with subtraction
+  KILLED linha 66 - Replaced integer addition with subtraction
+  KILLED linha 62 - negated conditional
+  KILLED linha 66 - negated conditional
+  KILLED linha 70 - negated conditional
+  KILLED linha 74 - negated conditional
+  KILLED linha 92 - changed conditional boundary
+  KILLED linha 88 - Replaced integer division with multiplication
+  KILLED linha 88 - Replaced integer subtraction with addition
+  KILLED linha 98 - Replaced integer division with multiplication
+  KILLED linha 98 - Replaced integer subtraction with addition
+  KILLED linha 99 - Replaced integer multiplication with division
+  KILLED linha 99 - Replaced integer addition with subtraction
+  KILLED linha 92 - negated conditional
+  KILLED linha 94 - negated conditional
+  KILLED linha 82 - removed call to br/display/Background::print
+  KILLED linha 84 - removed call to java/awt/Graphics::setColor
+  KILLED linha 85 - removed call to java/awt/Graphics::setFont
+  KILLED linha 87 - removed call to java/awt/Graphics::drawString
+  KILLED linha 91 - removed call to java/awt/Graphics::setFont
+  KILLED linha 93 - removed call to java/awt/Graphics::setColor
+  KILLED linha 95 - removed call to java/awt/Graphics::setColor
+  KILLED linha 97 - removed call to java/awt/Graphics::drawString
+  KILLED linha 104 - removed call to br/characters/Alien::paint
+  KILLED linha 135 - removed call to br/states/StateManager::setState
+  KILLED linha 138 - removed call to br/states/StateManager::setState
+  KILLED linha 141 - removed call to java/lang/Runnable::run
+  KILLED linha 53 - Replaced integer addition with subtraction
+  KILLED linha 54 - Replaced integer addition with subtraction
+  KILLED linha 56 - removed call to br/states/MenuState::limits
+
+Mutante sem cobertura: System.exit(0) dentro do construtor publico. Nao pode rodar dentro da JVM de teste
+(encerraria o Maven). E exercitado de ponta a ponta pelo teste de sistema RF04, que verifica o codigo de saida do processo.
+
+## Revisao do Roger (versao final)
+Corte dos testes de cor, fonte e posicao exatas e do teste de KeyPressed vazio.
+Corte puro: 48 mutantes, 38 mortos = 79,2%. Deixava passar o destaque invertido (linha 94) e o menu de cabeca para baixo (linha 99).
+Com 2 verificacoes de comportamento (destaque diferente do texto comum, texto dentro da tela e opcoes em ordem):
+48 mutantes, 40 mortos, 7 sobreviventes, 1 sem cobertura = 83,3% bruto.
+Sobreviventes: linhas 88 e 98 (centralizacao exata), 84 (cor do titulo), 85 e 91 (fonte). Classificados como equivalentes
+em relacao a especificacao (arte). Escore ajustado: 40/40 = 100%. Classificacao em docs/ai/roger/revisao.md, secao 5.

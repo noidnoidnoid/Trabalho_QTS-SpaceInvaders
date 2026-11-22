@@ -98,6 +98,48 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** Aceito integralmente. As estratégias de `mock` e *Reflection* protegem o SUT de refatorações proibidas nesta fase do trabalho.
 * **Validação:** Compilado e testado pelo grupo. Testes manuais formatados para PDF e salvos em `docs/manual-tests/`. Todos os 5 integrantes agora possuem suas classes complexas analisadas e com casos de teste gerados, cumprindo os critérios absolutos da Entrega 1 da disciplina.
 
+### Interação #008: Planejamento da Entrega 2 do Roger
+* **Data:** 22/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** Plano para os itens assumidos: unitários com isolamento, integração e sistema (funcional e não funcional).
+* **Ferramenta:** Claude (Claude Code, modo de planejamento)
+* **Prompt/Instrução Utilizada:**
+  > *"Quero fazer uma boa Entrega 2. Disse pro meu grupo então que eu faria [...] Então, como faremos isso?"* Seguido de: *"MenuState parece interessante, mas estou ferrando outra pessoa fazendo isso? Precisamos alinhar isso antes de eu seguir."*, *"Faça a refatoração mínima, mas se tiver como documentar isso no lugar apropriado acho que seria bom."* e *"Talvez tenha uma maneira de conseguirmos usar o Selenium nesse projeto?"*
+* **Resultado:** Plano em etapas. Descoberta de que a suíte herdada de `AudioPlayer` nunca passou. Análise do código da GenIA-E2ETest mostrando que ela exige HTML. Proposta de camada web para usar Selenium.
+* **Decisão:** Alterado. Roger exigiu alinhar a troca para `MenuState` com o grupo antes de começar (o grupo confirmou), trocou a proposta inicial de `java.awt.Robot` por camada web + Selenium e pediu que as mudanças no SUT fossem documentadas (`docs/alteracoes-no-sut.md`).
+* **Validação:** `mvn clean test` executado na `main`: 59 testes, 10 erros (`docs/ai/roger/evidencias/2026-11-22-baseline-mvn-test.txt`).
+
+### Interação #009: AudioPlayer e MenuState: defeitos, correção e suítes isoladas
+* **Data:** 22/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** Testes unitários com isolamento de dependências (`mockStatic`, `mockConstruction`, injeção pelo construtor).
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:** Execução do plano aprovado, no fluxo "a IA gera, o Roger revisa".
+* **Resultado:** 3 defeitos de `AudioPlayer` confirmados por testes que falharam contra o código original (#2, #3, #4), correção mínima e suíte com 21 casos. `MenuState` com construtor injetável e suíte com 33 casos (29 depois da revisão do Roger).
+* **Decisão:** Rascunhos da IA preservados em `docs/ai/roger/drafts/`. Mudanças entre rascunho e versão final descritas em `docs/ai/roger/revisao.md`. **Alterado pelo Roger na suíte de `MenuState`:** removeu os testes de cor, fonte e posição exatas (decisões de arte, que quebrariam o teste sem defeito) e o teste do `KeyPressed()` vazio. O corte puro deixava o escore em 79,2% e não pegava 2 erros reais (destaque invertido e menu de cabeça para baixo), então foram acrescentadas 2 verificações de comportamento que não fixam cor nem posição. O teste da tecla sem função foi mantido como caso da classe inválida. Nas demais suítes não pediu mudanças. Detalhes em `docs/ai/roger/revisao.md`, seção 5.
+* **Validação:** PIT `AudioPlayer` 78,6% na rodada 1 e 100% (13/13) na rodada 2. PIT `MenuState`: 93,8% e 97,9% nas rodadas da IA, e 83,3% bruto (100% ajustado, com os 7 sobreviventes de arte classificados como equivalentes em relação à especificação) na versão final revisada. JaCoCo: arestas 26/26 em `MenuState` e 8/8 em `AudioPlayer` (9/10 depois da correção do PMD, porque o try-with-resources ganhou uma aresta gerada pelo compilador e inalcançável), complexidade ciclomática de `MenuState` = 24.
+
+### Interação #010: Testes de integração, camada web e testes de sistema com Selenium
+* **Data:** 22/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** 22 casos de integração (failsafe), adaptador web (`src/br/web/`) e 11 casos de sistema com Selenium (RF01 a RF07, RNF01, RNF01b, RNF02).
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:** *"Corrigir faz parte do trabalho? Se sim, corrija agora. Lembre-se de [...] documentar tudo corretamente, incluindo issues."*
+* **Resultado:** Defeitos encontrados e registrados nas issues #5 a #12. Correções de `Shot` (#8, #9), `Background` (#11) e `Alien`/`Shot` (#12) com a nova classe `Sprites`.
+* **Decisão:** Erros da própria IA corrigidos depois de detectados por teste ou medição (lista em `docs/ai/roger/revisao.md`, seção 4).
+* **Validação:** CTI-18 e CTI-19 falharam antes das correções e passam depois. Frame normal da fase 2 caiu de 17 a 28 ms para 3 a 5 ms depois da #11. Suíte de sistema: com o critério estrito, o CTS-10 falhou em 2 de 3 rodadas por picos isolados (41,9 e 33,6 ms). O GC foi descartado por medição (maior pausa de 4,6 ms), e a causa provável, disputa de CPU com o navegador, não foi comprovada (`docs/ai/roger/evidencias/2026-11-22-investigacao-cts10.txt`). Por decisão do Roger, o critério foi revisto para mediana <= 16,7 ms e no máximo 1 segundo acima de 33,3 ms. Esse critério ainda reprova o código antigo. Execuções finais: 3 de 3 rodadas com todos os casos passando (`docs/evidencias/sistema/execucoes-finais/`). Frame mais lento por segundo entre 2,4 e 13,5 ms, média de 60,5 a 60,8 FPS, pior resposta a tecla de 82 a 114 ms.
+
+### Interação #011: Inspeção de código com PMD e texto do Plano de Teste
+* **Data:** 22/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** Relatório de inspeção do código-fonte e correção dos problemas na classe complexa (`MenuState`) e no `AudioPlayer`. Texto das seções do Roger para o Plano de Teste.
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:**
+  > *"Faça um sonar então, prepare o texto para eu copiar e colar no Docs, e me diga em qual Docs eu deveria colar, e aonde."* Depois: *"Sonar é um exemplo. Talvez tenha outro que possamos usar que não precise de Docker? [...] O que for mais fácil."*
+* **Resultado:** O Docker não estava instalado de fato, então a IA propôs o PMD, que roda como plugin do Maven. Relatório antes: 5 problemas na `MenuState` e 3 no `AudioPlayer`. Correções feitas nas duas classes e no código da camada web gerado pela IA. Texto do Plano de Teste em `docs/plano-de-teste/colar-no-google-docs-roger.html`, com o local de cada bloco no documento.
+* **Decisão:** Roger escolheu a ferramenta pelo critério de facilidade (PMD no lugar do Sonar). Os nomes `KeyPressed` e `KeyReleased` (interface `State`) ficaram sem correção porque a mudança atingiria as classes dos outros integrantes. Os avisos de `volatile` e de IP fixo no código da camada web foram mantidos com justificativa (`docs/inspecao/LEIA-ME.md`).
+* **Validação:** PMD depois das correções: nenhum problema nas duas classes (print em `docs/inspecao/depois/`). Total do projeto de 64 para 47 problemas. Suítes da `MenuState` e do `AudioPlayer`, integração e sistema executadas de novo depois das correções.
+
 ---
 
 ## Modelo para Novas Entradas (Template)

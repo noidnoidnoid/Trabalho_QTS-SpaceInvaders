@@ -1,0 +1,30 @@
+# Investigacao dos picos isolados do CTS-10 (RNF01b), 2026-11-22
+
+## Sintoma
+Depois das correcoes das issues #11 e #12, a suite de sistema rodou 3 vezes seguidas.
+CTS-10 falhou em 2 das 3: picos isolados de 41.9 ms (primeiro segundo da fase 2)
+e 33.6 ms (meio da fase), limite 33.3 ms. Os outros segundos ficaram entre 2.5 e 8 ms.
+
+## Hipotese 1: custo de entrar na fase 2 (Level2State.init dentro de um frame)
+Medido com docs/ai/roger/evidencias/bench/SpikeProbe.java (JVM fria, sprite do alien ja em cache):
+  Level2State.init(): 11.3 ms, dos quais new Ship() = 7.0 ms (Ship ainda le o PNG a cada objeto).
+Conclusao: contribui, mas sozinho fica abaixo de 33.3 ms. Ship e classe do Luiz e o ShipTest
+intercepta ImageIO.read da Ship, entao ela nao foi trocada para Sprites.
+
+## Hipotese 2: pausas do coletor de lixo (o adaptador aloca uma imagem de 3.4 MB por frame servido)
+- SpikeProbe (WebGame real, frames buscados a cada 33 ms como a pagina faz, 20 s na fase 2):
+  frame mais lento por segundo entre 2.2 e 4.9 ms, GC somado de 0 a 4 ms por segundo,
+  maior pausa stop-the-world 4.2 ms (G1). Nenhum pico.
+- Testes de sistema com -Xlog:gc no processo do jogo (GameServerProcess), 8 execucoes do CTS-10:
+  maior pausa stop-the-world por execucao entre 2.7 e 4.6 ms, inclusive na execucao que falhou (pico de 35.8 ms).
+Conclusao: descartada. Nenhuma pausa de GC chega perto de 30 ms.
+
+## Hipotese 3: disputa de CPU com o navegador e o Selenium (nao comprovada)
+O pico so aparece quando Chrome headless, chromedriver, a JVM do Maven e o jogo rodam juntos.
+Na sonda sem navegador nao aparece. A medida do jogo e tempo de relogio do frame, entao se o sistema
+operacional tirar a thread do jogo do processador no meio do frame, o tempo entra na medida.
+Nao foi possivel separar isso com tempo de CPU por thread: no Windows esse valor e atualizado
+na granularidade do tick do escalonador (cerca de 15.6 ms), grosso demais para um frame.
+
+## Resultados por execucao (8 execucoes do CTS-10 neste lote)
+pior frame por execucao (ms): 6.7, 12.4, 35.8, 19.5, 10.5, 9.5, 7.4, 9.9 -> 1 falha em 8

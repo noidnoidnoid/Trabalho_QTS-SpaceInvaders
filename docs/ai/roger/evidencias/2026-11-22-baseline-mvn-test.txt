@@ -1,0 +1,30 @@
+# mvn clean test na main (commit bbb57f3), executado em 2026-11-22
+# JDK: java version "20.0.1" 2023-04-18
+# Fonte: target/surefire-reports/TEST-*.xml (os .txt do surefire mostram 0 por causa das classes @Nested)
+
+br.GameTest: tests=5 errors=5 failures=0
+br.audio.AudioPlayerTest: tests=5 errors=5 failures=0
+br.characters.ShipTest: tests=32 errors=0 failures=0
+br.states.Level1StateTest: tests=6 errors=0 failures=0
+br.states.Level2StateTest: tests=11 errors=0 failures=0
+
+Resultado do Maven: Tests run: 59, Failures: 0, Errors: 10 (BUILD FAILURE)
+
+## Primeiro erro de AudioPlayerTest
+    <error type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException
+	at java.base/java.util.Objects.requireNonNull(Objects.java:233)
+	at java.desktop/javax.sound.sampled.AudioSystem.getAudioInputStream(AudioSystem.java:1004)
+	at br.audio.AudioPlayer.<init>(AudioPlayer.java:18)
+	at br.audio.AudioPlayerTest.preparar(AudioPlayerTest.java:34)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:578)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+## Primeiro erro de GameTest
+    <error type="java.awt.HeadlessException"><![CDATA[java.awt.HeadlessException
+	at java.desktop/java.awt.GraphicsEnvironment.checkHeadless(GraphicsEnvironment.java:166)
+	at java.desktop/java.awt.Window.<init>(Window.java:553)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:428)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:224)
+	at br.display.Display.<init>(Display.java:28)
+	at br.Game.<init>(Game.java:22)
+	at br.GameTest.prepararEstado(GameTest.java:38)

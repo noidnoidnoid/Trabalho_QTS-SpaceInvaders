@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plano de Teste Roger</title>
+<style>
+  body { font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.4; color: #000; background: #fff; max-width: 860px; margin: 24px auto; padding: 0 16px; }
+  table { border-collapse: collapse; margin: 8px 0 16px; }
+  th, td { border: 1px solid #000; padding: 4px 8px; vertical-align: top; }
+  th { background: #e8e8e8; }
+  code { font-family: "Courier New", monospace; font-size: 10pt; }
+  .onde { background: #fff3b0; border: 2px dashed #b38f00; padding: 10px 14px; margin: 36px 0 12px; font-family: Arial, sans-serif; }
+  .onde strong { color: #6b5500; }
+  .bloco { border-left: 4px solid #4a7bd0; padding-left: 14px; }
+</style>
+</head>
+<body>
+
+<div class="onde">
+<strong>Como usar este arquivo.</strong> Abra no navegador. Para cada bloco, selecione só o conteúdo dentro da faixa azul (sem a caixa amarela), copie (Ctrl+C) e cole no Google Docs (Ctrl+V) no lugar indicado. Faça logado na sua conta, para a colaboração aparecer no histórico de versões.<br>
+Documento: <strong>Plano De Teste - Space Invaders</strong> (o link "Plano de Teste" do README).<br>
+Os blocos 1, 2, 4, 5 e 6 já foram colados. Falta só trocar o bloco 3 pela versão curta.
+</div>
+
+<!-- ===================================================== -->
+<div class="onde">
+<strong>BLOCO 1. Onde colar:</strong> seção <em>Registro de Mudanças</em>, primeira tabela do documento. Preencha a primeira linha vazia, logo abaixo da linha "1.0 | 19/09/2026 | Leon Stevans", uma célula de cada vez.
+</div>
+<div class="bloco">
+<table>
+<tr><th>Versão</th><th>Data de Mudança</th><th>Por</th><th>Descrição</th></tr>
+<tr><td>1.1</td><td>22/11/2026</td><td>Roger Egito</td><td>Entrega 2: MenuState como classe complexa, estratégia de isolamento nos testes unitários, casos de integração e de sistema (Selenium), requisitos não funcionais de desempenho e inspeção de código com PMD</td></tr>
+</table>
+</div>
+
+<!-- ===================================================== -->
+<div class="onde">
+<strong>BLOCO 2. Onde colar:</strong> seção <em>Papéis e Responsabilidades</em>, tabela de membros, linha <em>Roger Egito</em>. Substitua o texto das duas células abaixo e mantenha a coluna "Teste Manual Atribuído" como está.
+</div>
+<div class="bloco">
+<table>
+<tr><th>Coluna</th><th>Novo texto</th></tr>
+<tr><td>Responsabilidade Principal</td><td>Testador. Na Entrega 2: testes unitários com isolamento de dependências, testes de integração, testes de sistema e inspeção de código</td></tr>
+<tr><td>Classe Complexa (Testes Unitários)</td><td>MenuState (navegação do menu, seleção de opções e animação com limites de tela, complexidade ciclomática 24) e AudioPlayer (tratamento de exceções e decodificação de streams)</td></tr>
+</table>
+</div>
+
+<!-- ===================================================== -->
+<div class="onde">
+<strong>BLOCO 3 (versão curta, substitui a anterior). Onde colar:</strong> seção <em>Metodologia de Teste</em>, no lugar do bloco 3 antigo. Antes de colar, apague tudo desde o título "Fases de Testes de Unidade com Isolamento, Integração e Sistema (Entrega 2)" até o parágrafo "WebGame aparece com 0% no relatório do JaCoCo...", que fica logo antes de <em>Triagem de Erros</em>. Deixe o título original <em>Fases de Teste</em> e seus três parágrafos como estão. Cole numa linha vazia.
+</div>
+<div class="bloco" style="font-family: Calibri, Arial, sans-serif;">
+<p style="font-size: 16pt; font-weight: bold; margin: 12px 0 6px;">Testes da Entrega 2: unidade com isolamento, integração e sistema</p>
+<p><strong>Teste de Unidade com isolamento:</strong> MenuState (29 casos, complexidade ciclomática 24) e AudioPlayer (21 casos), projetados por partição de equivalência e análise de valor limite. As dependências que tocam hardware, disco ou a própria JVM (placa de som, System.exit, arquivos de imagem e o StateManager estático) são substituídas por mocks do Mockito, injetados pelo construtor ou com mockStatic e mockConstruction. Cor, fonte e posição exatas não são testadas, por serem decisões de arte.</p>
+<p><strong>Teste de Integração:</strong> 22 casos com objetos reais (StateManager, estados, KeyManager, Ship, Alien, Shot e AudioPlayer com MP3 real), substituindo apenas o som e a janela. Cobrem a navegação do menu, o controle da nave, a troca de fases e o ciclo de vida dos tiros. Dois casos encontraram defeitos na classe Shot (issues #8 e #9).</p>
+<p><strong>Teste de Sistema:</strong> 11 casos com Selenium WebDriver sobre uma versão web do jogo, que roda a mesma lógica sem janela, porque o Selenium só controla navegadores e o jogo é desktop. Cobrem 7 requisitos funcionais levantados a partir do comportamento do jogo: navegação do menu, início da fase 1, ajuda, saída, movimento da nave, passagem para a fase 2 e Game Over.</p>
+<p><strong>Requisitos não funcionais (Eficiência de Desempenho):</strong> média de pelo menos 57 FPS na fase 2, fluidez (mediana do frame mais lento de cada segundo até 16,7 ms) e resposta a uma tecla em até 200 ms. A medição revelou que o fundo era relido do disco a cada frame (issue #11), o que foi corrigido.</p>
+<p><strong>Inspeção de código:</strong> PMD 7.7.0 no lugar do SonarQube, por não exigir servidor nem conta. Os 8 problemas encontrados na MenuState e no AudioPlayer foram corrigidos.</p>
+<p><strong>Resultados:</strong> MenuState com 100% das arestas e 83,3% de escore de mutação. AudioPlayer com 90% das arestas e 100% de escore de mutação. Os testes de integração e de sistema passaram em 3 execuções seguidas.</p>
+<p><strong>Limitações:</strong> os testes de sistema não cobrem a janela desktop (Display), que foi coberta pelos testes manuais da Entrega 1. As medidas de desempenho dependem da máquina em que os testes rodam.</p>
+<p><strong>Detalhamento:</strong> casos de teste, técnicas, critérios e evidências estão no repositório, em docs/plano-de-teste/secoes-roger-entrega2.md.</p>
+</div>
+
+<!-- ===================================================== -->
+<div class="onde">
+<strong>BLOCO 4. Onde colar:</strong> seção <em>Necessidades de Recursos e Ambiente</em> &gt; <em>Ferramentas de Teste</em>, no fim da lista, depois de "Gestão de Defeitos: GitHub Issues.". Não apague a linha "Análise Estática de Código: SonarQube / SonarCloud.", porque outros integrantes podem usar o Sonar.
+</div>
+<div class="bloco">
+<ul>
+<li><strong>Teste de Sistema:</strong> Selenium WebDriver 4 com Chrome headless, sobre a versão web do jogo (camada em src/br/web/).</li>
+<li><strong>Inspeção de Código:</strong> PMD 7.7.0 pelo maven-pmd-plugin, comando mvn pmd:pmd.</li>
+</ul>
+</div>
+
+<!-- ===================================================== -->
+<div class="onde">
+<strong>BLOCO 5. Onde colar:</strong> seção <em>Entregáveis de Teste</em>, no fim da lista, depois de "Scripts de Teste de Código: Código-fonte dos testes em src/test/java/.".
+</div>
+<div class="bloco">
+<ul>
+<li><strong>Evidências dos testes de sistema:</strong> screenshots, medições de desempenho e relatórios de 3 execuções em docs/evidencias/sistema/.</li>
+<li><strong>Evidências de inspeção com PMD:</strong> relatórios e prints de antes e depois em docs/inspecao/.</li>
+<li><strong>Registro das alterações no código do jogo:</strong> docs/alteracoes-no-sut.md.</li>
+</ul>
+</div>
+
+<!-- ===================================================== -->
+<div class="onde">
+<strong>BLOCO 6. Onde colar:</strong> seção <em>Termos / Acrônimos</em>, tabela do fim do documento. Acrescente estas linhas (no Docs: clique na última linha, botão direito, "Inserir linha abaixo") e cole uma célula de cada vez.
+</div>
+<div class="bloco">
+<table>
+<tr><th>TERMO / ACRÔNIMO</th><th>DEFINIÇÃO</th></tr>
+<tr><td>CTI</td><td>Caso de Teste de Integração</td></tr>
+<tr><td>CTS</td><td>Caso de Teste de Sistema</td></tr>
+<tr><td>RF / RNF</td><td>Requisito Funcional / Requisito Não Funcional</td></tr>
+<tr><td>Mutante equivalente</td><td>Mutante que não altera nenhum comportamento especificado, então nenhum teste correto consegue matá-lo. Sai do cálculo do escore ajustado</td></tr>
+<tr><td>PMD</td><td>Ferramenta de análise estática de código Java usada na inspeção</td></tr>
+<tr><td>Page Object</td><td>Padrão em que uma classe concentra os detalhes de uma página (elementos e ações), e os testes de sistema usam só essa classe</td></tr>
+</table>
+</div>
+
+</body>
+</html>

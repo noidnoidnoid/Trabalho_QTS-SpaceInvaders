@@ -1,0 +1,15 @@
+# Testes de integracao que expuseram defeitos em br.characters.Shot, 2026-11-22
+# Comando: mvn verify -Dit.test=ShotDefectsIT
+
+CASO: shotLeavingTheScreenIsRemoved
+  FALHOU: shot is still in the list at y = -470 ==&gt; expected: &lt;true&gt; but was: &lt;false&gt;
+CASO: hittingOneAlienKeepsOtherShots
+  FALHOU: the shot that hit nothing disappeared ==&gt; expected: &lt;true&gt; but was: &lt;false&gt;
+
+Causa CTI-18: Shot.update() so marca o tiro como invisivel quando y > Game.HEIGHT, mas o tiro sobe (y diminui).
+  O tiro nunca sai da lista: a lista cresce enquanto o jogador atira.
+Causa CTI-19: Shot.isVisible e static. Quando um tiro acerta, todos os tiros ficam invisiveis e sao removidos.
+
+Observacao da primeira execucao: com 2 frames o CTI-19 PASSOU. O laco de remocao em Level2State.render()
+pula o elemento seguinte a cada remove(e), entao o tiro em voo sobrevivia um frame a mais e o teste nao via o defeito.
+Com 3 frames ele aparece. Dois defeitos se anulavam na janela observada.
