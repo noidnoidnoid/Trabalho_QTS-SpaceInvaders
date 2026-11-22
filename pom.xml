@@ -95,6 +95,15 @@
       <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- System tests (br.system): drive the web version of the game in Chrome.
+         Selenium Manager, bundled with selenium-java, downloads a matching
+         chromedriver on the first run. -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>4.27.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -141,6 +150,35 @@
         </configuration>
       </plugin>
 
+      <!-- Integration tests: classes named *IT.java, run by "mvn verify" after the unit
+           tests. They use real collaborators (StateManager, states, Ship, Alien...) and
+           only fake hardware, so they stay headless like the unit tests.
+           The system tests in br/system need a browser and a running game server, so
+           they are excluded here and only run with "mvn verify -Psystem". -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <argLine>-Djava.awt.headless=true</argLine>
+          <workingDirectory>${project.basedir}</workingDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/system/**</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -177,9 +215,14 @@
         <configuration>
           <targetClasses>
             <param>br.characters.Ship</param>
+            <param>br.audio.AudioPlayer</param>
+            <param>br.states.MenuState</param>
           </targetClasses>
           <targetTests>
             <param>br.characters.ShipTest</param>
+            <!-- The trailing * includes the @Nested inner classes (AudioPlayerTest$PlayAndStop...). -->
+            <param>br.audio.AudioPlayerTest*</param>
+            <param>br.states.MenuStateTest*</param>
           </targetTests>
           <outputFormats>
             <param>HTML</param>
@@ -201,6 +244,26 @@
         </dependencies>
       </plugin>
 
+      <!-- Code inspection (static analysis): mvn pmd:pmd -> target/reports/pmd.html
+           PMD plays the role of SonarQube here: same kind of rules (code smells, bad
+           practices, error-prone code), but it runs inside Maven with no server,
+           account or Docker. Only the game sources are inspected, not the tests. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.26.0</version>
+        <configuration>
+          <rulesets>
+            <ruleset>/rulesets/java/quickstart.xml</ruleset>
+          </rulesets>
+          <excludes>
+            <exclude>test/java/**</exclude>
+          </excludes>
+          <linkXRef>false</linkXRef>
+          <targetJdk>17</targetJdk>
+        </configuration>
+      </plugin>
+
       <!-- mvn compile exec:java  -> abre o jogo -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -213,5 +276,39 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- mvn verify -Psystem
+         Also runs the system tests in br/system. Each test starts the web version of the
+         game (br.web.WebLaunch) as a separate process and drives it with Selenium in
+         headless Chrome. Needs Google Chrome installed. Takes a few minutes. -->
+    <profile>
+      <id>system</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>system-tests</id>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/system/*IT.java</include>
+                  </includes>
+                  <reportsDirectory>${project.build.directory}/failsafe-system-reports</reportsDirectory>
+                  <summaryFile>${project.build.directory}/failsafe-system-reports/failsafe-summary.xml</summaryFile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
