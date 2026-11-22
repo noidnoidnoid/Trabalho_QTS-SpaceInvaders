@@ -13,18 +13,30 @@ import br.display.Background;
 public class MenuState implements State {
 	
 	private String[] options = { "START", "HELP", "EXIT" };
-	private Font font1, font2;
-	private int choice = 0;
-	private int x = 0, y = 0, movex = 3, movey = 3; //POSICAO INICIAL, X=0 E Y=0; ACRESCIDO DO MOVIMENTO UNIFORME MOVEX=3 E MOVEY=3
+	private Font font1;
+	private Font font2;
+	// Package-private (no "private") for testability, same decision documented in
+	// Level2State: MenuStateTest lives in br.states and sets up boundary positions and
+	// menu choices directly, without reflection and without new public getters.
+	int choice = 0;
+	//POSICAO INICIAL, X=0 E Y=0; ACRESCIDO DO MOVIMENTO UNIFORME MOVEX=3 E MOVEY=3
+	int x = 0;
+	int y = 0;
+	int movex = 3;
+	int movey = 3;
 	
-	private Alien alien;
-	
-	private AudioPlayer themeSound;
-	
-	private Background background;
+	private final AudioPlayer themeSound;
+	private final Runnable exitAction;
 	
 	public MenuState() {
-		themeSound = new AudioPlayer("/audio/theblackframe.mp3");
+		this(new AudioPlayer("/audio/theblackframe.mp3"), () -> System.exit(0));
+	}
+
+	// Package-private seam: tests inject a fake theme player and a fake exit action,
+	// so they neither play music nor kill the test JVM through System.exit.
+	MenuState(AudioPlayer themeSound, Runnable exitAction) {
+		this.themeSound = themeSound;
+		this.exitAction = exitAction;
 	}
 
 	@Override
@@ -67,7 +79,7 @@ public class MenuState implements State {
 
 	@Override
 	public void render(Graphics g) {
-		background = new Background();
+		Background background = new Background();
 		background.print(g);
 		
 		g.setColor(Color.WHITE);
@@ -89,14 +101,15 @@ public class MenuState implements State {
 		}
 		
 		//ANIMAÇÃO DO MENU
-		alien = new Alien(x, y);
+		Alien alien = new Alien(x, y);
 		alien.paint(g);
 	}
 
 	//METODOS ONDE ACONTECE A INTERACAO
 	@Override
 	public void KeyPressed(int cod) {
-		
+		// Intentionally empty: the menu acts when the key is released (KeyReleased),
+		// so holding a key does not repeat the action.
 	}
 
 	@Override
@@ -127,7 +140,7 @@ public class MenuState implements State {
 			StateManager.setState(StateManager.HELP);
 			break;
 		case 2:
-			System.exit(0);
+			exitAction.run();
 			break;
 		default:
 			break;
