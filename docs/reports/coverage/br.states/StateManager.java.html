@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Space Invaders - SUT de Qualidade e Teste de Software</a> &gt; <a href="index.source.html" class="el_package">br.states</a> &gt; <span class="el_source">StateManager.java</span></div><h1>StateManager.java</h1><pre class="source lang-java linenums">package br.states;
+
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+//GUARDARÁ UMA QUANTIDADE DE ESTADOS
+public class StateManager implements KeyListener{
+
+	public static final int NUMBERSTATES = 6; //0 1 2 3 4 5
+<span class="fc" id="L11">	public static State[] states = new State[NUMBERSTATES]; //ARRAY PARA GUARDAR OS ESTADOS</span>
+<span class="fc" id="L12">	public static int currentState = 0;</span>
+	
+	//PARA A SELEÇÃO DOS ESTADOS DO JOGO EM MENUSTATE
+	public static final int MENU = 0;
+	public static final int HELP = 1;
+	public static final int GAMEOVER = 2;
+	public static final int YOUWIN = 3;
+	public static final int LEVEL1 = 4;
+	public static final int LEVEL2 = 5;
+	
+	public static void setState(int state) {
+<span class="fc" id="L23">		currentState = state;</span>
+<span class="fc" id="L24">		states[currentState].init();</span>
+<span class="fc" id="L25">	}</span>
+	
+	public static State getState() {
+<span class="fc" id="L28">		return states[currentState];</span>
+	}
+	
+<span class="fc" id="L31">	public StateManager() {</span>
+		//POPULAR O ARRAY INSTANCIANDO OS ESTADOS
+<span class="fc" id="L33">		states[0] = new MenuState();</span>
+<span class="fc" id="L34">		states[1] = new HelpState();</span>
+<span class="fc" id="L35">		states[2] = new GameOverState();</span>
+<span class="fc" id="L36">		states[3] = new YouWinState();</span>
+<span class="fc" id="L37">		states[4] = new Level1State();</span>
+<span class="fc" id="L38">		states[5] = new Level2State();</span>
+<span class="fc" id="L39">	}</span>
+	
+	public void update() {
+<span class="nc" id="L42">		states[currentState].update();</span>
+<span class="nc" id="L43">	}</span>
+	
+	public void render(Graphics g) {
+<span class="nc" id="L46">		states[currentState].render(g);</span>
+<span class="nc" id="L47">	}</span>
+
+	@Override
+<span class="nc" id="L50">	public void keyTyped(KeyEvent e) {}</span>
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+<span class="nc" id="L54">		states[currentState].KeyPressed(e.getKeyCode());</span>
+<span class="nc" id="L55">	}</span>
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+<span class="nc" id="L59">		states[currentState].KeyReleased(e.getKeyCode());</span>
+<span class="nc" id="L60">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

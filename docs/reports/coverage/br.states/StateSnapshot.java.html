@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateSnapshot.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Space Invaders - SUT de Qualidade e Teste de Software</a> &gt; <a href="index.source.html" class="el_package">br.states</a> &gt; <span class="el_source">StateSnapshot.java</span></div><h1>StateSnapshot.java</h1><pre class="source lang-java linenums">package br.states;
+
+/**
+ * Read-only picture of what the player sees, taken by the game loop after each frame.
+ * The web adapter (br.web) sends it to the browser, where the system tests read it.
+ *
+ * It lives in br.states so it can read the package-private fields MenuState and
+ * Level2State already expose for their tests, without changing those classes or
+ * adding public getters. Fields that are not visible from here are left null:
+ * Level1State keeps its ship and alien private.
+ *
+ * @param state      name of the current screen: MENU, HELP, GAMEOVER, YOUWIN, LEVEL1, LEVEL2
+ * @param menuOption selected option on the main menu, or null on other screens
+ * @param shipX      x of the ship on level 2, or null
+ * @param aliens     aliens still alive on level 2, or null
+ * @param shots      shots in the ship's list on level 2, or null
+ */
+<span class="fc" id="L18">public record StateSnapshot(String state, String menuOption, Integer shipX, Integer aliens, Integer shots) {</span>
+
+<span class="fc" id="L20">	static final String[] STATE_NAMES = { &quot;MENU&quot;, &quot;HELP&quot;, &quot;GAMEOVER&quot;, &quot;YOUWIN&quot;, &quot;LEVEL1&quot;, &quot;LEVEL2&quot; };</span>
+<span class="fc" id="L21">	private static final String[] MENU_OPTIONS = { &quot;START&quot;, &quot;HELP&quot;, &quot;EXIT&quot; };</span>
+
+	public static StateSnapshot capture() {
+<span class="fc" id="L24">		int index = StateManager.currentState;</span>
+<span class="fc bfc" id="L25" title="All 4 branches covered.">		if (index &lt; 0 || index &gt;= STATE_NAMES.length) {</span>
+<span class="fc" id="L26">			return new StateSnapshot(&quot;UNKNOWN&quot;, null, null, null, null);</span>
+		}
+<span class="fc" id="L28">		String name = STATE_NAMES[index];</span>
+<span class="fc" id="L29">		State current = StateManager.getState();</span>
+
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		if (current instanceof MenuState menu) {</span>
+<span class="pc bpc" id="L32" title="1 of 4 branches missed.">			String option = menu.choice &gt;= 0 &amp;&amp; menu.choice &lt; MENU_OPTIONS.length ? MENU_OPTIONS[menu.choice] : null;</span>
+<span class="fc" id="L33">			return new StateSnapshot(name, option, null, null, null);</span>
+		}
+<span class="fc bfc" id="L35" title="All 4 branches covered.">		if (current instanceof Level2State level2 &amp;&amp; level2.ship != null) {</span>
+<span class="fc" id="L36">			return new StateSnapshot(name, null, level2.ship.getX(), level2.aliens.size(), level2.shots.size());</span>
+		}
+<span class="fc" id="L38">		return new StateSnapshot(name, null, null, null, null);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

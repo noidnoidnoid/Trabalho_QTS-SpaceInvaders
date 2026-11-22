@@ -1,0 +1,27 @@
+== run 1
+br.audio.ThemeAudioIT tests=3 errors=0 skipped=1 failures=0
+br.states.LevelProgressionIT tests=5 errors=0 skipped=0 failures=0
+br.states.MenuNavigationIT tests=6 errors=0 skipped=0 failures=0
+br.states.PlayerInputIT tests=6 errors=0 skipped=0 failures=0
+br.states.ShotDefectsIT tests=2 errors=0 skipped=0 failures=0
+br.system.GameplaySystemIT tests=3 errors=0 skipped=0 failures=0
+br.system.MenuSystemIT tests=5 errors=0 skipped=0 failures=0
+br.system.PerformanceSystemIT tests=3 errors=0 skipped=0 failures=1
+== run 2
+br.audio.ThemeAudioIT tests=3 errors=0 skipped=1 failures=0
+br.states.LevelProgressionIT tests=5 errors=0 skipped=0 failures=0
+br.states.MenuNavigationIT tests=6 errors=0 skipped=0 failures=0
+br.states.PlayerInputIT tests=6 errors=0 skipped=0 failures=0
+br.states.ShotDefectsIT tests=2 errors=0 skipped=0 failures=0
+br.system.GameplaySystemIT tests=3 errors=0 skipped=0 failures=0
+br.system.MenuSystemIT tests=5 errors=0 skipped=0 failures=0
+br.system.PerformanceSystemIT tests=3 errors=0 skipped=0 failures=1
+== run 3
+br.audio.ThemeAudioIT tests=3 errors=0 skipped=1 failures=0
+br.states.LevelProgressionIT tests=5 errors=0 skipped=0 failures=0
+br.states.MenuNavigationIT tests=6 errors=0 skipped=0 failures=0
+br.states.PlayerInputIT tests=6 errors=0 skipped=0 failures=0
+br.states.ShotDefectsIT tests=2 errors=0 skipped=0 failures=0
+br.system.GameplaySystemIT tests=3 errors=0 skipped=0 failures=0
+br.system.MenuSystemIT tests=5 errors=0 skipped=0 failures=0
+br.system.PerformanceSystemIT tests=3 errors=0 skipped=0 failures=0

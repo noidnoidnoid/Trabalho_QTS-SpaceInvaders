@@ -1,0 +1,3 @@
+CTS-10 RNF01b fase 2: frame mais lento por segundo (ms) [7.3, 4.9, 4.6, 2.8, 3.9, 4.4, 3.6, 13.5, 5.1, 4.1], mediana 4.5 (limite 16.7), segundos acima de 33.3 ms: 0 (limite 1)
+CTS-09 RNF02 resposta a tecla (ms): [78, 64, 54, 63, 114, 87, 58, 57, 61, 89, 58, 59], mediana 63, pior 114
+CTS-08 RNF01 fase 2: 19 amostras de FPS [61, 60, 60, 61, 61, 61, 60, 61, 61, 60, 61, 60, 61, 61, 60, 60, 61, 61, 61], media 60.6, min 60, frame mais lento do jogo 33.1 ms (orcamento 16.7 ms)

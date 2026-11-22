@@ -1,0 +1,57 @@
+[0.013s][info][gc] Using G1
+[1.559s][info][gc] GC(0) Pause Young (Concurrent Start) (G1 Humongous Allocation) 114M->53M(246M) 1.881ms
+[1.559s][info][gc] GC(1) Concurrent Undo Cycle
+[1.559s][info][gc] GC(1) Concurrent Undo Cycle 0.111ms
+[2.200s][info][gc] GC(2) Pause Young (Concurrent Start) (G1 Humongous Allocation) 134M->87M(246M) 2.237ms
+[2.200s][info][gc] GC(3) Concurrent Undo Cycle
+[2.200s][info][gc] GC(3) Concurrent Undo Cycle 0.137ms
+[2.472s][info][gc] GC(4) Pause Young (Normal) (G1 Evacuation Pause) 159M->111M(246M) 2.062ms
+[2.520s][info][gc] GC(5) Pause Young (Concurrent Start) (G1 Humongous Allocation) 119M->100M(246M) 1.478ms
+[2.520s][info][gc] GC(6) Concurrent Undo Cycle
+[2.521s][info][gc] GC(6) Concurrent Undo Cycle 0.227ms
+[2.726s][info][gc] GC(7) Pause Young (Concurrent Start) (G1 Humongous Allocation) 148M->108M(246M) 1.998ms
+[2.726s][info][gc] GC(8) Concurrent Undo Cycle
+[2.726s][info][gc] GC(8) Concurrent Undo Cycle 0.245ms
+[2.794s][info][gc] GC(9) Pause Young (Concurrent Start) (G1 Humongous Allocation) 126M->101M(246M) 1.430ms
+[2.794s][info][gc] GC(10) Concurrent Undo Cycle
+[2.795s][info][gc] GC(10) Concurrent Undo Cycle 0.201ms
+[2.981s][info][gc] GC(11) Pause Young (Concurrent Start) (G1 Humongous Allocation) 148M->109M(246M) 1.363ms
+[2.981s][info][gc] GC(12) Concurrent Undo Cycle
+[2.981s][info][gc] GC(12) Concurrent Undo Cycle 0.146ms
+[3.048s][info][gc] GC(13) Pause Young (Concurrent Start) (G1 Humongous Allocation) 126M->102M(246M) 1.394ms
+[3.048s][info][gc] GC(14) Concurrent Undo Cycle
+[3.048s][info][gc] GC(14) Concurrent Undo Cycle 0.162ms
+[3.241s][info][gc] GC(15) Pause Young (Concurrent Start) (GCLocker Initiated GC) 149M->109M(246M) 1.381ms
+[3.241s][info][gc] GC(16) Concurrent Mark Cycle
+[3.245s][info][gc] GC(16) Pause Remark 115M->115M(246M) 0.968ms
+[3.245s][info][gc] GC(16) Pause Cleanup 115M->115M(246M) 0.065ms
+[3.246s][info][gc] GC(16) Concurrent Mark Cycle 4.598ms
+[3.807s][info][gc] GC(17) Pause Young (Prepare Mixed) (G1 Evacuation Pause) 249M->137M(350M) 1.999ms
+[4.711s][info][gc] GC(18) Pause Young (Mixed) (GCLocker Initiated GC) 349M->156M(358M) 5.303ms
+[4.888s][info][gc] GC(19) Pause Young (Concurrent Start) (G1 Humongous Allocation) 193M->108M(358M) 1.407ms
+[4.888s][info][gc] GC(20) Concurrent Undo Cycle
+[4.889s][info][gc] GC(20) Concurrent Undo Cycle 0.195ms
+[5.771s][info][gc] GC(21) Pause Young (Concurrent Start) (G1 Humongous Allocation) 316M->156M(358M) 1.831ms
+[5.771s][info][gc] GC(22) Concurrent Undo Cycle
+[5.771s][info][gc] GC(22) Concurrent Undo Cycle 0.180ms
+[5.955s][info][gc] GC(23) Pause Young (Concurrent Start) (G1 Humongous Allocation) 204M->110M(358M) 1.543ms
+[5.955s][info][gc] GC(24) Concurrent Undo Cycle
+[5.956s][info][gc] GC(24) Concurrent Undo Cycle 0.206ms
+[6.847s][info][gc] GC(25) Pause Young (Concurrent Start) (G1 Humongous Allocation) 317M->153M(358M) 1.608ms
+[6.847s][info][gc] GC(26) Concurrent Undo Cycle
+[6.847s][info][gc] GC(26) Concurrent Undo Cycle 0.219ms
+[7.033s][info][gc] GC(27) Pause Young (Concurrent Start) (G1 Humongous Allocation) 199M->114M(358M) 2.062ms
+[7.033s][info][gc] GC(28) Concurrent Undo Cycle
+[7.034s][info][gc] GC(28) Concurrent Undo Cycle 0.343ms
+[7.903s][info][gc] GC(29) Pause Young (Concurrent Start) (G1 Humongous Allocation) 321M->152M(358M) 1.731ms
+[7.903s][info][gc] GC(30) Concurrent Undo Cycle
+[7.903s][info][gc] GC(30) Concurrent Undo Cycle 0.219ms
+[8.033s][info][gc] GC(31) Pause Young (Concurrent Start) (G1 Humongous Allocation) 184M->111M(358M) 1.387ms
+[8.033s][info][gc] GC(32) Concurrent Undo Cycle
+[8.033s][info][gc] GC(32) Concurrent Undo Cycle 0.182ms
+[8.822s][info][gc] GC(33) Pause Young (Concurrent Start) (G1 Humongous Allocation) 303M->155M(358M) 1.006ms
+[8.822s][info][gc] GC(34) Concurrent Undo Cycle
+[8.823s][info][gc] GC(34) Concurrent Undo Cycle 0.185ms
+[8.889s][info][gc] GC(35) Pause Young (Concurrent Start) (G1 Humongous Allocation) 172M->107M(358M) 0.933ms
+[8.889s][info][gc] GC(36) Concurrent Undo Cycle
+[8.889s][info][gc] GC(36) Concurrent Undo Cycle 0.223ms

@@ -1,0 +1,9 @@
+CTS-09 RNF02 resposta a tecla (ms): [47, 58, 45, 58, 58, 44, 73, 45, 43, 46, 74, 41], mediana 47, pior 74
+CTS-08 RNF01 fase 2: 19 amostras de FPS [61, 61, 60, 61, 61, 61, 61, 60, 61, 60, 61, 60, 60, 61, 60, 61, 61, 61, 61], media 60.7, min 60, frame mais lento do jogo 6.2 ms (orcamento 16.7 ms)
+CTS-10 RNF01b fase 2: frame mais lento por segundo (ms) [41.9, 3.2, 2.9, 3.4, 2.9, 3.2, 8.3, 3.3, 2.6, 3.8], pior 41.9, limite 33.3
+CTS-09 RNF02 resposta a tecla (ms): [65, 45, 58, 45, 55, 61, 60, 59, 56, 60, 57, 85], mediana 59, pior 85
+CTS-08 RNF01 fase 2: 19 amostras de FPS [61, 61, 61, 61, 61, 61, 60, 60, 60, 61, 60, 60, 61, 60, 60, 61, 60, 60, 60], media 60.5, min 60, frame mais lento do jogo 6.9 ms (orcamento 16.7 ms)
+CTS-10 RNF01b fase 2: frame mais lento por segundo (ms) [6.7, 4.7, 3.3, 33.6, 3.3, 3.9, 2.5, 3.2, 3.8, 3.9], pior 33.6, limite 33.3
+CTS-09 RNF02 resposta a tecla (ms): [51, 58, 45, 58, 58, 58, 42, 44, 44, 58, 43, 45], mediana 51, pior 58
+CTS-08 RNF01 fase 2: 19 amostras de FPS [60, 60, 61, 61, 61, 61, 61, 61, 60, 60, 61, 60, 61, 60, 61, 61, 61, 61, 61], media 60.7, min 60, frame mais lento do jogo 5.8 ms (orcamento 16.7 ms)
+CTS-10 RNF01b fase 2: frame mais lento por segundo (ms) [5.7, 3.6, 2.5, 2.9, 3.7, 2.7, 4.4, 3.3, 2.9, 2.3], pior 5.7, limite 33.3
