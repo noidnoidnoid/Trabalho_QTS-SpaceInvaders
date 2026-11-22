@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Space Invaders (web)</title>
+  <style>
+    :root { --bg: #0b0d12; --panel: #161a22; --text: #e6e8ee; --muted: #8a92a6; --ok: #4cc38a; --bad: #e5484d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, sans-serif;
+           display: flex; gap: 24px; justify-content: center; align-items: flex-start; padding: 16px; flex-wrap: wrap; }
+    #frame { height: min(90vh, 1080px); aspect-ratio: 800 / 1080; background: #000; display: block; }
+    aside { background: var(--panel); border-radius: 8px; padding: 16px 20px; min-width: 240px; }
+    h1 { font-size: 18px; margin: 0 0 12px; }
+    dl { display: grid; grid-template-columns: auto auto; gap: 6px 16px; margin: 0 0 16px; }
+    dt { color: var(--muted); }
+    dd { margin: 0; font-variant-numeric: tabular-nums; }
+    #connection[data-status="conectado"] { color: var(--ok); }
+    #connection[data-status="desconectado"] { color: var(--bad); }
+    p { color: var(--muted); margin: 0; max-width: 260px; }
+  </style>
+</head>
+<body>
+  <img id="frame" alt="Tela do jogo" src="/frame.jpg">
+  <aside>
+    <h1>Space Invaders</h1>
+    <dl>
+      <dt>Servidor</dt><dd id="connection" data-status="conectando">conectando</dd>
+      <dt>Tela</dt><dd id="state">-</dd>
+      <dt>Opção do menu</dt><dd id="menu-option">-</dd>
+      <dt>Nave (x)</dt><dd id="ship-x">-</dd>
+      <dt>Aliens</dt><dd id="aliens">-</dd>
+      <dt>Tiros</dt><dd id="shots">-</dd>
+      <dt>FPS</dt><dd id="fps">-</dd>
+      <dt>Frame mais lento (ms)</dt><dd id="slowest-frame-ms">-</dd>
+    </dl>
+    <p>W/S e Enter no menu. A/D movem a nave e Espaço atira. Os campos acima mostram o estado que o próprio jogo publica a cada frame.</p>
+  </aside>
+
+  <script>
+    const GAME_KEYS = new Set(["KeyW", "KeyA", "KeyS", "KeyD", "Space", "Enter", "NumpadEnter"]);
+    const fields = ["state", "menu-option", "ship-x", "aliens", "shots", "fps", "slowest-frame-ms"];
+    const jsonName = { "state": "state", "menu-option": "menuOption", "ship-x": "shipX",
+                       "aliens": "aliens", "shots": "shots", "fps": "fps",
+                       "slowest-frame-ms": "slowestFrameMs" };
+    const connection = document.getElementById("connection");
+
+    function setConnection(status) {
+      connection.textContent = status;
+      connection.dataset.status = status;
+    }
+
+    async function pollState() {
+      try {
+        const response = await fetch("/state", { cache: "no-store" });
+        const state = await response.json();
+        for (const id of fields) {
+          const value = state[jsonName[id]];
+          document.getElementById(id).textContent = value === null ? "-" : String(value);
+        }
+        setConnection("conectado");
+      } catch (e) {
+        setConnection("desconectado");
+      }
+      setTimeout(pollState, 50);
+    }
+
+    const frame = document.getElementById("frame");
+    function nextFrame() { frame.src = "/frame.jpg?t=" + Date.now(); }
+    frame.addEventListener("load", () => setTimeout(nextFrame, 33));
+    frame.addEventListener("error", () => setTimeout(nextFrame, 500));
+
+    function sendKey(event, type) {
+      if (!GAME_KEYS.has(event.code)) return;
+      event.preventDefault();
+      if (event.repeat) return;
+      fetch("/key", { method: "POST", body: new URLSearchParams({ code: event.code, type }) }).catch(() => {});
+    }
+    document.addEventListener("keydown", e => sendKey(e, "down"));
+    document.addEventListener("keyup", e => sendKey(e, "up"));
+
+    pollState();
+  </script>
+</body>
+</html>
