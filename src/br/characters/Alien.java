@@ -3,12 +3,11 @@ package br.characters;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 
 import br.Game;
+import br.display.Sprites;
 
 public class Alien extends Character {
 
@@ -28,7 +27,8 @@ public class Alien extends Character {
 	@Override
 	public void load() {
 		try {
-			img = ImageIO.read(new File("src/space-green-alien.png"));
+			// Read once and shared: level 2 creates 8 aliens inside one frame (issue #12).
+			img = Sprites.read("src/space-green-alien.png");
 		} catch (IOException e) {
 			System.out.println("Não foi possível carregar a imagem do alien");
 			e.printStackTrace();

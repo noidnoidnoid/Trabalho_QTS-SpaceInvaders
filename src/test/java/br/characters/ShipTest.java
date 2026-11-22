@@ -73,11 +73,10 @@ class ShipTest {
 
     @BeforeEach
     void preparar() {
-        // Shot.isVisible e Shot.velocity sao static no SUT, defeito registrado
-        // nas Issues do repositorio. Qualquer teste que crie um tiro contamina
-        // os demais, entao o estado global e zerado antes de cada caso para que
-        // a suite nao dependa da ordem de execucao.
-        Shot.setVisible(false);
+        // Shot.velocity e static no SUT. Qualquer teste que mude a velocidade
+        // contamina os demais, entao ela e zerada antes de cada caso para que a
+        // suite nao dependa da ordem de execucao. Shot.isVisible deixou de ser
+        // static na correcao da issue #9, entao nao precisa mais ser zerado aqui.
         Shot.setVelocity(7);
 
         ship = new Ship();

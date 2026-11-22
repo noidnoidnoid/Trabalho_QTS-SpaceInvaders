@@ -2,10 +2,8 @@ package br.display;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 
 import br.Game;
 
@@ -18,7 +16,8 @@ public class Background {
 	//CONSTRUTOR
 	public Background() {
 		try {
-			img = ImageIO.read(new File("src/fundo.png"));
+			// Read once and shared: this constructor runs on every frame (issue #11).
+			img = Sprites.read("src/fundo.png");
 		} catch (IOException e) {
 			System.out.println("N�o foi poss�vel carregar a imagem de fundo");
 			e.printStackTrace();
