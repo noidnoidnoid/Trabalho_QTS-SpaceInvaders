@@ -14,7 +14,7 @@
 | **Breno Carvalho** | 123083015 | `Testador` | `Level2State` |
 | **Erick Bessa** | 122083063 | `Testador/Realizador dos slides` | `Level1State` |
 | **Leon Stevans** | 123083047 | `Projetista de Teste/Testador` | `Game` |
-| **Luiz Eduardo** | 123083019 | `Testador` | `Ship` |
+| **Luiz Eduardo** | 123083019 | `Testador` (Entrega 2: inspeção de código com SonarQube) | `Ship` |
 | **Roger Egito** | 220083118 | `Testador` (Entrega 2: unitários com isolamento, integração e sistema) | `MenuState` (CC 24, a partir da Entrega 2) e `AudioPlayer` |
 
 ---
@@ -74,11 +74,14 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * Como o jogo é desktop (AWT), os testes usam uma versão web que roda a mesma lógica: [`src/br/web/`](src/br/web/). Detalhes em [`docs/alteracoes-no-sut.md`](docs/alteracoes-no-sut.md)
   * Evidências (screenshots, medições, relatórios de 3 execuções): [`docs/evidencias/sistema/`](docs/evidencias/sistema/)
 * [ ] **Cobertura Estrutural ($\ge 80\%$ Todas-Arestas):** Relatório JaCoCo/HTML disponível em [`docs/reports/coverage/`](docs/reports/coverage/).
+  * `Ship` (Luiz): [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · arestas 8/8 (100%)
 * [ ] **Teste Baseado em Defeitos ($\ge 80\%$ Escore de Mutação):** Relatório Pitest disponível em [`docs/reports/mutation/`](docs/reports/mutation/).
+  * `Ship` (Luiz): 16/18 (88,9%) antes da correção do Sonar e 14/16 (87,5%) depois. Os 2 sobreviventes são equivalentes ([`docs/sonar/ship.md`](docs/sonar/ship.md))
 * [ ] **Inspeção de Código (SonarQube/SonarCloud):**
   * Evidências antes das correções: [`docs/sonar/before/`](docs/sonar/before/)
   * Evidências após as correções: [`docs/sonar/after/`](docs/sonar/after/)
   * **Roger** (`MenuState` e `AudioPlayer`), com PMD 7.7.0 no lugar do Sonar (sem servidor nem conta, `mvn pmd:pmd`): 8 problemas antes, 0 depois. Prints, relatórios e justificativas em [`docs/inspecao/`](docs/inspecao/LEIA-ME.md)
+  * **Luiz** (`Ship`), com SonarQube (perfil comprehensive) como base e PMD como complemento: 7 issues antes, 0 depois (PMD: 1 antes, 0 depois). Resultado em [`docs/sonar/ship.md`](docs/sonar/ship.md); método e comparação PMD x Sonar em [`docs/sonar/`](docs/sonar/README.md). Uso de IA: [`AI-LOG`](docs/ai/AI-LOG.md), interações #013 e #014
 
 ---
 
