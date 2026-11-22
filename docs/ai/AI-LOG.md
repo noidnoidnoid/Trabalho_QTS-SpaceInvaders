@@ -140,6 +140,17 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** Roger escolheu a ferramenta pelo critério de facilidade (PMD no lugar do Sonar). Os nomes `KeyPressed` e `KeyReleased` (interface `State`) ficaram sem correção porque a mudança atingiria as classes dos outros integrantes. Os avisos de `volatile` e de IP fixo no código da camada web foram mantidos com justificativa (`docs/inspecao/LEIA-ME.md`).
 * **Validação:** PMD depois das correções: nenhum problema nas duas classes (print em `docs/inspecao/depois/`). Total do projeto de 64 para 47 problemas. Suítes da `MenuState` e do `AudioPlayer`, integração e sistema executadas de novo depois das correções.
 
+### Interação #012 — Correção de Execução Headless em `GameTest` (Issue #7)
+* **Data:** 22/11/2026
+* **Responsável:** Leon Stevans
+* **Atividade:** Diagnóstico e correção da falha por `java.awt.HeadlessException` e dependências gráficas nos testes unitários da classe `br.Game` (Issue #7).
+* **Ferramenta:** Gemini
+* **Prompt/Instrução Utilizada:**
+  > *"Atualize o GameTest.java para isolar Display e dependências gráficas em ambiente headless sem alterar Game.java, resolvendo a Issue #7."*
+* **Resultado:** Isolamento de `br.display.Display` via `Mockito.mockConstruction` fornecendo `Canvas`, `BufferStrategy`, `Graphics` e `FontMetrics` simulados, além de limpeza controlada da thread e dos mocks no `@AfterEach` e estabilização dos testes de `stop()` e `run()`.
+* **Decisão:** **Aceito sem alterações.** O código de produção (`src/br/Game.java`) permaneceu intacto e o encoding `ISO-8859-1` do projeto foi preservado.
+* **Validação:** Execução de `mvn test -Dtest=GameTest` concluída com `BUILD SUCCESS` (`Tests run: 5, Failures: 0, Errors: 0, Skipped: 0`).
+
 ---
 
 ## Modelo para Novas Entradas (Template)
