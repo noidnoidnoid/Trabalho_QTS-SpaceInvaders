@@ -31,10 +31,13 @@ const classes = [
 const pad = (n) => String(n).padStart(2, "0");
 const shots = [
   ["01-visao-geral", `/dashboard?id=${project}`],
-  ...classes.map(([name, file], i) => [
-    `${pad(i + 2)}-issues-${name}`,
-    `/project/issues?id=${project}&files=${encodeURIComponent(file)}&issueStatuses=OPEN%2CCONFIRMED`,
-  ]),
+  ...classes.flatMap(([name, file], i) => {
+    const base = `/project/issues?id=${project}&files=${encodeURIComponent(file)}`;
+    const shotsForClass = [[`${pad(i + 2)}-issues-${name}`, `${base}&issueStatuses=OPEN%2CCONFIRMED`]];
+    // No "depois", tambem as issues que o Sonar marcou como corrigidas (status Fixed).
+    if (label === "depois") shotsForClass.push([`${pad(i + 2)}b-issues-${name}-corrigidas`, `${base}&issueStatuses=FIXED`]);
+    return shotsForClass;
+  }),
   [`${pad(classes.length + 2)}-complexidade-por-arquivo`, `/component_measures?id=${project}&metric=complexity&view=list`],
   [`${pad(classes.length + 3)}-perfil-de-regras`, `/project/information?id=${project}`],
 ];
@@ -82,6 +85,15 @@ async function fitToContent(page) {
     await page.goto(HOST + url);
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(1500); // graficos e contadores terminam de desenhar
+
+    if (name.includes("-issues-")) {
+      // Abre o filtro "File": com zero resultados, e o unico lugar que mostra qual arquivo foi filtrado.
+      const facet = page.getByRole("button", { name: /^File/ }).first();
+      if (await facet.count()) {
+        await facet.click();
+        await page.waitForTimeout(1200);
+      }
+    }
 
     if (name.endsWith("visao-geral")) {
       // Com mais de uma analise, o painel abre em "New Code"; o retrato completo e "Overall Code".

@@ -48,6 +48,8 @@ Observações:
 | [09-eclipse-problemas-Ship.png](before/09-eclipse-problemas-Ship.png) | Plugin do Sonar no Eclipse: as mesmas 7 issues da `Ship` |
 | [10-pmd-Ship.png](before/10-pmd-Ship.png) | PMD na `Ship` (1 problema) |
 
+**Depois** (por enquanto só a `Ship`, análise de 22/11, 18:30): prints em [`after/`](after/) e resultado em [`ship.md`](ship.md).
+
 ## Como refazer
 
 SonarQube Community Build 26.11 (precisa de JDK 21), com o perfil comprehensive associado ao projeto. Na raiz do repositório, com o token em `SONAR_TOKEN`:
@@ -62,6 +64,6 @@ mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.9.0.7382:sonar 
 ```
 
 - `sonar.exclusions`: os testes ficam dentro de `src/`; sem isso o Sonar lê os testes duas vezes e para.
-- `maven.test.failure.ignore`: o `GameTest` falha no Maven (issue [#7](https://github.com/noidnoidnoid/Trabalho_QTS-SpaceInvaders/issues/7)) e pararia o build.
+- `maven.test.failure.ignore`: só é necessária para refazer o "antes" (commit `bbb57f3`), em que o `GameTest` ainda falhava no Maven (issue [#7](https://github.com/noidnoidnoid/Trabalho_QTS-SpaceInvaders/issues/7), corrigida depois pelo Leon).
 
 Scripts em [`scripts/`](scripts/): `sonar_baseline.py` (relatórios em texto) e `capturar-prints.cjs` (prints).

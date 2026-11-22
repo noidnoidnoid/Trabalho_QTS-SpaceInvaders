@@ -151,7 +151,33 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Aceito sem alterações.** O código de produção (`src/br/Game.java`) permaneceu intacto e o encoding `ISO-8859-1` do projeto foi preservado.
 * **Validação:** Execução de `mvn test -Dtest=GameTest` concluída com `BUILD SUCCESS` (`Tests run: 5, Failures: 0, Errors: 0, Skipped: 0`).
 
-### Interação #013 — Evolução da Suíte `GameTest` (Funcional, Estrutural e Mutação)
+### Interação #013 — Inspeção de Código da Classe `Ship` com SonarQube ("antes")
+* **Data:** 22/11/2026
+* **Responsável:** Luiz Eduardo
+* **Atividade:** Configuração do SonarQube local, escolha do perfil de regras, análise do projeto e registro do "antes" da inspeção de código (item 6 da Entrega 2).
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:**
+  > *"Monte a inspeção de código da classe Ship com o Sonar: suba o servidor, rode a análise e gere os prints e relatórios do 'antes', sem alterar o código do jogo."*
+
+  (síntese das instruções dadas ao longo da sessão)
+* **Resultado:** SonarQube Community 26.11 rodando localmente, análise do commit `bbb57f3` com o perfil Sonar way comprehensive, 10 prints e relatórios em `docs/sonar/before/`, plugin SonarQube for IDE no Eclipse em modo conectado e comparação com o PMD do grupo (51 problemas no PMD contra 100 no Sonar, no mesmo código).
+* **Decisão:** **Aceito com alterações.** O Luiz escolheu o perfil comprehensive (o padrão deixava três classes sem nenhum problema), definiu o Sonar como base e o PMD do Roger como complemento, pediu textos mais curtos e tirou da entrega o relatório do perfil padrão e dois scripts.
+* **Validação:** Contagens dos prints conferidas contra a API do servidor. PMD reexecutado com a configuração do Roger, reproduzindo os 47 problemas do relatório dele. Varredura sem senhas, tokens ou caminhos locais, e todos os links conferidos. Erros da ferramenta encontrados e corrigidos na sessão: a estimativa inicial de complexidade da `Ship` (6) estava errada, porque JaCoCo e Sonar dão 14; o aviso "analysis has warnings" foi primeiro atribuído à configuração de codificação, mas vinha de um defeito real em `Background.java:23`; os primeiros prints saíram cortados e um deles mostrava um token, e foram refeitos.
+
+### Interação #014 — Correção das Issues da Classe `Ship` e Registro do "depois"
+* **Data:** 22/11/2026
+* **Responsável:** Luiz Eduardo
+* **Atividade:** Correção das 7 issues do Sonar na `Ship`, ajuste do teste afetado e registro do "depois" da inspeção (item 6 da Entrega 2).
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:**
+  > *"Corrija as 7 issues da Ship sem mudar o comportamento, prove com testes, cobertura e mutação que nada quebrou e deixe tudo na staging para eu revisar antes do commit."*
+
+  (síntese das instruções dadas ao longo da sessão)
+* **Resultado:** `Ship.java` com o import sem uso removido, `java.util.logging` no lugar de `System.out` e `printStackTrace()`, a constante `MOVEX`, a lista `shots` como `final` e sem código comentado. `ShipTest` passando a verificar o aviso no log, e não mais o terminal. Prints e resultado em `docs/sonar/after/` e `docs/sonar/ship.md`.
+* **Decisão:** **Aceito sem alterações no código.** Na revisão, o Luiz jogou o jogo para conferir a nave e pediu que esse teste manual fosse registrado no `ship.md`. A versão anterior e a nova do teste estão no histórico do Git (commits `d85b947` e `7f41f71`).
+* **Validação:** Sonar de 7 para 0 issues (as 7 marcadas como corrigidas no servidor) e PMD de 1 para 0. 32 testes da `Ship` passando, arestas 8/8 e mutação 14/16 (87,5%), com os 2 sobreviventes equivalentes. `mvn test` com 156/156 depois de integrar a correção do Leon. Encoding `ISO-8859-1` preservado. Antes de editar, a ferramenta verificou que deixar `movex` só como `final` violaria a regra `java:S1170`, por isso ele virou uma constante.
+
+### Interação #015 — Evolução da Suíte `GameTest` (Funcional, Estrutural e Mutação)
 * **Data:** 22/11/2026
 * **Responsável:** Leon Stevans
 * **Atividade:** Expansão dos casos de teste de `br.Game` para cobrir as técnicas funcional, estrutural ($\ge 80\%$ todas-arestas) e baseada em defeitos ($\ge 80\%$ de mutação no PIT)[cite: 14, 18].

@@ -2,11 +2,12 @@ package br.characters;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -14,8 +15,10 @@ import br.Game;
 
 public class Ship extends Character {
 
-	private int movex = 6; //VELOCIDADE DE MOVIMENTACAO DO OBJETO
-	private List<Shot> shots; //PARA ALOCAR UMA QUANTIDADE DESCONHECIDA DE TIROS
+	private static final Logger LOGGER = Logger.getLogger(Ship.class.getName());
+
+	private static final int MOVEX = 6; //VELOCIDADE DE MOVIMENTACAO DO OBJETO
+	private final List<Shot> shots; //PARA ALOCAR UMA QUANTIDADE DESCONHECIDA DE TIROS
 	
 	//CONSTRUTOR
 	public Ship() {
@@ -31,8 +34,7 @@ public class Ship extends Character {
 		try {
 			img = ImageIO.read(new File("src/space-ship.png"));
 		} catch (IOException e) {
-			System.out.println("Não foi possível carregar a imagem da nave");
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Não foi possível carregar a imagem da nave", e);
 		}
 	}
 	
@@ -44,9 +46,9 @@ public class Ship extends Character {
 	
 	public void moveShip(int valor) {
 		if (valor == 1) {
-			x += movex; // >>>
+			x += MOVEX; // >>>
 		} else if (valor == -1) {
-			x -= movex; // <<<
+			x -= MOVEX; // <<<
 		}
 		
 		limits();
@@ -69,7 +71,7 @@ public class Ship extends Character {
 	}
 	
 	public int getShipWidth() {
-		return 100; //img.getWidth();
+		return 100;
 	}
 	
 	@Override
@@ -79,8 +81,6 @@ public class Ship extends Character {
 	
 	public void simpleShot() {
 		this.shots.add(new Shot(this.getX(), this.getY()));
-		//Shot.setVisible(true);
-		
 	}
 	
 	public List<Shot> getShots() {
