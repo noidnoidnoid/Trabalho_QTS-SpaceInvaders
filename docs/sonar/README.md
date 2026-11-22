@@ -48,6 +48,8 @@ Observações:
 | [09-eclipse-problemas-Ship.png](before/09-eclipse-problemas-Ship.png) | Plugin do Sonar no Eclipse: as mesmas 7 issues da `Ship` |
 | [10-pmd-Ship.png](before/10-pmd-Ship.png) | PMD na `Ship` (1 problema) |
 
+**Depois** (por enquanto só a `Ship`, análise de 22/11, 18:30): prints em [`after/`](after/) e resultado em [`ship.md`](ship.md).
+
 ## Como refazer
 
 SonarQube Community Build 26.11 (precisa de JDK 21), com o perfil comprehensive associado ao projeto. Na raiz do repositório, com o token em `SONAR_TOKEN`:

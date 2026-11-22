@@ -14,11 +14,14 @@ import static org.mockito.Mockito.verify;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -53,7 +56,7 @@ class ShipTest {
     /** Ship() posiciona a nave em Game.WIDTH / 2. */
     private static final int X_INICIAL = Game.WIDTH / 2;        // 400
 
-    /** Campo privado movex de Ship. */
+    /** Constante MOVEX de Ship. */
     private static final int VELOCIDADE = 6;
 
     /** A nave nao se move em Y. */
@@ -117,17 +120,34 @@ class ShipTest {
             // padrao, o que permite interceptar o metodo estatico ImageIO.read
             // sem tocar no SUT. Isola o teste do sistema de arquivos e cobre o
             // unico bloco de Ship que os demais casos nao alcancam.
-            PrintStream saidaOriginal = System.out;
-            PrintStream erroOriginal = System.err;
-            ByteArrayOutputStream saidaCapturada = new ByteArrayOutputStream();
-            // load() tambem faz e.printStackTrace(); a saida de erro e capturada em vez
-            // de descartada, senao o mutante que remove essa chamada sobrevive.
-            ByteArrayOutputStream erroCapturado = new ByteArrayOutputStream();
+            // Desde a correcao do Sonar (java:S106 e java:S4507), load() avisa a
+            // falha pelo java.util.logging, e nao mais por System.out e
+            // printStackTrace(). O teste captura os registros do logger da classe.
+            Logger logger = Logger.getLogger(Ship.class.getName());
+            List<LogRecord> registros = new ArrayList<>();
+            Handler captura = new Handler() {
+                @Override
+                public void publish(LogRecord registro) {
+                    registros.add(registro);
+                }
+
+                @Override
+                public void flush() {
+                    // nada a descarregar: os registros ficam na lista
+                }
+
+                @Override
+                public void close() {
+                    // nada a liberar
+                }
+            };
+            boolean usavaHandlersDoPai = logger.getUseParentHandlers();
 
             Ship naveSemImagem;
             try {
-                System.setOut(new PrintStream(saidaCapturada));
-                System.setErr(new PrintStream(erroCapturado));
+                logger.addHandler(captura);
+                // Nao imprime o aviso no console durante a suite.
+                logger.setUseParentHandlers(false);
 
                 try (MockedStatic<ImageIO> imageIO = mockStatic(ImageIO.class)) {
                     imageIO.when(() -> ImageIO.read(any(File.class)))
@@ -136,15 +156,18 @@ class ShipTest {
                     naveSemImagem = new Ship();
                 }
             } finally {
-                System.setOut(saidaOriginal);
-                System.setErr(erroOriginal);
+                logger.removeHandler(captura);
+                logger.setUseParentHandlers(usavaHandlersDoPai);
             }
 
             assertNull(naveSemImagem.img, "load() deve engolir a IOException e deixar img nulo");
-            assertTrue(saidaCapturada.toString().contains("carregar a imagem da nave"),
-                    "load() deve avisar na saida padrao");
-            assertTrue(erroCapturado.toString().contains("arquivo de imagem ausente"),
-                    "load() deve registrar a excecao na saida de erro");
+            assertEquals(1, registros.size(), "load() deve registrar um aviso");
+            LogRecord aviso = registros.get(0);
+            assertEquals(Level.WARNING, aviso.getLevel());
+            assertTrue(aviso.getMessage().contains("carregar a imagem da nave"),
+                    "o aviso deve explicar o que falhou");
+            assertEquals("arquivo de imagem ausente", aviso.getThrown().getMessage(),
+                    "o aviso deve levar a excecao original");
             // O construtor termina mesmo sem a imagem: a nave continua utilizavel.
             assertEquals(X_INICIAL, naveSemImagem.getX());
             assertTrue(naveSemImagem.getShots().isEmpty());
@@ -291,8 +314,7 @@ class ShipTest {
         @DisplayName("getShipWidth() devolve 100, e nao a largura da imagem")
         void getShipWidthEhConstante() {
             assertEquals(LARGURA_NAVE, ship.getShipWidth());
-            // A imagem tem 444px; o SUT usa a constante 100 e deixa
-            // img.getWidth() comentado em Ship.java:72.
+            // A imagem tem 444px; getShipWidth() devolve a constante 100.
             assertEquals(LARGURA_IMG, ship.img.getWidth());
         }
     }
@@ -321,7 +343,7 @@ class ShipTest {
         @Test
         @DisplayName("BUG #3: a altura e 930 em vez de 100")
         void alturaIncorretaDocumentada() {
-            // Ship.java:77 passa getY() como quarto argumento de Rectangle, que e
+            // Ship.java:79 passa getY() como quarto argumento de Rectangle, que e
             // a ALTURA, e nao a coordenada inferior. O retangulo de colisao da nave
             // tem 100x930 e se estende muito abaixo da tela, o que faz a deteccao
             // de colisao de Level1State e Level2State disparar cedo demais.
@@ -408,7 +430,7 @@ class ShipTest {
 
             ship.paint(g);
 
-            // Ship.java:41 -> drawImage(img, x, 930, x + 100, 1030, 0, 0, 444, 512, null)
+            // Ship.java:43 -> drawImage(img, x, 930, x + 100, 1030, 0, 0, 444, 512, null)
             verify(g).drawImage(
                     eq(ship.img),
                     eq(X_INICIAL), eq(Y_FIXO),
