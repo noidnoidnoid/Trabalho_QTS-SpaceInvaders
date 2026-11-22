@@ -191,6 +191,14 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Aceito sem alterações.** O único mutante remanescente (`changed conditional boundary` em `delta >= 1` na linha 46) foi classificado como equivalente/não determinístico em aritmética contínua de nanossegundos (`System.nanoTime()`).
 * **Validação:** Execução de `mvn clean test jacoco:report` (100% branches) e `mvn test-compile org.pitest:pitest-maven:mutationCoverage` (93% mutação em `br.Game`, 89% no projeto geral).
 
+## Interação #016 — 22/11/2026
+* **Responsável:** Leon Stevans (`br.Game`)
+* **Ferramenta de IA:** Gemini
+* **Atividade:** Análise de pendências da Entrega 2, validação da inspeção estática via PMD (`pmd.xml`) e preenchimento da Seção 2.6 do Plano de Teste.
+* **Prompt / Solicitação:** Verificação dos itens pendentes da classe `br.Game` para a Entrega 2, orientação para exportação dos relatórios do PIT, análise dos apontamentos gerados pelo plugin `maven-pmd-plugin` em `target/pmd.xml` e apoio na redação do cronograma da Seção 2.6 do Plano de Teste.
+* **Saída Gerada:** Checklist de fechamento da Entrega 2, comandos de cópia dos relatórios HTML do PIT (`docs/reports/mutation/`), classificação das 6 violações de estilo reportadas pelo PMD em `Game.java` e tabela de atividades, entregas e estimativas da Seção 2.6.
+* **Validação e Ação Tomada:** O relatório `target/pmd.xml` foi executado e inspecionado manualmente, confirmando que os 6 apontamentos (`OneDeclarationPerLine`, `LocalVariableNamingConventions`, `UncommentedEmptyMethodBody` e `ControlStatementBraces`) são apenas regras cosméticas/de estilo do código legado original (`Game.java`), o qual foi mantido inalterado conforme a estratégia de isolamento da suíte `GameTest`. A Seção 2.5, a Seção 2.6 e o histórico de versões (v1.3) foram incorporados ao Plano de Teste e documentados no `README.md`.
+
 ---
 
 ## Modelo para Novas Entradas (Template)

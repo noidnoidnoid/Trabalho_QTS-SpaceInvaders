@@ -87,6 +87,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * Evidências após as correções: [`docs/sonar/after/`](docs/sonar/after/)
   * **Roger** (`MenuState` e `AudioPlayer`), com PMD 7.7.0 no lugar do Sonar (sem servidor nem conta, `mvn pmd:pmd`): 8 problemas antes, 0 depois. Prints, relatórios e justificativas em [`docs/inspecao/`](docs/inspecao/LEIA-ME.md)
   * **Luiz** (`Ship`), com SonarQube (perfil comprehensive) como base e PMD como complemento: 7 issues antes, 0 depois (PMD: 1 antes, 0 depois). Resultado em [`docs/sonar/ship.md`](docs/sonar/ship.md); método e comparação PMD x Sonar em [`docs/sonar/`](docs/sonar/README.md). Uso de IA: [`AI-LOG`](docs/ai/AI-LOG.md), interações #013 e #014
+  * **`br.Game` (Leon):** Inspeção estática realizada via PMD (`mvn pmd:pmd`), confirmando ausência de vulnerabilidades críticas ou *code smells* bloqueantes na classe principal e na suíte `GameTest`.
 
 ---
 
