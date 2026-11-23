@@ -219,6 +219,7 @@
             <param>br.states.MenuState</param>
             <param>br.Game</param>
             <param>br.states.Level2State</param>
+            <param>br.states.Level1State</param>
           </targetClasses>
           <targetTests>
             <param>br.characters.ShipTest</param>
@@ -227,6 +228,7 @@
             <param>br.states.MenuStateTest*</param>
             <param>br.GameTest*</param>
             <param>br.states.Level2StateTest*</param>
+            <param>br.states.Level1State*</param>
           </targetTests>
           <outputFormats>
             <param>HTML</param>
