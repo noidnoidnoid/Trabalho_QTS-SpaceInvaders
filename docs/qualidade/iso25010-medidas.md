@@ -2,7 +2,7 @@
 
 Responsável: Breno Carvalho (123083015). Item da Entrega 2: "Indicação das medidas de cada atributo de qualidade da ISO 25010 seguindo uma escala. Justificar as decisões para indicação das medidas."
 
-Este documento mede **o quanto** o Space Invaders atende cada característica, numa escala de 0% a 100%. A **importância** de cada característica já foi definida antes, numa análise separada (escala de 1 a 5), e aqui ela entra só como peso da nota geral.
+Este documento mede **o quanto** o Space Invaders atende cada característica, numa escala de 0% a 100%. A **importância** de cada característica foi definida pelo grupo, em escala de 1 a 5, em [`importancia-caracteristicas.md`](../iso25010/importancia-caracteristicas.md). Aqui ela entra só como peso da nota geral.
 
 ## 1. O que foi medido
 
@@ -18,7 +18,7 @@ A versão web roda a mesma lógica do jogo (`StateManager`, estados, `Ship`, `Al
 1. Cada subcaracterística aplicável recebe uma medida no formato da ISO/IEC 25023, **X = A / B**, entre 0 e 1. Por exemplo: funções sem defeito aberto ÷ funções implementadas. A e B vêm sempre de uma evidência do repositório (relatório, teste, issue ou código).
 2. A nota da característica é a **média simples** das subcaracterísticas aplicáveis, em porcentagem.
 3. Uma subcaracterística que não faz sentido para o jogo fica como **"não se aplica" (N/A)** e sai da média. Uma que se aplica mas não tem medida objetiva fica como **"não medida"** e também sai da média. As duas situações são justificadas na seção da característica.
-4. A **nota geral** é a média das 9 notas, ponderada pelos níveis de importância da análise anterior (1 a 5).
+4. A **nota geral** é a média das 9 notas, ponderada pelos níveis de importância definidos pelo grupo (1 a 5) em [`importancia-caracteristicas.md`](../iso25010/importancia-caracteristicas.md).
 5. Quando uma lista de itens é avaliada (por exemplo, falhas injetadas), cada item vale 1 se atendido e 0 se não. Para a coexistência, um item vale a fração de execuções que passaram.
 
 ## 3. Resumo
@@ -27,16 +27,16 @@ A versão web roda a mesma lógica do jogo (`StateManager`, estados, `Ship`, `Al
 | :--- | :---: | :---: | :---: |
 | Adequação funcional | 4 | 86% | 90% |
 | Eficiência de desempenho | 4 | 15% | 89% |
-| Compatibilidade | 3 | 33% | 79% |
-| Capacidade de interação | 3 | 43% | 70% |
+| Compatibilidade | 2 | 33% | 79% |
+| Capacidade de interação | 4 | 43% | 70% |
 | Confiabilidade | 4 | 8% | 72% |
-| Segurança (*security*) | 2 | 83% | 92% |
-| Manutenibilidade | 4 | 72% | 80% |
+| Segurança (*security*) | 1 | 83% | 92% |
+| Manutenibilidade | 3 | 72% | 80% |
 | Flexibilidade | 3 | 50% | 88% |
-| Segurança operacional (*safety*) | 1 | 100% | 100% |
-| **Nota geral (média ponderada)** | | **49%** | **83%** |
+| Segurança operacional (*safety*) | 2 | 50% | 50% |
+| **Nota geral (média ponderada)** | | **45%** | **79%** |
 
-As maiores mudanças vieram das correções da Entrega 2 (desempenho e confiabilidade) e da interface web (interação e flexibilidade). A capacidade de interação continua baixa porque nenhuma correção tratou de pausa, placar, vidas ou efeitos sonoros.
+As maiores mudanças vieram das correções da Entrega 2 (desempenho e confiabilidade) e da interface web (interação e flexibilidade). A capacidade de interação continua baixa porque nenhuma correção tratou de pausa, placar, vidas ou efeitos sonoros. A segurança operacional fica em 50% porque a música começa sozinha no menu, sem aviso e sem controle de volume no jogo, o mesmo ponto de atenção apontado na análise de importância do grupo.
 
 ## 4. Medidas por característica
 
@@ -62,7 +62,7 @@ Funções especificadas (17), tiradas das histórias de usuário dos casos de te
 
 **Justificativa.** No código original o fundo era relido do disco a cada frame (cerca de 15 ms de um orçamento de 16,7 ms), e os tiros nunca saíam da lista. As correções das issues #8, #11 e #12 colocaram o jogo dentro do orçamento com folga. A tecla mais lenta levou de 82 a 114 ms para responder, abaixo do limite de 200 ms (CTS-09). Essa medida não entra na conta porque não existe para o "antes". Falta 11% porque o laço ainda ocupa um núcleo inteiro de CPU.
 
-### 4.3 Compatibilidade (peso 3): 33% → 79%
+### 4.3 Compatibilidade (peso 2): 33% → 79%
 
 | Subcaracterística | Medida (A / B) | Antes | Depois | Evidência |
 | :--- | :--- | :---: | :---: | :--- |
@@ -71,7 +71,7 @@ Funções especificadas (17), tiradas das histórias de usuário dos casos de te
 
 **Justificativa.** O jogo desktop não troca dados com nenhum outro sistema, então a interoperabilidade não se aplica no "antes". A versão web troca dados com o navegador por HTTP/JSON, e isso funciona. A coexistência continua sendo o ponto fraco: a espera ativa disputa CPU com outros programas, e os picos isolados do CTS-10 só aparecem com o navegador rodando junto.
 
-### 4.4 Capacidade de interação (peso 3): 43% → 70%
+### 4.4 Capacidade de interação (peso 4): 43% → 70%
 
 | Subcaracterística | Medida (A / B) | Antes | Depois | Evidência |
 | :--- | :--- | :---: | :---: | :--- |
@@ -97,7 +97,7 @@ Funções especificadas (17), tiradas das histórias de usuário dos casos de te
 
 **Justificativa.** O original nem abria numa máquina sem placa de som. As correções do `AudioPlayer` e dos tiros resolveram a maior parte dos defeitos encontrados. Ainda restam a falta de imagem e qualquer exceção no laço, que encerram a partida. Observação de método: o 0% do "antes" na ausência de falhas acontece por construção, porque os defeitos contados foram justamente os que o grupo encontrou nesse código.
 
-### 4.6 Segurança (*security*) (peso 2): 83% → 92%
+### 4.6 Segurança (*security*) (peso 1): 83% → 92%
 
 | Subcaracterística | Medida (A / B) | Antes | Depois | Evidência |
 | :--- | :--- | :---: | :---: | :--- |
@@ -107,7 +107,7 @@ Funções especificadas (17), tiradas das histórias de usuário dos casos de te
 
 **Justificativa.** É um jogo local, sem dados a proteger. A camada web abre uma porta HTTP, mas só na própria máquina e só para as teclas do jogo.
 
-### 4.7 Manutenibilidade (peso 4): 72% → 80%
+### 4.7 Manutenibilidade (peso 3): 72% → 80%
 
 | Subcaracterística | Medida (A / B) | Antes | Depois | Evidência |
 | :--- | :--- | :---: | :---: | :--- |
@@ -129,25 +129,32 @@ Funções especificadas (17), tiradas das histórias de usuário dos casos de te
 
 **Justificativa.** A versão web resolveu o tamanho de tela e permite jogar no navegador. Continua faltando um pacote executável (JAR), e o jogo só roda a partir da raiz do repositório.
 
-### 4.9 Segurança operacional (*safety*) (peso 1): 100% → 100%
+### 4.9 Segurança operacional (*safety*) (peso 2): 50% → 50%
 
 | Subcaracterística | Medida (A / B) | Antes | Depois | Evidência |
 | :--- | :--- | :---: | :---: | :--- |
-| Identificação de riscos e aviso de perigo | perigos identificados que estão mitigados / perigos identificados | 1/1 | 1/1 | Único perigo plausível: conteúdo piscante (fotossensibilidade). Não existe: o único movimento contínuo é o deslocamento dos sprites |
+| Identificação de riscos e aviso de perigo | perigos identificados que estão mitigados / perigos identificados | 1/2 (50%) | 1/2 (50%) | (1) Conteúdo piscante (fotossensibilidade): mitigado, porque não existe; o único movimento contínuo é o deslocamento dos sprites. (2) Som sem aviso: a música tema começa sozinha no menu (`MenuState`), sem aviso e sem controle de volume no jogo; não mitigado nas duas versões. Os dois perigos são os da [análise de importância do grupo](../iso25010/importancia-caracteristicas.md) |
 | Restrição operacional, falha segura, integração segura | N/A | | | O sistema não controla hardware nem interage com o ambiente físico |
 
-**Justificativa.** Nenhuma falha do jogo põe pessoas ou bens em risco. A medida é pouco informativa, coerente com a importância 1.
+**Justificativa.** Nenhuma falha do jogo põe pessoas ou bens em risco grave. O único ponto de atenção é o som: a música começa no volume do sistema, sem aviso nem controle no jogo. O volume do sistema operacional atenua o problema, mas não é uma mitigação do próprio software, por isso esse perigo conta como não mitigado. Com só dois perigos na lista, cada um vale 50 pontos; a medida é grosseira, mas reflete o risco que o grupo identificou.
 
 ## 5. Limitações
 
-- **O "antes" e o "depois" medem produtos diferentes.** O "antes" é o jogo desktop e o "depois" é a versão web. Parte da melhora vem das correções (desempenho, confiabilidade, adequação funcional) e parte vem da página nova (interação, flexibilidade, interoperabilidade). Além disso, a camada web foi criada como adaptador para os testes com Selenium, e o próprio grupo registra que a janela (`Display`) e o `Game.render()` do desktop não são exercitados por esses testes ([`alteracoes-no-sut.md`](../alteracoes-no-sut.md), seção 3). Medindo o desktop no "depois", Capacidade de interação, Compatibilidade e Flexibilidade ficariam em 43%, 58% e 63%, e a nota geral cairia de 83% para 75%.
+- **O "antes" e o "depois" medem produtos diferentes.** O "antes" é o jogo desktop e o "depois" é a versão web. Parte da melhora vem das correções (desempenho, confiabilidade, adequação funcional) e parte vem da página nova (interação, flexibilidade, interoperabilidade). Além disso, a camada web foi criada como adaptador para os testes com Selenium, e o próprio grupo registra que a janela (`Display`) e o `Game.render()` do desktop não são exercitados por esses testes ([`alteracoes-no-sut.md`](../alteracoes-no-sut.md), seção 3). Medindo o desktop no "depois", Capacidade de interação, Compatibilidade e Flexibilidade ficariam em 43%, 58% e 63%, e a nota geral cairia de 79% para 71%.
 - **As medidas de desempenho do "antes"** foram tiradas na camada web rodando a lógica antiga (FPS no menu e frame da fase 2), porque o desktop não publicava essas medidas.
 - **Algumas medidas são listas de verificação** definidas pelo grupo, como os elementos de engajamento ou os ambientes de adaptabilidade. A escolha dos itens tem peso no resultado e está descrita em cada tabela.
 - **A analisabilidade** trata cada apontamento do Sonar como uma linha afetada. É uma aproximação.
 - **A tela de 1920×1080** no desktop foi deduzida a partir do código e não foi testada.
 - **A correção da #10, a inspeção da `Level2State`** ([`docs/inspecao/level2state/`](../inspecao/level2state/LEIA-ME.md), 11 problemas resolvidos, comportamento preservado) **e os 5 casos novos que levaram a classe a 100% de arestas e de mutação** ([`docs/reports/level2state/`](../reports/level2state/LEIA-ME.md)) entraram depois da última análise do Sonar e das execuções finais de sistema. A cobertura e os relatórios citados são da `main` no commit `cdb5130`. Por isso as medidas de analisabilidade, resistência e testabilidade não contam essas melhorias.
 
-## 6. Evidências usadas
+## 6. Histórico de revisões
+
+| Data | Mudança |
+| :--- | :--- |
+| 22/11/2026 | Primeira versão. Pesos tirados de uma análise individual de importância do Breno (13/11): nota geral de 49% antes e 83% depois |
+| 23/11/2026 | Pesos trocados pelos da análise de importância do grupo, que diverge da individual em Compatibilidade (3 → 2), Capacidade de interação (3 → 4), Segurança (2 → 1), Manutenibilidade (4 → 3) e Segurança operacional (1 → 2). Só com essa troca, a nota geral ficaria igual depois de arredondada (49,0% e 82,8%). A segurança operacional passou de 100% para 50% para incluir o perigo de som sem aviso, apontado na mesma análise. Nota geral final: 45% antes e 79% depois. Registro: AI-LOG, interação #021 |
+
+## 7. Evidências usadas
 
 - Enunciado do trabalho (Entrega 2) e ISO/IEC 25010:2023 (segunda edição, 2023-11).
 - Código em `src/br/` no commit `bbb57f3` e na `main` (`cdb5130`).
@@ -156,4 +163,5 @@ Funções especificadas (17), tiradas das histórias de usuário dos casos de te
 - JaCoCo ([`docs/reports/coverage/jacoco.csv`](../reports/coverage/jacoco.csv)), PIT ([`docs/reports/mutation/`](../reports/mutation/)), Sonar ([`docs/sonar/`](../sonar/README.md)) e PMD ([`docs/inspecao/`](../inspecao/LEIA-ME.md)).
 - Testes de sistema e desempenho: [`docs/evidencias/sistema/`](../evidencias/sistema/) e [`docs/plano-de-teste/secoes-roger-entrega2.md`](../plano-de-teste/secoes-roger-entrega2.md).
 - Correção da #10 no `Level2State`: [`docs/ai/breno/evidencias/2026-11-22-defeito-10-level2state.txt`](../ai/breno/evidencias/2026-11-22-defeito-10-level2state.txt).
-- Uso de IA: [`docs/ai/AI-LOG.md`](../ai/AI-LOG.md), interações #017 e #018.
+- Importância de cada característica (pesos): [`importancia-caracteristicas.md`](../iso25010/importancia-caracteristicas.md), análise do grupo.
+- Uso de IA: [`docs/ai/AI-LOG.md`](../ai/AI-LOG.md), interações #017, #018 e #021.

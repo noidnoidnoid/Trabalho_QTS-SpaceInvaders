@@ -251,6 +251,19 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Aceito sem alterações.** O Breno aprovou a mudança no `pom.xml` e os 5 casos como foram propostos. Na proposta, a ferramenta apontou que os casos de desenho e movimento não fixam posição exata, cor nem velocidade, para não repetir o problema que levou o Roger a remover testes de arte da suíte da `MenuState`.
 * **Validação:** Na máquina do Breno, `mvn test -Dtest=Level2StateTest` deu 19 testes, 0 falhas, e o PIT deu **29/29 (100%)**, com test strength de 100% e nenhum mutante sem cobertura. JaCoCo: **34/34 arestas (100%)**. As 2 linhas não cobertas (55/57) são os corpos vazios de `KeyPressed` e `KeyReleased`. Prints e relatórios em `docs/reports/level2state/`.
 
+### Interação #021 — Alinhamento dos pesos das medidas ISO 25010 com a análise de importância do grupo
+* **Data:** 23/11/2026
+* **Responsável:** Breno Carvalho
+* **Atividade:** Correção dos pesos da nota geral das medidas ISO 25010 (interação #017) e revisão da medida de segurança operacional.
+* **Ferramenta:** Claude (app Claude)
+* **Prompt/Instrução Utilizada:**
+  > *"Verifique o item 3 do print publicado. Parece que utilizamos pesos diferentes no nosso projeto. Monte um plano para essa mudança e não realize nenhuma implementação sem minha revisão"*, com o arquivo `importancia-caracteristicas.md` anexado.
+
+  Decisões do Breno ao plano proposto: adotar os pesos do `importancia-caracteristicas.md` e registrar a mudança aqui; o autor da análise publica o arquivo no repositório; segurança operacional em 50%; receber os arquivos editados pelo chat para aplicar.
+* **Resultado:** Uma revisão do grupo (item 3) apontou que a nota geral da #017 usava os pesos de uma análise individual de importância do Breno (13/11), e não os da análise oficial do grupo. As duas divergem em 5 características: Compatibilidade 3 → 2, Capacidade de interação 3 → 4, Segurança 2 → 1, Manutenibilidade 4 → 3 e Segurança operacional 1 → 2. A ferramenta recalculou a nota com os pesos do grupo: 49,0% antes e 82,8% depois, os mesmos 49% e 83% depois de arredondar. Também mostrou que a medida de segurança operacional (100%) ignorava o único ponto de atenção da análise do grupo: a música começa sozinha no menu, sem aviso e sem controle de volume. Por fim, apresentou os riscos de manter 100% (contradição com o documento oficial) e de passar a 50% (medida grosseira e números já publicados a refazer).
+* **Decisão:** **Alterado.** Pesos trocados pelos do grupo. A segurança operacional passou a 50% (1 de 2 perigos mitigados), e a nota geral foi para **45% antes e 79% depois**; medindo o desktop no "depois", 71%. As 8 outras medidas não mudaram. Arquivos atualizados: `docs/qualidade/iso25010-medidas.md` (com histórico de revisões), README e a seção 2.7 do Plano de Teste. A #017 foi mantida como registro do que foi feito naquele momento.
+* **Validação:** Nota geral recalculada por script, a partir das medidas de cada subcaracterística, com os dois conjuntos de pesos e com a segurança operacional em 100% e em 50%. Conferido que os valores arredondados da tabela levam ao mesmo resultado (1223/27 = 45,3% e 2138/27 = 79,2%). Os links para o `importancia-caracteristicas.md` dependem da publicação do arquivo pelo autor, em `docs/iso25010/`.
+
 ---
 
 ## Modelo para Novas Entradas (Template)
