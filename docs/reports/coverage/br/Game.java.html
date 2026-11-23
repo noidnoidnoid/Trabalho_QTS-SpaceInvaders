@@ -19,68 +19,68 @@ public class Game implements Runnable{
 	private KeyManager km;
 	
 <span class="fc" id="L21">	public Game() {</span>
-<span class="nc" id="L22">		display = new Display(&quot;Space Invaders&quot;, WIDTH, HEIGHT);</span>
-<span class="nc" id="L23">		sm = new StateManager(); //ADMINISTRADOR DE ESTADOS</span>
-<span class="nc" id="L24">		km = new KeyManager(); //ADMINISTRADOR DAS ENTRADAS</span>
-<span class="nc" id="L25">		display.setKeyListener(sm);</span>
-<span class="nc" id="L26">		display.setKeyListener(km);</span>
-<span class="nc" id="L27">		StateManager.setState(StateManager.MENU); //INICIALIZA NO MENU</span>
-<span class="nc" id="L28">	}</span>
+<span class="fc" id="L22">		display = new Display(&quot;Space Invaders&quot;, WIDTH, HEIGHT);</span>
+<span class="fc" id="L23">		sm = new StateManager(); //ADMINISTRADOR DE ESTADOS</span>
+<span class="fc" id="L24">		km = new KeyManager(); //ADMINISTRADOR DAS ENTRADAS</span>
+<span class="fc" id="L25">		display.setKeyListener(sm);</span>
+<span class="fc" id="L26">		display.setKeyListener(km);</span>
+<span class="fc" id="L27">		StateManager.setState(StateManager.MENU); //INICIALIZA NO MENU</span>
+<span class="fc" id="L28">	}</span>
 
 	@Override
 	public void run() {
 		//ELEMENTO QUE SERÁ RODADO NA THREAD PARA RENDERIZACAO DA TELA
 		
-<span class="nc" id="L34">		init();</span>
-<span class="nc" id="L35">		int FPS = 60; //60 FRAMES POR SEGUNDO</span>
-<span class="nc" id="L36">		double timePerTick = 1000000000 / FPS;//UM TICK É UMA ATUALIZAÇÃO, 1 nanosegundo por 60 frames</span>
-<span class="nc" id="L37">		double delta = 0;</span>
+<span class="fc" id="L34">		init();</span>
+<span class="fc" id="L35">		int FPS = 60; //60 FRAMES POR SEGUNDO</span>
+<span class="fc" id="L36">		double timePerTick = 1000000000 / FPS;//UM TICK É UMA ATUALIZAÇÃO, 1 nanosegundo por 60 frames</span>
+<span class="fc" id="L37">		double delta = 0;</span>
 		long now;
-<span class="nc" id="L39">		long lastTime = System.nanoTime();</span>
+<span class="fc" id="L39">		long lastTime = System.nanoTime();</span>
 		
-<span class="nc bnc" id="L41" title="All 2 branches missed.">		while(running) {</span>
-<span class="nc" id="L42">			now = System.nanoTime();</span>
-<span class="nc" id="L43">			delta += (now - lastTime) / timePerTick;</span>
-<span class="nc" id="L44">			lastTime = now;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		while(running) {</span>
+<span class="fc" id="L42">			now = System.nanoTime();</span>
+<span class="fc" id="L43">			delta += (now - lastTime) / timePerTick;</span>
+<span class="fc" id="L44">			lastTime = now;</span>
 			
-<span class="nc bnc" id="L46" title="All 2 branches missed.">			if (delta &gt;= 1) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">			if (delta &gt;= 1) {</span>
 				//MOMENTO DE ATUALIZAR A TELA
-<span class="nc" id="L48">				update();</span>
-<span class="nc" id="L49">				render();</span>
+<span class="fc" id="L48">				update();</span>
+<span class="fc" id="L49">				render();</span>
 				//System.out.println(&quot;FPS = 60\nTempo de atualização: &quot; + delta);
-<span class="nc" id="L51">				delta--; //VOLTA A SER 0</span>
+<span class="fc" id="L51">				delta--; //VOLTA A SER 0</span>
 			}
 		}
-<span class="nc" id="L54">		stop();</span>
-<span class="nc" id="L55">	}</span>
+<span class="fc" id="L54">		stop();</span>
+<span class="fc" id="L55">	}</span>
 	
-<span class="nc" id="L57">	private void init() {}</span>
+<span class="fc" id="L57">	private void init() {}</span>
 	
 	private void update() {
 		//ATUALIZA A CADA INTERACAO DO USUARIO
-<span class="nc bnc" id="L61" title="All 2 branches missed.">		if (StateManager.getState() == null) return;</span>
-<span class="nc" id="L62">		sm.update();</span>
-<span class="nc" id="L63">		km.update(); //VERIFICAR O PRESSIONAMENTO DE TECLA A CADA UPDATE</span>
-<span class="nc" id="L64">	}</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		if (StateManager.getState() == null) return;</span>
+<span class="fc" id="L62">		sm.update();</span>
+<span class="fc" id="L63">		km.update(); //VERIFICAR O PRESSIONAMENTO DE TECLA A CADA UPDATE</span>
+<span class="fc" id="L64">	}</span>
 	
 	private void render() {
 		//REDESENHA
-<span class="nc" id="L68">		BufferStrategy bs = display.getBufferStrategy();</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">		if (bs == null) {</span>
-<span class="nc" id="L70">			display.createBufferStrategy();</span>
-<span class="nc" id="L71">			bs = display.getBufferStrategy();</span>
+<span class="fc" id="L68">		BufferStrategy bs = display.getBufferStrategy();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		if (bs == null) {</span>
+<span class="fc" id="L70">			display.createBufferStrategy();</span>
+<span class="fc" id="L71">			bs = display.getBufferStrategy();</span>
 		}
 		
-<span class="nc" id="L74">		Graphics g = bs.getDrawGraphics(); </span>
-<span class="nc" id="L75">		g.clearRect(0, 0, WIDTH, HEIGHT); //LIMPAR A TELA</span>
+<span class="fc" id="L74">		Graphics g = bs.getDrawGraphics(); </span>
+<span class="fc" id="L75">		g.clearRect(0, 0, WIDTH, HEIGHT); //LIMPAR A TELA</span>
 		
-<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (StateManager.getState() != null) {</span>
-<span class="nc" id="L78">			sm.render(g); //vai renderizar o desenho passado por cada fase</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">		if (StateManager.getState() != null) {</span>
+<span class="fc" id="L78">			sm.render(g); //vai renderizar o desenho passado por cada fase</span>
 		}
 		
-<span class="nc" id="L81">		g.dispose(); //DISPONIBILIZA O GRAFICO</span>
-<span class="nc" id="L82">		bs.show(); //DISPLAY DE BUFFER</span>
-<span class="nc" id="L83">	}</span>
+<span class="fc" id="L81">		g.dispose(); //DISPONIBILIZA O GRAFICO</span>
+<span class="fc" id="L82">		bs.show(); //DISPLAY DE BUFFER</span>
+<span class="fc" id="L83">	}</span>
 
 	/*MÉTODOS PARA PODERMOS LIGAR E DESLIGAR A THREAD
 	* void start();
@@ -88,19 +88,19 @@ public class Game implements Runnable{
 	* utilizando o modificador synchronized
 	*/
 	public synchronized void start() {
-<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (thread != null) return; //SE JÁ EXISTIR UM OBJETO, RETORNAMOS E NÃO INSTANCIAMOS UM NOVO OBJETO</span>
-<span class="nc" id="L92">		thread = new Thread(this); //NAO EXISTINDO, INSTANCIAMOS UM E VAI QUERER SABER O TARGET, A CLASSE QUE TEM O MÉTODO RUN, ESTA.</span>
-<span class="nc" id="L93">		thread.start();</span>
-<span class="nc" id="L94">		running = true;</span>
-<span class="nc" id="L95">	}</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if (thread != null) return; //SE JÁ EXISTIR UM OBJETO, RETORNAMOS E NÃO INSTANCIAMOS UM NOVO OBJETO</span>
+<span class="fc" id="L92">		thread = new Thread(this); //NAO EXISTINDO, INSTANCIAMOS UM E VAI QUERER SABER O TARGET, A CLASSE QUE TEM O MÉTODO RUN, ESTA.</span>
+<span class="fc" id="L93">		thread.start();</span>
+<span class="fc" id="L94">		running = true;</span>
+<span class="fc" id="L95">	}</span>
 	
 	public synchronized void stop() {
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		if (thread == null) return;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		if (thread == null) return;</span>
 		try {
-<span class="nc" id="L100">			thread.join(); //IRA JUNTAR COM A APLICACAO PRINCIPAL</span>
-<span class="nc" id="L101">		} catch (InterruptedException e) {</span>
-<span class="nc" id="L102">			e.printStackTrace();</span>
-<span class="nc" id="L103">		}</span>
-<span class="nc" id="L104">	}</span>
+<span class="fc" id="L100">			thread.join(); //IRA JUNTAR COM A APLICACAO PRINCIPAL</span>
+<span class="fc" id="L101">		} catch (InterruptedException e) {</span>
+<span class="fc" id="L102">			e.printStackTrace();</span>
+<span class="fc" id="L103">		}</span>
+<span class="fc" id="L104">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

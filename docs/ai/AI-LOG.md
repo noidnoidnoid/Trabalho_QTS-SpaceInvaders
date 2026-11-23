@@ -297,6 +297,17 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** Aceito. Só o cenário mudou. As duas verificações do caso (vitória marcada e derrota não marcada) continuam as mesmas, e a intenção do teste foi mantida.
 * **Validação:** A falha foi reproduzida no build completo da `main` antes da correção (`expected: <false> but was: <true>` em `gameOver`). Depois da correção, os 17 casos da `Level1State` passam, e a suíte unitária inteira roda com 183 casos e nenhuma falha.
 
+### Interação #024: Reserva da parte da `Level1State` (mutação, inspeção e issue #10)
+* **Data:** 23/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** Preparar, numa branch separada (`reserva/level1state`), o que faltava da classe `Level1State` na Entrega 2, como segurança para a entrega do grupo, dando prioridade ao que o Erick entregar: testes para matar os mutantes sobreviventes, inspeção com PMD antes e depois, correção da issue #10 na classe e inclusão da classe no PIT.
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:**
+  > *"Deixe tudo isso pronto em algum lugar separado. [...] Quero isso como uma segurança para a entrega do grupo, mas priorizando o que ele fizer."*
+* **Resultado:** `Level1StateTransicoesTest` com 8 casos: troca de tela na vitória e no Game Over, nenhuma troca sem colisão, o que cada frame desenha e movimenta, remoção de tiros invisíveis e o caso da issue #10. `Level1State` corrigida (4 problemas do PMD e os 13 do Sonar). `br.states.Level1State` incluída em `targetClasses` e `targetTests` do PIT.
+* **Decisão:** Os testes novos ficaram num arquivo próprio para não conflitar com o arquivo do Erick. A correção da #10 seguiu o padrão já usado pelo Breno na `Level2State` (`removeIf` antes de percorrer a lista).
+* **Validação:** PIT: 66,7% com as suítes do Erick, 100% (24/24) com os testes novos e a classe ainda sem alterações, e 100% (21/21) depois das correções. JaCoCo: 20/20 arestas. O teste da issue #10 falhou contra a classe original (sobrava 1 tiro) e passa depois. PMD: 4 problemas antes e nenhum depois. Build completo com 191 testes unitários, 22 de integração e 11 de sistema, sem falhas.
+
 ---
 
 ## Modelo para Novas Entradas (Template)

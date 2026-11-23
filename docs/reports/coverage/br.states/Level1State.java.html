@@ -16,109 +16,99 @@ import br.input.KeyManager;
 	private Ship ship;
 	private List&lt;Shot&gt; shots;
 	private Alien alien;
-	private Background background;
 	
-	//private boolean emJogo;
 	private boolean victory;
 	private boolean gameOver;
 
 	@Override
 	public void init() {
 		//INSTANCIANDO O SHIP
-<span class="fc" id="L28">		ship = new Ship();</span>
+<span class="fc" id="L26">		ship = new Ship();</span>
 		
 		//PEGANDO A LISTA DE TIROS
-<span class="fc" id="L31">		shots = ship.getShots();</span>
+<span class="fc" id="L29">		shots = ship.getShots();</span>
 		
 		//INSTANCIANDO O ALIEN
-<span class="fc" id="L34">		alien = new Alien(Game.WIDTH/2, Game.HEIGHT * 1/4);</span>
+<span class="fc" id="L32">		alien = new Alien(Game.WIDTH/2, Game.HEIGHT * 1/4);</span>
 		
-		//emJogo = true;
-<span class="fc" id="L37">		victory = false;</span>
-<span class="fc" id="L38">		gameOver = false;</span>
-<span class="fc" id="L39">	}</span>
+<span class="fc" id="L34">		victory = false;</span>
+<span class="fc" id="L35">		gameOver = false;</span>
+<span class="fc" id="L36">	}</span>
 
 	@Override
 	public void update() {
 		//INTERACAO DO USUARIO
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">		if (KeyManager.a) {</span>
-<span class="nc" id="L45">			ship.moveShip(-1); //-1 PARA &lt;&lt;&lt;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if (KeyManager.a) {</span>
+<span class="fc" id="L42">			ship.moveShip(-1); //-1 PARA &lt;&lt;&lt;</span>
 		}
-<span class="fc bfc" id="L47" title="All 2 branches covered.">		if (KeyManager.d) {</span>
-<span class="fc" id="L48">			ship.moveShip(1); //1 PARA &gt;&gt;&gt;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if (KeyManager.d) {</span>
+<span class="fc" id="L45">			ship.moveShip(1); //1 PARA &gt;&gt;&gt;</span>
 		}
-<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (KeyManager.space) {</span>
-<span class="fc" id="L51">			ship.simpleShot();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">		if (KeyManager.space) {</span>
+<span class="fc" id="L48">			ship.simpleShot();</span>
 		}
-<span class="fc" id="L53">	}</span>
+<span class="fc" id="L50">	}</span>
 
 	@Override
 	public void render(Graphics g) {
+<span class="fc" id="L54">		Background background = new Background();</span>
+<span class="fc" id="L55">		background.print(g);</span>
 		
-		//if (emJogo == true) {
-<span class="fc" id="L59">			background = new Background();</span>
-<span class="fc" id="L60">			background.print(g);</span>
-			
-			//DESENHANDO O SHIP
-<span class="fc" id="L63">			ship.paint(g);</span>
+		//DESENHANDO O SHIP
+<span class="fc" id="L58">		ship.paint(g);</span>
 
-			//DESENHANDO O ALIEN
-<span class="fc" id="L66">			alien.paint(g);</span>
-			
-			//MOVIMENTACAO DO ALIEN
-<span class="fc" id="L69">			alien.update();</span>
-			
-			//DESENHANDO E MOVIMENTANDO OS TIROS
-<span class="fc bfc" id="L72" title="All 2 branches covered.">			for (int e = 0; e &lt; shots.size(); e++) {</span>
-<span class="fc" id="L73">				Shot s = shots.get(e);</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">				if (s.isVisible()) {</span>
-<span class="fc" id="L75">					s.paint(g);</span>
-<span class="fc" id="L76">					s.update();</span>
-				}
-				else {
-<span class="nc" id="L79">					shots.remove(e);</span>
-				}
-			}
-<span class="fc" id="L82">			checarColisoes();</span>
-		//}
-<span class="fc bfc" id="L84" title="All 2 branches covered.">		if (victory == true) {</span>
-			//YouWinState CASO victory == true
-<span class="fc" id="L86">			StateManager.setState(StateManager.LEVEL2);</span>
+		//DESENHANDO O ALIEN
+<span class="fc" id="L61">		alien.paint(g);</span>
+		
+		//MOVIMENTACAO DO ALIEN
+<span class="fc" id="L64">		alien.update();</span>
+		
+		//DESENHANDO E MOVIMENTANDO OS TIROS
+		// Remove the invisible shots before going through the list: removing inside
+		// an index loop skipped the next element (issue #10).
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		shots.removeIf(s -&gt; !s.isVisible());</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">		for (Shot s : shots) {</span>
+<span class="fc" id="L71">			s.paint(g);</span>
+<span class="fc" id="L72">			s.update();</span>
+<span class="fc" id="L73">		}</span>
+<span class="fc" id="L74">		checarColisoes();</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">		if (victory) {</span>
+			//YouWinState CASO victory
+<span class="fc" id="L78">			StateManager.setState(StateManager.LEVEL2);</span>
 		}
-		//else {
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">		if (gameOver == true) {</span>
-			//GameOverState CASO emJogo == false
-<span class="fc" id="L91">			StateManager.setState(StateManager.GAMEOVER);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		if (gameOver) {</span>
+			//GameOverState CASO gameOver
+<span class="fc" id="L82">			StateManager.setState(StateManager.GAMEOVER);</span>
 		}
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L84">	}</span>
 	
 	private void checarColisoes() {
-<span class="fc" id="L96">		Rectangle formaShip = ship.getBounds();</span>
-<span class="fc" id="L97">		Rectangle formaAlien = alien.getBounds();</span>
-		Rectangle formaShot;
+<span class="fc" id="L87">		Rectangle formaShip = ship.getBounds();</span>
+<span class="fc" id="L88">		Rectangle formaAlien = alien.getBounds();</span>
 		
 		//COLISAO ENTRE O SHIP E O ALIEN
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (formaShip.intersects(formaAlien)) {</span>
-			//emJogo = false;
-<span class="fc" id="L103">			gameOver = true;</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if (formaShip.intersects(formaAlien)) {</span>
+<span class="fc" id="L92">			gameOver = true;</span>
 		}
 		
 		//COLISAO ENTRE O SHOT E O ALIEN
-<span class="fc" id="L107">		List&lt;Shot&gt; shots = ship.getShots();</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (int i = 0; i &lt; shots.size(); i++) {</span>
-<span class="fc" id="L109">			Shot tempShot = shots.get(i);</span>
-<span class="fc" id="L110">			formaShot = tempShot.getBounds();</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			if (formaShot.intersects(formaAlien)) {</span>
-<span class="fc" id="L112">				victory = true;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		for (Shot tempShot : shots) {</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">			if (tempShot.getBounds().intersects(formaAlien)) {</span>
+<span class="fc" id="L98">				victory = true;</span>
 			}
-		}
-<span class="fc" id="L115">	}</span>
+<span class="fc" id="L100">		}</span>
+<span class="fc" id="L101">	}</span>
 
 	@Override
-<span class="nc" id="L118">	public void KeyPressed(int cod) {}</span>
+	public void KeyPressed(int cod) {
+		// Intentionally empty: level 1 reads the keyboard through KeyManager in update().
+<span class="nc" id="L106">	}</span>
 
 	@Override
-<span class="nc" id="L121">	public void KeyReleased(int cod) {}</span>
+	public void KeyReleased(int cod) {
+		// Intentionally empty: level 1 reads the keyboard through KeyManager in update().
+<span class="nc" id="L111">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

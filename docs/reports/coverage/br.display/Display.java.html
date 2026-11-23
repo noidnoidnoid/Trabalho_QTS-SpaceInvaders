@@ -16,14 +16,14 @@ public class Display {
     private Canvas canvas;
 
     
-<span class="fc" id="L19">    public Display(String title, int width, int height) {</span>
-<span class="fc" id="L20">        canvas = new Canvas();</span>
-<span class="fc" id="L21">        canvas.setPreferredSize(new Dimension(width, height));</span>
-<span class="fc" id="L22">        canvas.setMaximumSize(new Dimension(width, height));</span>
-<span class="fc" id="L23">        canvas.setMinimumSize(new Dimension(width, height));</span>
+<span class="nc" id="L19">    public Display(String title, int width, int height) {</span>
+<span class="nc" id="L20">        canvas = new Canvas();</span>
+<span class="nc" id="L21">        canvas.setPreferredSize(new Dimension(width, height));</span>
+<span class="nc" id="L22">        canvas.setMaximumSize(new Dimension(width, height));</span>
+<span class="nc" id="L23">        canvas.setMinimumSize(new Dimension(width, height));</span>
         
         // Garante que o Canvas aceita o foco de entrada
-<span class="fc" id="L26">        canvas.setFocusable(true);</span>
+<span class="nc" id="L26">        canvas.setFocusable(true);</span>
         
 <span class="nc" id="L28">        jframe = new JFrame(title);</span>
 <span class="nc" id="L29">        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>

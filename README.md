@@ -82,9 +82,11 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
 * [ ] **Cobertura Estrutural ($\ge 80\%$ Todas-Arestas):** Relatório JaCoCo/HTML disponível em [`docs/reports/coverage/`](docs/reports/coverage/).
   * `Ship` (Luiz): [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · arestas 8/8 (100%)
   * `Level2State` (Breno): [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java) · 19 casos · arestas 34/34 (100%). Relatório e prints em [`docs/reports/level2state/`](docs/reports/level2state/LEIA-ME.md)
+  * `Level1State` (Roger, reserva da parte do Erick): [`Level1StateTest`](src/test/java/br/states/Level1StateTest.java), [`Level1StateCoberturaMutacaoTest`](src/test/java/br/states/Level1StateCoberturaMutacaoTest.java) e [`Level1StateTransicoesTest`](src/test/java/br/states/Level1StateTransicoesTest.java) · 25 casos · arestas 20/20 (100%)
 * [ ] **Teste Baseado em Defeitos ($\ge 80\%$ Escore de Mutação):** Relatório Pitest disponível em [`docs/reports/mutation/`](docs/reports/mutation/).
   * `Ship` (Luiz): 16/18 (88,9%) antes da correção do Sonar e 14/16 (87,5%) depois. Os 2 sobreviventes são equivalentes ([`docs/sonar/ship.md`](docs/sonar/ship.md))
   * `Level2State` (Breno): 19/29 (66%) na primeira execução e 29/29 (100%) depois de 5 casos novos para os 10 sobreviventes. Análise dos sobreviventes em [`docs/reports/level2state/`](docs/reports/level2state/LEIA-ME.md)
+  * `Level1State` (Roger, reserva da parte do Erick): 66,7% com as suítes do Erick e 21/21 (100%) depois de `Level1StateTransicoesTest`, que cobre a troca de tela e o que `render()` desenha. Evidência em [`docs/ai/roger/evidencias/`](docs/ai/roger/evidencias/2026-11-23-pit-level1state.txt)
 * [ ] **Inspeção de Código (SonarQube/SonarCloud):**
   * Evidências antes das correções: [`docs/sonar/before/`](docs/sonar/before/)
   * Evidências após as correções: [`docs/sonar/after/`](docs/sonar/after/)
@@ -92,6 +94,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * **Luiz** (`Ship`), com SonarQube (perfil comprehensive) como base e PMD como complemento: 7 issues antes, 0 depois (PMD: 1 antes, 0 depois). Resultado em [`docs/sonar/ship.md`](docs/sonar/ship.md); método e comparação PMD x Sonar em [`docs/sonar/`](docs/sonar/README.md). Uso de IA: [`AI-LOG`](docs/ai/AI-LOG.md), interações #013 e #014
   * **`br.Game` (Leon):** Inspeção estática realizada via PMD (`mvn pmd:pmd`), confirmando ausência de vulnerabilidades críticas ou *code smells* bloqueantes na classe principal e na suíte `GameTest`.
   * **Breno** (`Level2State`), com PMD 7.7.0 (`mvn pmd:pmd`) e o Sonar do Luiz como complemento: 11 problemas antes, 0 depois (projeto de 48 para 37 no PMD). Os 14 testes da classe continuam passando, e 150 partidas simuladas deram o mesmo resultado antes e depois. Prints, relatórios e a tabela de correções em [`docs/inspecao/level2state/`](docs/inspecao/level2state/LEIA-ME.md)
+  * **`Level1State`** (Roger, reserva da parte do Erick), com PMD 7.7.0 e o Sonar do Luiz como complemento: 4 problemas no PMD antes, 0 depois (projeto de 37 para 33), e os 13 apontados pelo Sonar tratados. Inclui a correção da issue [#10](../../issues/10) na classe. Prints, relatórios e a tabela de correções em [`docs/inspecao/level1state/`](docs/inspecao/level1state/LEIA-ME.md)
 
 ---
 

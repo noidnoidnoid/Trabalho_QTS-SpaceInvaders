@@ -4,18 +4,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 //PERMITE O PRESSIONAMENTO DE TECLAS SIMULTANEAMENTE
-<span class="nc" id="L7">public class KeyManager implements KeyListener {</span>
+<span class="fc" id="L7">public class KeyManager implements KeyListener {</span>
 
 	//ARRAY DE VERDADEIRO OU FALSO SOBRE AS TECLAS
-<span class="nc" id="L10">	private boolean[] keys = new boolean[256];</span>
+<span class="fc" id="L10">	private boolean[] keys = new boolean[256];</span>
 	
 	public static boolean a, d, space;
 	
 	public void update() {
-<span class="nc" id="L15">		a = keys[KeyEvent.VK_A]; //PASSA PARA A VARIÁVEL O VALOR DA CHAVE CORRESPONDENTE A CADA TECLA</span>
-<span class="nc" id="L16">		d = keys[KeyEvent.VK_D];</span>
-<span class="nc" id="L17">		space = keys[KeyEvent.VK_SPACE];</span>
-<span class="nc" id="L18">	}</span>
+<span class="fc" id="L15">		a = keys[KeyEvent.VK_A]; //PASSA PARA A VARIÁVEL O VALOR DA CHAVE CORRESPONDENTE A CADA TECLA</span>
+<span class="fc" id="L16">		d = keys[KeyEvent.VK_D];</span>
+<span class="fc" id="L17">		space = keys[KeyEvent.VK_SPACE];</span>
+<span class="fc" id="L18">	}</span>
 
 	@Override
 	public void keyPressed(KeyEvent k) {
