@@ -147,7 +147,6 @@ cp -r target/pit-reports docs/reports/mutation
   ISO-8859-1, que é o único valor sob o qual tudo compila — trocar para UTF-8 quebra os
   demais arquivos. Vale padronizar o conjunto em algum momento.
 * Os testes rodam em modo *headless* e desenham em `BufferedImage`, sem abrir janela.
-* Enquanto a issue [#7](../../issues/7) estiver aberta, os 5 casos de `GameTest` dão erro e o Maven para na fase de testes unitários, antes dos testes de integração e de sistema. Para rodar o resto mesmo assim, acrescente `-Dmaven.test.failure.ignore=true`.
 * Os padrões de `includes`/`excludes` do Failsafe precisam começar com `**/`. Com `br/system/**/*IT.java` a execução dos testes de sistema encontrava 0 testes, sem erro nenhum.
 * Para adicionar os testes das demais classes, basta criar os arquivos em
   `src/test/java/br/...`. Nenhuma alteração no `pom.xml` é necessária.

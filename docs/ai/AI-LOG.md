@@ -104,7 +104,7 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Atividade:** Plano para os itens assumidos: unitários com isolamento, integração e sistema (funcional e não funcional).
 * **Ferramenta:** Claude (Claude Code, modo de planejamento)
 * **Prompt/Instrução Utilizada:**
-  > *"Quero fazer uma boa Entrega 2. Disse pro meu grupo então que eu faria [...] Então, como faremos isso?"* Seguido de: *"MenuState parece interessante, mas estou ferrando outra pessoa fazendo isso? Precisamos alinhar isso antes de eu seguir."*, *"Faça a refatoração mínima, mas se tiver como documentar isso no lugar apropriado acho que seria bom."* e *"Talvez tenha uma maneira de conseguirmos usar o Selenium nesse projeto?"*
+  > *"Quero fazer uma boa Entrega 2. Disse pro meu grupo então que eu faria [...] Então, como faremos isso?"* Seguido de: *"MenuState parece interessante, mas estou ferrando outra pessoa fazendo isso? Precisamos alinhar isso antes de eu seguir."*, *"Faça a refatoração mínima, mas se tiver como documentar isso no lugar apropriado [...] seria bom"* e *"Talvez tenha uma maneira de conseguirmos usar o Selenium nesse projeto?"*
 * **Resultado:** Plano em etapas. Descoberta de que a suíte herdada de `AudioPlayer` nunca passou. Análise do código da GenIA-E2ETest mostrando que ela exige HTML. Proposta de camada web para usar Selenium.
 * **Decisão:** Alterado. Roger exigiu alinhar a troca para `MenuState` com o grupo antes de começar (o grupo confirmou), trocou a proposta inicial de `java.awt.Robot` por camada web + Selenium e pediu que as mudanças no SUT fossem documentadas (`docs/alteracoes-no-sut.md`).
 * **Validação:** `mvn clean test` executado na `main`: 59 testes, 10 erros (`docs/ai/roger/evidencias/2026-11-22-baseline-mvn-test.txt`).
@@ -114,7 +114,11 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Responsável:** Roger Egito
 * **Atividade:** Testes unitários com isolamento de dependências (`mockStatic`, `mockConstruction`, injeção pelo construtor).
 * **Ferramenta:** Claude (Claude Code)
-* **Prompt/Instrução Utilizada:** Execução do plano aprovado, no fluxo "a IA gera, o Roger revisa".
+* **Prompt/Instrução Utilizada:** Execução do plano aprovado, no fluxo "a IA gera, o Roger revisa". Na revisão da suíte de `MenuState`, Roger questionou:
+  > *"Sinto que o teste de "tecla sem função no menu não muda nada" irrelevante, assim como "KeyPressed() não faz nada (o menu reage só ao soltar a tecla)". O teste deve ser só se o menu sobe e desce de acordo com a tecla que foi pressionada corretamente. Testes de título em branco, centralizado, posicionado, e qualquer coisa de desenho, não entendo o sentido também. Os desenvolvedores podem só querer mudar artisticamente o jogo e isso não deveria falhar o teste."*
+
+  Depois de ver que o corte derrubava o escore de mutação para 79,2%:
+  > *"Se mutantes mudam posição exata, fonte e cor, se não incluímos os testes disso, está tudo certo, não? A cor do título, posição, e fonte mudarem não são erros."*
 * **Resultado:** 3 defeitos de `AudioPlayer` confirmados por testes que falharam contra o código original (#2, #3, #4), correção mínima e suíte com 21 casos. `MenuState` com construtor injetável e suíte com 33 casos (29 depois da revisão do Roger).
 * **Decisão:** Rascunhos da IA preservados em `docs/ai/roger/drafts/`. Mudanças entre rascunho e versão final descritas em `docs/ai/roger/revisao.md`. **Alterado pelo Roger na suíte de `MenuState`:** removeu os testes de cor, fonte e posição exatas (decisões de arte, que quebrariam o teste sem defeito) e o teste do `KeyPressed()` vazio. O corte puro deixava o escore em 79,2% e não pegava 2 erros reais (destaque invertido e menu de cabeça para baixo), então foram acrescentadas 2 verificações de comportamento que não fixam cor nem posição. O teste da tecla sem função foi mantido como caso da classe inválida. Nas demais suítes não pediu mudanças. Detalhes em `docs/ai/roger/revisao.md`, seção 5.
 * **Validação:** PIT `AudioPlayer` 78,6% na rodada 1 e 100% (13/13) na rodada 2. PIT `MenuState`: 93,8% e 97,9% nas rodadas da IA, e 83,3% bruto (100% ajustado, com os 7 sobreviventes de arte classificados como equivalentes em relação à especificação) na versão final revisada. JaCoCo: arestas 26/26 em `MenuState` e 8/8 em `AudioPlayer` (9/10 depois da correção do PMD, porque o try-with-resources ganhou uma aresta gerada pelo compilador e inalcançável), complexidade ciclomática de `MenuState` = 24.
@@ -124,20 +128,28 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Responsável:** Roger Egito
 * **Atividade:** 22 casos de integração (failsafe), adaptador web (`src/br/web/`) e 11 casos de sistema com Selenium (RF01 a RF07, RNF01, RNF01b, RNF02).
 * **Ferramenta:** Claude (Claude Code)
-* **Prompt/Instrução Utilizada:** *"Corrigir faz parte do trabalho? Se sim, corrija agora. Lembre-se de [...] documentar tudo corretamente, incluindo issues."*
+* **Prompt/Instrução Utilizada:**
+  > *"Estou pensando em Camada web + Selenium"*
+
+  Ao saber que os testes de integração tinham confirmado defeitos em classes sem dono (`Shot`, `Background`):
+  > *"Corrija agora. Lembre-se de [...] documentar tudo corretamente, incluindo issues."*
 * **Resultado:** Defeitos encontrados e registrados nas issues #5 a #12. Correções de `Shot` (#8, #9), `Background` (#11) e `Alien`/`Shot` (#12) com a nova classe `Sprites`.
-* **Decisão:** Erros da própria IA corrigidos depois de detectados por teste ou medição (lista em `docs/ai/roger/revisao.md`, seção 4).
+* **Decisão:**
+  * **Camada web:** Roger só aprovou depois de pedir a explicação dos riscos. A camada troca apenas a janela e reusa toda a lógica do jogo, e a parte que fica sem teste de sistema (janela desktop) foi declarada como limitação no Plano de Teste.
+  * **Correções:** Roger autorizou corrigir os defeitos encontrados nas classes sem dono e exigiu uma issue para cada um (#8, #9, #11 e #12). A linha do `ShipTest` afetada pela correção da #9 está registrada em `docs/alteracoes-no-sut.md`.
+  * **Critério do CTS-10:** depois da investigação dos picos de frame, a IA apresentou três opções (manter o critério estrito, mediana com 1 pico tolerado, ou medir fora do navegador). Roger escolheu a mediana com 1 pico tolerado, opção que ainda reprova o código anterior à correção.
+  * Os erros da própria IA, detectados por teste ou medição, estão listados em `docs/ai/roger/revisao.md`, seção 4.
 * **Validação:** CTI-18 e CTI-19 falharam antes das correções e passam depois. Frame normal da fase 2 caiu de 17 a 28 ms para 3 a 5 ms depois da #11. Suíte de sistema: com o critério estrito, o CTS-10 falhou em 2 de 3 rodadas por picos isolados (41,9 e 33,6 ms). O GC foi descartado por medição (maior pausa de 4,6 ms), e a causa provável, disputa de CPU com o navegador, não foi comprovada (`docs/ai/roger/evidencias/2026-11-22-investigacao-cts10.txt`). Por decisão do Roger, o critério foi revisto para mediana <= 16,7 ms e no máximo 1 segundo acima de 33,3 ms. Esse critério ainda reprova o código antigo. Execuções finais: 3 de 3 rodadas com todos os casos passando (`docs/evidencias/sistema/execucoes-finais/`). Frame mais lento por segundo entre 2,4 e 13,5 ms, média de 60,5 a 60,8 FPS, pior resposta a tecla de 82 a 114 ms.
 
 ### Interação #011: Inspeção de código com PMD e texto do Plano de Teste
 * **Data:** 22/11/2026
 * **Responsável:** Roger Egito
-* **Atividade:** Relatório de inspeção do código-fonte e correção dos problemas na classe complexa (`MenuState`) e no `AudioPlayer`. Texto das seções do Roger para o Plano de Teste.
+* **Atividade:** Relatório de inspeção do código-fonte e correção dos problemas na classe complexa (`MenuState`) e no `AudioPlayer`. Texto das seções do Roger para o Plano de Teste, que ele revisou e editou no próprio Google Docs, e não apenas copiou e colou.
 * **Ferramenta:** Claude (Claude Code)
 * **Prompt/Instrução Utilizada:**
-  > *"Faça um sonar então, prepare o texto para eu copiar e colar no Docs, e me diga em qual Docs eu deveria colar, e aonde."* Depois: *"Sonar é um exemplo. Talvez tenha outro que possamos usar que não precise de Docker? [...] O que for mais fácil."*
+  > *"Faça um sonar então, prepare o texto para eu copiar e colar no Docs, e me diga em qual Docs eu deveria colar, e aonde."* Depois: *"Sonar é um exemplo. Talvez tenha outro que possamos usar que não precise de Docker? [...]"*
 * **Resultado:** O Docker não estava instalado de fato, então a IA propôs o PMD, que roda como plugin do Maven. Relatório antes: 5 problemas na `MenuState` e 3 no `AudioPlayer`. Correções feitas nas duas classes e no código da camada web gerado pela IA. Texto do Plano de Teste em `docs/plano-de-teste/colar-no-google-docs-roger.html`, com o local de cada bloco no documento.
-* **Decisão:** Roger escolheu a ferramenta pelo critério de facilidade (PMD no lugar do Sonar). Os nomes `KeyPressed` e `KeyReleased` (interface `State`) ficaram sem correção porque a mudança atingiria as classes dos outros integrantes. Os avisos de `volatile` e de IP fixo no código da camada web foram mantidos com justificativa (`docs/inspecao/LEIA-ME.md`).
+* **Decisão:** Roger deixou a escolha da ferramenta com a IA, com a restrição de não depender de Docker. A IA propôs o PMD, que roda pelo Maven sem servidor nem conta, de modo que qualquer integrante consegue repetir a análise com um comando, e Roger aprovou. No Plano de Teste, a revisão do Roger fez o bloco principal ser reescrito em versão curta, no estilo do documento, com o detalhamento dos casos movido para o repositório, e retirou as assinaturas de autoria, que já estão na tabela de responsabilidades. Os nomes `KeyPressed` e `KeyReleased` (interface `State`) ficaram sem correção porque a mudança atingiria as classes dos outros integrantes. Os avisos de `volatile` e de IP fixo no código da camada web foram mantidos com justificativa (`docs/inspecao/LEIA-ME.md`).
 * **Validação:** PMD depois das correções: nenhum problema nas duas classes (print em `docs/inspecao/depois/`). Total do projeto de 64 para 47 problemas. Suítes da `MenuState` e do `AudioPlayer`, integração e sistema executadas de novo depois das correções.
 
 ### Interação #012 — Correção de Execução Headless em `GameTest` (Issue #7)
