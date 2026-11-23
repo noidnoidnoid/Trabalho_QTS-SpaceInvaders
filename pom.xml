@@ -218,6 +218,7 @@
             <param>br.audio.AudioPlayer</param>
             <param>br.states.MenuState</param>
             <param>br.Game</param>
+            <param>br.states.Level2State</param>
           </targetClasses>
           <targetTests>
             <param>br.characters.ShipTest</param>
@@ -225,6 +226,7 @@
             <param>br.audio.AudioPlayerTest*</param>
             <param>br.states.MenuStateTest*</param>
             <param>br.GameTest*</param>
+            <param>br.states.Level2StateTest*</param>
           </targetTests>
           <outputFormats>
             <param>HTML</param>

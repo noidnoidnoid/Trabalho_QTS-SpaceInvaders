@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Level2State.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Space Invaders - SUT de Qualidade e Teste de Software</a> &gt; <a href="index.source.html" class="el_package">br.states</a> &gt; <span class="el_source">Level2State.java</span></div><h1>Level2State.java</h1><pre class="source lang-java linenums">package br.states;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.Game;
+import br.characters.Alien;
+import br.characters.Ship;
+import br.characters.Shot;
+import br.display.Background;
+import br.input.KeyManager;
+
+<span class="fc" id="L15">public class Level2State implements State {</span>
+
+	// Campos de acesso de pacote (sem &quot;private&quot;) por decisao de testabilidade:
+	// Level2StateTest.java fica de proposito no pacote br.states para ler e
+	// manipular este estado direto nos testes, sem getters novos na API
+	// publica e sem reflection. Mesma logica ja usada em Ship.x (protected em
+	// Character), documentada no cabecalho de ShipTest.java.
+	Ship ship;
+	List&lt;Shot&gt; shots;
+	List&lt;Alien&gt; aliens;
+
+	boolean victory;
+	boolean gameOver;
+
+	private static final int NUMERO_DE_ALIENS = 8;
+
+	@Override
+	public void init() {
+		//INSTANCIANDO O SHIP
+<span class="fc" id="L34">		ship = new Ship();</span>
+		
+		//PEGANDO A LISTA DE TIROS
+<span class="fc" id="L37">		shots = ship.getShots();</span>
+		
+		//INSTANCIANDO A LISTA DE ALIENS
+<span class="fc" id="L40">		aliens = new ArrayList&lt;Alien&gt;();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		for (int a = 0; a &lt; NUMERO_DE_ALIENS; a++) {</span>
+<span class="fc" id="L42">			aliens.add(new Alien(a * 100, Game.HEIGHT / 4));</span>
+		}
+		
+<span class="fc" id="L45">		victory = false;</span>
+<span class="fc" id="L46">		gameOver = false;</span>
+<span class="fc" id="L47">	}</span>
+
+	@Override
+	public void update() {
+		//INTERACAO DO USUARIO
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		if (KeyManager.a) {</span>
+<span class="fc" id="L53">			ship.moveShip(-1); //-1 PARA &lt;&lt;&lt;</span>
+		}
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		if (KeyManager.d) {</span>
+<span class="fc" id="L56">			ship.moveShip(1); //1 PARA &gt;&gt;&gt;</span>
+		}
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		if (KeyManager.space) {</span>
+<span class="fc" id="L59">			ship.simpleShot();</span>
+		}
+<span class="fc" id="L61">	}</span>
+
+	@Override
+	public void render(Graphics g) {
+		
+<span class="fc" id="L66">			Background background = new Background();</span>
+<span class="fc" id="L67">			background.print(g);</span>
+			
+			//DESENHANDO O SHIP
+<span class="fc" id="L70">			ship.paint(g);</span>
+
+			//DESENHANDO OS ALIENS
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			for (Alien alien : aliens) {</span>
+<span class="fc" id="L74">				alien.paint(g);</span>
+<span class="fc" id="L75">			}</span>
+			
+			//MOVIMENTACAO DO ALIEN
+			// Remove os invisiveis antes de percorrer a lista: remover dentro
+			// do laco com indice pulava o elemento seguinte (issue #10).
+<span class="fc bfc" id="L80" title="All 2 branches covered.">			aliens.removeIf(alien -&gt; !alien.isVisible());</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">			for (Alien alien : aliens) {</span>
+<span class="fc" id="L82">				alien.update();</span>
+<span class="fc" id="L83">			}</span>
+			
+			//DESENHANDO E MOVIMENTANDO OS TIROS
+<span class="fc bfc" id="L86" title="All 2 branches covered.">			shots.removeIf(s -&gt; !s.isVisible());</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">			for (Shot s : shots) {</span>
+<span class="fc" id="L88">				s.paint(g);</span>
+<span class="fc" id="L89">				s.update();</span>
+<span class="fc" id="L90">			}</span>
+<span class="fc" id="L91">			checarColisoes();</span>
+			
+<span class="fc bfc" id="L93" title="All 2 branches covered.">		if (victory) {</span>
+			//YouWinState CASO victory
+<span class="fc" id="L95">			StateManager.setState(StateManager.YOUWIN);</span>
+		}
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		if (gameOver) {</span>
+			//GameOverState CASO gameOver
+<span class="fc" id="L99">			StateManager.setState(StateManager.GAMEOVER);</span>
+		}
+<span class="fc" id="L101">	}</span>
+	
+	private void checarColisoes() {
+<span class="fc" id="L104">		Rectangle formaShip = ship.getBounds();</span>
+		Rectangle formaAlien;
+		Rectangle formaShot;
+		
+		//COLISAO ENTRE O SHIP E O ALIEN
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (Alien alienAux : aliens) {</span>
+<span class="fc" id="L110">			formaAlien = alienAux.getBounds();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">			if (formaShip.intersects(formaAlien)) {</span>
+<span class="fc" id="L112">				gameOver = true;</span>
+			}
+<span class="fc" id="L114">		}</span>
+		
+		//COLISAO ENTRE O SHOT E O ALIEN
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		for (Shot shotAux : shots) {</span>
+<span class="fc" id="L118">			formaShot = shotAux.getBounds();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">			for (Alien alienAux : aliens) {</span>
+<span class="fc" id="L120">				formaAlien = alienAux.getBounds();</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">				if (formaShot.intersects(formaAlien)) {</span>
+<span class="fc" id="L122">					alienAux.setVisible(false);</span>
+<span class="fc" id="L123">					shotAux.setVisible(false);</span>
+				}
+<span class="fc" id="L125">			}</span>
+<span class="fc" id="L126">		}</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (aliens.isEmpty()) {</span>
+<span class="fc" id="L128">			victory = true;</span>
+		}
+<span class="fc" id="L130">	}</span>
+
+	@Override
+	public void KeyPressed(int cod) {
+		// Vazio de proposito: a fase 2 le o teclado pelo KeyManager em update().
+<span class="nc" id="L135">	}</span>
+
+	@Override
+	public void KeyReleased(int cod) {
+		// Vazio de proposito: a fase 2 le o teclado pelo KeyManager em update().
+<span class="nc" id="L140">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

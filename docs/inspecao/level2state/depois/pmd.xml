@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.7.0" timestamp="2026-11-22T23:26:42.058">
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\Game.java">
+<violation beginline="16" endline="16" begincolumn="26" endcolumn="31" rule="OneDeclarationPerLine" ruleset="Best Practices" package="br" class="Game" variable="WIDTH, HEIGHT" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#onedeclarationperline" priority="4">
+Use one line for each declaration, it enhances code readability.
+</violation>
+<violation beginline="35" endline="35" begincolumn="7" endcolumn="10" rule="LocalVariableNamingConventions" ruleset="Code Style" package="br" class="Game" method="run" variable="FPS" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#localvariablenamingconventions" priority="1">
+The local variable name 'FPS' doesn't match '[a-z][a-zA-Z0-9]*'
+</violation>
+<violation beginline="57" endline="57" begincolumn="22" endcolumn="24" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br" class="Game" method="init" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+<violation beginline="61" endline="61" begincolumn="40" endcolumn="47" rule="ControlStatementBraces" ruleset="Code Style" package="br" class="Game" method="update" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#controlstatementbraces" priority="3">
+This statement should have braces
+</violation>
+<violation beginline="91" endline="91" begincolumn="23" endcolumn="30" rule="ControlStatementBraces" ruleset="Code Style" package="br" class="Game" method="start" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#controlstatementbraces" priority="3">
+This statement should have braces
+</violation>
+<violation beginline="98" endline="98" begincolumn="23" endcolumn="30" rule="ControlStatementBraces" ruleset="Code Style" package="br" class="Game" method="stop" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#controlstatementbraces" priority="3">
+This statement should have braces
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\Launch.java">
+<violation beginline="4" endline="4" begincolumn="8" endcolumn="13" rule="UseUtilityClass" ruleset="Design" package="br" class="Launch" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#useutilityclass" priority="3">
+This utility class has a non-private constructor
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\characters\Alien.java">
+<violation beginline="5" endline="5" begincolumn="1" endcolumn="37" rule="UnnecessaryImport" ruleset="Code Style" package="br.characters" class="Alien" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#unnecessaryimport" priority="4">
+Unused import 'java.awt.image.BufferedImage'
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\characters\Character.java">
+<violation beginline="33" endline="33" begincolumn="23" endcolumn="25" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.characters" class="Character" method="update" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\characters\Shot.java">
+<violation beginline="13" endline="13" begincolumn="14" endcolumn="19" rule="OneDeclarationPerLine" ruleset="Best Practices" package="br.characters" class="Shot" variable="width, height" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#onedeclarationperline" priority="4">
+Use one line for each declaration, it enhances code readability.
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\input\KeyManager.java">
+<violation beginline="12" endline="12" begincolumn="24" endcolumn="25" rule="OneDeclarationPerLine" ruleset="Best Practices" package="br.input" class="KeyManager" variable="a, d, space" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#onedeclarationperline" priority="4">
+Use one line for each declaration, it enhances code readability.
+</violation>
+<violation beginline="22" endline="22" begincolumn="51" endcolumn="58" rule="ControlStatementBraces" ruleset="Code Style" package="br.input" class="KeyManager" method="keyPressed" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#controlstatementbraces" priority="3">
+This statement should have braces
+</violation>
+<violation beginline="28" endline="28" begincolumn="51" endcolumn="58" rule="ControlStatementBraces" ruleset="Code Style" package="br.input" class="KeyManager" method="keyReleased" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#controlstatementbraces" priority="3">
+This statement should have braces
+</violation>
+<violation beginline="33" endline="33" begincolumn="35" endcolumn="37" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.input" class="KeyManager" method="keyTyped" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\states\GameOverState.java">
+<violation beginline="14" endline="14" begincolumn="15" endcolumn="20" rule="OneDeclarationPerLine" ruleset="Best Practices" package="br.states" class="GameOverState" variable="font1, font2" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#onedeclarationperline" priority="4">
+Use one line for each declaration, it enhances code readability.
+</violation>
+<violation beginline="17" endline="17" begincolumn="21" endcolumn="31" rule="SingularField" ruleset="Design" package="br.states" class="GameOverState" variable="background" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#singularfield" priority="3">
+Perhaps 'background' could be replaced by a local variable.
+</violation>
+<violation beginline="26" endline="26" begincolumn="23" endcolumn="25" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="GameOverState" method="update" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+<violation beginline="62" endline="62" begincolumn="34" endcolumn="36" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="GameOverState" method="KeyPressed" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\states\HelpState.java">
+<violation beginline="17" endline="17" begincolumn="21" endcolumn="31" rule="SingularField" ruleset="Design" package="br.states" class="HelpState" variable="background" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#singularfield" priority="3">
+Perhaps 'background' could be replaced by a local variable.
+</violation>
+<violation beginline="25" endline="25" begincolumn="23" endcolumn="25" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="HelpState" method="update" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+<violation beginline="59" endline="59" begincolumn="34" endcolumn="36" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="HelpState" method="KeyPressed" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\states\Level1State.java">
+<violation beginline="19" endline="19" begincolumn="21" endcolumn="31" rule="SingularField" ruleset="Design" package="br.states" class="Level1State" variable="background" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#singularfield" priority="3">
+Perhaps 'background' could be replaced by a local variable.
+</violation>
+<violation beginline="108" endline="114" begincolumn="3" endcolumn="4" rule="ForLoopCanBeForeach" ruleset="Best Practices" package="br.states" class="Level1State" method="checarColisoes" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#forloopcanbeforeach" priority="3">
+This for loop can be replaced by a foreach loop
+</violation>
+<violation beginline="118" endline="118" begincolumn="34" endcolumn="36" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="Level1State" method="KeyPressed" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+<violation beginline="121" endline="121" begincolumn="35" endcolumn="37" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="Level1State" method="KeyReleased" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\states\State.java">
+<violation beginline="9" endline="9" begincolumn="7" endcolumn="17" rule="MethodNamingConventions" ruleset="Code Style" package="br.states" class="State" method="KeyPressed" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#methodnamingconventions" priority="1">
+The instance method name 'KeyPressed' doesn't match '[a-z][a-zA-Z0-9]*'
+</violation>
+<violation beginline="10" endline="10" begincolumn="7" endcolumn="18" rule="MethodNamingConventions" ruleset="Code Style" package="br.states" class="State" method="KeyReleased" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_codestyle.html#methodnamingconventions" priority="1">
+The instance method name 'KeyReleased' doesn't match '[a-z][a-zA-Z0-9]*'
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\states\StateManager.java">
+<violation beginline="50" endline="50" begincolumn="35" endcolumn="37" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="StateManager" method="keyTyped" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\states\YouWinState.java">
+<violation beginline="14" endline="14" begincolumn="15" endcolumn="20" rule="OneDeclarationPerLine" ruleset="Best Practices" package="br.states" class="YouWinState" variable="font1, font2" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#onedeclarationperline" priority="4">
+Use one line for each declaration, it enhances code readability.
+</violation>
+<violation beginline="17" endline="17" begincolumn="21" endcolumn="31" rule="SingularField" ruleset="Design" package="br.states" class="YouWinState" variable="background" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#singularfield" priority="3">
+Perhaps 'background' could be replaced by a local variable.
+</violation>
+<violation beginline="26" endline="26" begincolumn="23" endcolumn="25" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="YouWinState" method="update" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+<violation beginline="62" endline="62" begincolumn="34" endcolumn="36" rule="UncommentedEmptyMethodBody" ruleset="Documentation" package="br.states" class="YouWinState" method="KeyPressed" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_documentation.html#uncommentedemptymethodbody" priority="3">
+Document empty method body
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\web\WebGame.java">
+<violation beginline="54" endline="54" begincolumn="33" endcolumn="41" rule="AvoidUsingVolatile" ruleset="Multithreading" package="br.web" class="WebGame" variable="snapshot" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_multithreading.html#avoidusingvolatile" priority="2">
+Use of modifier volatile is not recommended.
+</violation>
+<violation beginline="55" endline="55" begincolumn="23" endcolumn="38" rule="AvoidUsingVolatile" ruleset="Multithreading" package="br.web" class="WebGame" variable="framesPerSecond" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_multithreading.html#avoidusingvolatile" priority="2">
+Use of modifier volatile is not recommended.
+</violation>
+<violation beginline="56" endline="56" begincolumn="24" endcolumn="42" rule="AvoidUsingVolatile" ruleset="Multithreading" package="br.web" class="WebGame" variable="slowestFrameMicros" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_multithreading.html#avoidusingvolatile" priority="2">
+Use of modifier volatile is not recommended.
+</violation>
+<violation beginline="57" endline="57" begincolumn="27" endcolumn="34" rule="AvoidUsingVolatile" ruleset="Multithreading" package="br.web" class="WebGame" variable="running" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_multithreading.html#avoidusingvolatile" priority="2">
+Use of modifier volatile is not recommended.
+</violation>
+</file>
+<file name="C:\Users\breno\OneDrive\Desktop\qa\Trabalho_QTS-SpaceInvaders\src\br\web\WebServer.java">
+<violation beginline="41" endline="41" begincolumn="57" endcolumn="68" rule="AvoidUsingHardCodedIP" ruleset="Best Practices" package="br.web" class="WebServer" method="WebServer" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_bestpractices.html#avoidusinghardcodedip" priority="3">
+Do not hard code the IP address ${variableName}
+</violation>
+</file>
+</pmd>

@@ -45,7 +45,7 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * [x] `Ship` — [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · **100% de cobertura de arestas** · 89% de escore de mutação  
   * [x] `AudioPlayer`- [`AudioPlayerTest`](src/test/java/br/audio/AudioPlayerTest.java) · 5 casos (`play()`, `stop()` e isolamento da API Sound via Mock/Reflection)
   * [x] `Level1State` - [`Level1StateTest`](src/test/java/br/states/Level1StateTest.java) · 6 casos (`init()`, `update()`, colisão nave-alien e tiro-alien via Reflection)
-  * [x] `Level2State` — [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java) · 11 casos (`init()`, `update()`, `checarColisoes()` via `render()`) · cobertura/mutação: Entrega 2
+  * [x] `Level2State` — [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java) · 11 casos (`init()`, `update()`, `checarColisoes()` via `render()`) · 19 casos na Entrega 2, ver Cobertura Estrutural e Teste Baseado em Defeitos
 * [x] **Casos de Testes Manuais:**
   * [x] Cenário exportado do **TestLink** da classe `Game`: [`PDF`](docs/manual-tests/CT01-GameLoop-TestLink.pdf)
   * [x] Caso de teste de sistema da classe `Ship`: [`PDF`](docs/manual-tests/CT02-Ship-CasoDeTesteSistema.pdf) — 20 passos executados em 20/09/2026, 19 passaram e 1 falhou
@@ -72,7 +72,8 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * Alterações no código do jogo e motivo de cada uma: [`docs/alteracoes-no-sut.md`](docs/alteracoes-no-sut.md)
   * Defeitos encontrados: issues [#2](../../issues/2) a [#12](../../issues/12)
   * Validação do uso de IA (versões iniciais, finais e evidências): [`docs/ai/roger/`](docs/ai/roger/revisao.md)
-* [ ] **Métricas de Qualidade ISO 25010:** Relatório e justificativas no [Plano de Teste](https://docs.google.com/document/d/).
+* [x] **Métricas de Qualidade ISO 25010** (Breno): medidas de 0 a 100% das 9 características da ISO/IEC 25010:2023, antes (jogo desktop, commit `bbb57f3`) e depois (versão web, `main`), com a justificativa de cada número em [`docs/qualidade/iso25010-medidas.md`](docs/qualidade/iso25010-medidas.md). Nota geral ponderada pela importância: 49% antes e 83% depois
+* [x] **Correção da issue [#10](../../issues/10) no `Level2State`** (Breno): laços de remoção trocados por `removeIf` e 3 casos novos em [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java). A falha continua no `Level1State`. Evidência de antes e depois em [`docs/ai/breno/evidencias/`](docs/ai/breno/evidencias/2026-11-22-defeito-10-level2state.txt)
 * [x] **Testes Automatizados de Sistema** (Roger): Selenium WebDriver em [`src/test/java/br/system/`](src/test/java/br/system/), rodam com `mvn verify -Psystem`
   * Funcionais: RF01 a RF07 (menu, fases, Game Over) em [`MenuSystemIT`](src/test/java/br/system/MenuSystemIT.java) e [`GameplaySystemIT`](src/test/java/br/system/GameplaySystemIT.java)
   * Não funcionais (Eficiência de Desempenho): FPS médio, fluidez e tempo de resposta em [`PerformanceSystemIT`](src/test/java/br/system/PerformanceSystemIT.java)
@@ -80,14 +81,17 @@ Todas as entregas estão organizadas na branch principal (`main` / `master`) con
   * Evidências (screenshots, medições, relatórios de 3 execuções): [`docs/evidencias/sistema/`](docs/evidencias/sistema/)
 * [ ] **Cobertura Estrutural ($\ge 80\%$ Todas-Arestas):** Relatório JaCoCo/HTML disponível em [`docs/reports/coverage/`](docs/reports/coverage/).
   * `Ship` (Luiz): [`ShipTest`](src/test/java/br/characters/ShipTest.java) · 32 casos · arestas 8/8 (100%)
+  * `Level2State` (Breno): [`Level2StateTest`](src/test/java/br/states/Level2StateTest.java) · 19 casos · arestas 34/34 (100%). Relatório e prints em [`docs/reports/level2state/`](docs/reports/level2state/LEIA-ME.md)
 * [ ] **Teste Baseado em Defeitos ($\ge 80\%$ Escore de Mutação):** Relatório Pitest disponível em [`docs/reports/mutation/`](docs/reports/mutation/).
   * `Ship` (Luiz): 16/18 (88,9%) antes da correção do Sonar e 14/16 (87,5%) depois. Os 2 sobreviventes são equivalentes ([`docs/sonar/ship.md`](docs/sonar/ship.md))
+  * `Level2State` (Breno): 19/29 (66%) na primeira execução e 29/29 (100%) depois de 5 casos novos para os 10 sobreviventes. Análise dos sobreviventes em [`docs/reports/level2state/`](docs/reports/level2state/LEIA-ME.md)
 * [ ] **Inspeção de Código (SonarQube/SonarCloud):**
   * Evidências antes das correções: [`docs/sonar/before/`](docs/sonar/before/)
   * Evidências após as correções: [`docs/sonar/after/`](docs/sonar/after/)
   * **Roger** (`MenuState` e `AudioPlayer`), com PMD 7.7.0 no lugar do Sonar (sem servidor nem conta, `mvn pmd:pmd`): 8 problemas antes, 0 depois. Prints, relatórios e justificativas em [`docs/inspecao/`](docs/inspecao/LEIA-ME.md)
   * **Luiz** (`Ship`), com SonarQube (perfil comprehensive) como base e PMD como complemento: 7 issues antes, 0 depois (PMD: 1 antes, 0 depois). Resultado em [`docs/sonar/ship.md`](docs/sonar/ship.md); método e comparação PMD x Sonar em [`docs/sonar/`](docs/sonar/README.md). Uso de IA: [`AI-LOG`](docs/ai/AI-LOG.md), interações #013 e #014
   * **`br.Game` (Leon):** Inspeção estática realizada via PMD (`mvn pmd:pmd`), confirmando ausência de vulnerabilidades críticas ou *code smells* bloqueantes na classe principal e na suíte `GameTest`.
+  * **Breno** (`Level2State`), com PMD 7.7.0 (`mvn pmd:pmd`) e o Sonar do Luiz como complemento: 11 problemas antes, 0 depois (projeto de 48 para 37 no PMD). Os 14 testes da classe continuam passando, e 150 partidas simuladas deram o mesmo resultado antes e depois. Prints, relatórios e a tabela de correções em [`docs/inspecao/level2state/`](docs/inspecao/level2state/LEIA-ME.md)
 
 ---
 

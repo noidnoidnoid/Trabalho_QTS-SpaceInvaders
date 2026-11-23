@@ -22,10 +22,11 @@ public class Level2State implements State {
 	Ship ship;
 	List<Shot> shots;
 	List<Alien> aliens;
-	private Background background;
 
 	boolean victory;
 	boolean gameOver;
+
+	private static final int NUMERO_DE_ALIENS = 8;
 
 	@Override
 	public void init() {
@@ -36,10 +37,9 @@ public class Level2State implements State {
 		shots = ship.getShots();
 		
 		//INSTANCIANDO A LISTA DE ALIENS
-		int arrayDeAliens[] = new int[8]; //NUMERO DE ALIENS
 		aliens = new ArrayList<Alien>();
-		for (int a = 0; a < arrayDeAliens.length; a++) {
-			aliens.add(new Alien((0 + (a * 100)), Game.HEIGHT * 1/4));
+		for (int a = 0; a < NUMERO_DE_ALIENS; a++) {
+			aliens.add(new Alien(a * 100, Game.HEIGHT / 4));
 		}
 		
 		victory = false;
@@ -63,48 +63,39 @@ public class Level2State implements State {
 	@Override
 	public void render(Graphics g) {
 		
-			background = new Background();
+			Background background = new Background();
 			background.print(g);
 			
 			//DESENHANDO O SHIP
 			ship.paint(g);
 
 			//DESENHANDO OS ALIENS
-			for (int b = 0; b < aliens.size(); b++) {
-				Alien alien = aliens.get(b);
+			for (Alien alien : aliens) {
 				alien.paint(g);
 			}
 			
 			//MOVIMENTACAO DO ALIEN
-			for (int c = 0; c < aliens.size(); c++) {
-				Alien alien = aliens.get(c);
-				if (alien.isVisible()) {
-					alien.update();
-				}
-				else {
-					aliens.remove(c);
-				}
+			// Remove os invisiveis antes de percorrer a lista: remover dentro
+			// do laco com indice pulava o elemento seguinte (issue #10).
+			aliens.removeIf(alien -> !alien.isVisible());
+			for (Alien alien : aliens) {
+				alien.update();
 			}
 			
 			//DESENHANDO E MOVIMENTANDO OS TIROS
-			for (int e = 0; e < shots.size(); e++) {
-				Shot s = shots.get(e);
-				if (s.isVisible()) {
-					s.paint(g);
-					s.update();
-				}
-				else {
-					shots.remove(e);
-				}
+			shots.removeIf(s -> !s.isVisible());
+			for (Shot s : shots) {
+				s.paint(g);
+				s.update();
 			}
 			checarColisoes();
 			
-		if (victory == true) {
-			//YouWinState CASO victory == true
+		if (victory) {
+			//YouWinState CASO victory
 			StateManager.setState(StateManager.YOUWIN);
 		}
-		if (gameOver == true) {
-			//GameOverState CASO emJogo == false
+		if (gameOver) {
+			//GameOverState CASO gameOver
 			StateManager.setState(StateManager.GAMEOVER);
 		}
 	}
@@ -115,8 +106,7 @@ public class Level2State implements State {
 		Rectangle formaShot;
 		
 		//COLISAO ENTRE O SHIP E O ALIEN
-		for (int d = 0; d < aliens.size(); d++) {
-			Alien alienAux = aliens.get(d);
+		for (Alien alienAux : aliens) {
 			formaAlien = alienAux.getBounds();
 			if (formaShip.intersects(formaAlien)) {
 				gameOver = true;
@@ -124,12 +114,9 @@ public class Level2State implements State {
 		}
 		
 		//COLISAO ENTRE O SHOT E O ALIEN
-		List<Shot> shots = ship.getShots();
-		for (int i = 0; i < shots.size(); i++) {
-			Shot shotAux = shots.get(i);
+		for (Shot shotAux : shots) {
 			formaShot = shotAux.getBounds();
-			for (int e = 0; e < aliens.size(); e++) {
-				Alien alienAux = aliens.get(e);
+			for (Alien alienAux : aliens) {
 				formaAlien = alienAux.getBounds();
 				if (formaShot.intersects(formaAlien)) {
 					alienAux.setVisible(false);
@@ -137,15 +124,19 @@ public class Level2State implements State {
 				}
 			}
 		}
-		if (aliens.size() == 0) {
+		if (aliens.isEmpty()) {
 			victory = true;
 		}
 	}
 
 	@Override
-	public void KeyPressed(int cod) {}
+	public void KeyPressed(int cod) {
+		// Vazio de proposito: a fase 2 le o teclado pelo KeyManager em update().
+	}
 
 	@Override
-	public void KeyReleased(int cod) {}
+	public void KeyReleased(int cod) {
+		// Vazio de proposito: a fase 2 le o teclado pelo KeyManager em update().
+	}
 
 }

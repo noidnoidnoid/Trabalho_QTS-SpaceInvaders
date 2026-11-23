@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Sprites.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Space Invaders - SUT de Qualidade e Teste de Software</a> &gt; <a href="index.source.html" class="el_package">br.display</a> &gt; <span class="el_source">Sprites.java</span></div><h1>Sprites.java</h1><pre class="source lang-java linenums">package br.display;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.imageio.ImageIO;
+
+/**
+ * Reads each sprite file from disk once and shares the image afterwards.
+ *
+ * The game creates a new Background on every frame and a new Alien or Shot for
+ * every alien and every shot, and each constructor used to read its PNG again.
+ * Reading the background alone took ~15 ms of the 16.7 ms frame budget (issues
+ * #11 and #12). The images are only drawn, never modified, so sharing them is safe.
+ */
+public final class Sprites {
+
+<span class="fc" id="L21">	private static final Map&lt;String, BufferedImage&gt; CACHE = new ConcurrentHashMap&lt;&gt;();</span>
+
+	private Sprites() {}
+
+	/**
+	 * Same contract as ImageIO.read(new File(path)): throws IOException when the file
+	 * cannot be read. Failures are not cached, so a later call tries again.
+	 */
+	public static BufferedImage read(String path) throws IOException {
+<span class="fc" id="L30">		BufferedImage cached = CACHE.get(path);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		if (cached != null) {</span>
+<span class="fc" id="L32">			return cached;</span>
+		}
+<span class="fc" id="L34">		BufferedImage image = ImageIO.read(new File(path));</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		if (image == null) {</span>
+<span class="fc" id="L36">			throw new IOException(&quot;Not a readable image: &quot; + path);</span>
+		}
+<span class="fc" id="L38">		CACHE.putIfAbsent(path, image);</span>
+<span class="fc" id="L39">		return image;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

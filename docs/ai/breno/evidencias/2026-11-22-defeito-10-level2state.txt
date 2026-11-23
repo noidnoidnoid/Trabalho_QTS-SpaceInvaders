@@ -1,0 +1,81 @@
+# Issue #10 em Level2State: laços de remoção pulam o elemento seguinte. Evidência de antes e depois.
+# Data: 22/11/2026. Responsável: Breno Carvalho (123083015). Feito com Claude (ver AI-LOG, interação #018).
+
+## Defeito
+Em Level2State.render(), os laços de aliens e de tiros chamavam lista.remove(i) dentro de
+for (int i = 0; i < lista.size(); i++). Depois da remoção, o elemento seguinte desce para o
+índice i e o i++ passa por cima dele. O elemento pulado só sai da lista no frame seguinte e,
+neste frame, não é atualizado. Issue: https://github.com/noidnoidnoid/Trabalho_QTS-SpaceInvaders/issues/10
+
+## Correção
+Remover os invisíveis com removeIf antes de percorrer a lista e depois atualizar (e desenhar,
+no caso dos tiros) todos os que restaram. Só src/br/states/Level2State.java mudou.
+A mesma falha continua em Level1State.render() (classe do Erick) e por isso a issue segue aberta.
+
+## Como a prova foi executada
+Ambiente: cópia da main no commit cdb5130, JDK 21.0.13 (javac --release 17), modo headless.
+O Maven não pôde ser usado nesse ambiente porque a rede bloqueia o Maven Central. Por isso a prova
+é um programa simples, sem JUnit, com os mesmos três casos que entraram no Level2StateTest
+(classe aninhada RemocaoDeInvisiveis). Código: prova/br/states/Prova10.java.
+
+  javac -encoding ISO-8859-1 --release 17 -cp "lib/*" -d out $(find src/br -name '*.java') Prova10.java
+  java -Djava.awt.headless=true -cp "out:lib/*" br.states.Prova10   (a partir da raiz do repositório)
+
+## Antes da correção (código da main, commit cdb5130)
+FALHOU T1 remove aliens invisiveis consecutivos no mesmo frame | tamanho=7 invisiveis=1
+FALHOU T2 vitoria no mesmo frame em que o ultimo alien some | victory=false aliens na lista=4
+FALHOU T3 tiro depois de um tiro removido continua subindo | y antes=930 y depois=930 tiros=1
+
+## Depois da correção
+PASSOU T1 remove aliens invisiveis consecutivos no mesmo frame | tamanho=6 invisiveis=0
+PASSOU T2 vitoria no mesmo frame em que o ultimo alien some | victory=true aliens na lista=0
+PASSOU T3 tiro depois de um tiro removido continua subindo | y antes=930 y depois=923 tiros=1
+
+## Leitura dos resultados
+T1: com 2 aliens invisíveis seguidos, o segundo ficava na lista.
+T2: com os 8 aliens invisíveis, só 4 saíam no frame, e a vitória atrasava mais frames.
+T3: o tiro seguinte a um tiro removido ficava parado em y = 930 naquele frame (deveria subir 7 px).
+
+## Segunda verificação: o código dos testes JUnit, executado com substitutos
+O Level2StateTest.java inteiro foi compilado com substitutos mínimos das classes do JUnit e do
+Mockito (anotações, Assertions e mock(Graphics.class) devolvendo o Graphics de uma BufferedImage).
+Os 3 métodos da classe aninhada RemocaoDeInvisiveis rodaram por reflexão, com os @BeforeEach.
+Isso confere a compilação e o comportamento dos testes, mas não substitui o mvn test.
+
+Com o Level2State antigo (commit cdb5130):
+FALHOU dois aliens invisiveis seguidos saem da lista no mesmo frame -> java.lang.AssertionError: esperado 6 mas foi 7
+FALHOU vitoria no mesmo frame em que todos os aliens ficam invisiveis -> java.lang.AssertionError: esperado true
+FALHOU tiro logo depois de um tiro removido continua subindo no mesmo frame -> java.lang.AssertionError: esperado 923 mas foi 930
+
+Com o Level2State corrigido:
+PASSOU dois aliens invisiveis seguidos saem da lista no mesmo frame
+PASSOU vitoria no mesmo frame em que todos os aliens ficam invisiveis
+PASSOU tiro logo depois de um tiro removido continua subindo no mesmo frame
+
+## Execução com Maven na máquina do Breno (22/11/2026, 23:06)
+Comando: mvn test -Dtest=Level2StateTest (Windows 11, JDK 23, Maven 3.10.0, com placa de som).
+Print: 2026-11-22-mvn-test-level2statetest.png
+  Remocao de aliens e tiros invisiveis (issue #10): Tests run: 3, Failures: 0, Errors: 0
+  Colisoes e fim de jogo (via render):              Tests run: 3, Failures: 0, Errors: 0
+  update() - entrada do jogador:                    Tests run: 4, Failures: 0, Errors: 0
+  init():                                           Tests run: 4, Failures: 0, Errors: 0
+  Total: Tests run: 14, Failures: 0, Errors: 0, Skipped: 0. BUILD SUCCESS
+
+## Execução da suíte completa (mvn clean test, mesma máquina): ainda não passa, por dois motivos fora da correção
+1. A JVM dos testes ficou sem memória ("Java heap space") no início da classe Colisoes do
+   Level2StateTest, depois de 80 testes. Causa provável, ainda não comprovada: cada
+   "new StateManager()" cria um MenuState que carrega a música tema inteira (4,8 min,
+   ~51 MB em PCM) e nunca a libera. Com placa de som isso acontece de verdade, e as
+   instâncias se acumulam na mesma JVM. Com a classe rodando sozinha (acima) passa.
+   Ação tomada (decisão do Breno): no Level2StateTest, as classes aninhadas Colisoes e
+   RemocaoDeInvisiveis deixaram de chamar "new StateManager()". Agora chamam
+   usarEstadosFalsos(), que põe mock(State.class) no array StateManager.states, e o
+   @AfterEach restaurarEstados() devolve o array original. Isso elimina 6 carregamentos
+   da música por execução. O Level1StateTest (classe do Erick) continua criando StateManager.
+   Verificação no ambiente da ferramenta (mesmos substitutos de JUnit/Mockito da segunda
+   verificação): os 3 casos novos e "sem aliens restantes, define vitoria" passaram (4/4),
+   o array de estados voltou ao original depois de cada caso e a música não foi mais carregada.
+   Falta rodar de novo na máquina do Breno: mvn test -Dtest=Level2StateTest e mvn clean test.
+2. AudioPlayerTest.assertNoWarning falhou porque, no JDK 23, o Mockito imprime um aviso
+   no console ao se conectar à JVM, e o teste exige console vazio. O projeto é compilado
+   para Java 17. Não tem relação com o Level2State.

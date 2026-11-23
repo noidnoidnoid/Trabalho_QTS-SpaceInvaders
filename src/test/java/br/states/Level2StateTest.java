@@ -2,15 +2,22 @@ package br.states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.awt.Graphics;
+import java.awt.Image;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -38,10 +45,14 @@ import br.input.KeyManager;
  * ARMADILHA DE ESTADO ESTATICO:
  * StateManager.states so e populado dentro do construtor de StateManager
  * (StateManager.java:20-27). Testes que levam victory/gameOver a true
- * acionam StateManager.setState(...) dentro de render(), e sem um
- * "new StateManager()" previo isso lanca NullPointerException. Por isso
- * prepararColisoes() cria um StateManager antes de cada caso da classe
- * aninhada Colisoes.
+ * acionam StateManager.setState(...) dentro de render(), e com o array
+ * vazio isso lanca NullPointerException. A primeira versao resolvia com
+ * "new StateManager()" antes de cada caso, mas o construtor cria um
+ * MenuState que carrega a musica tema inteira na memoria (~51 MB, nunca
+ * liberados). Em maquina com placa de som, as instancias se acumulam na
+ * JVM do Surefire e a suite estourou o heap. Por isso as classes aninhadas
+ * chamam usarEstadosFalsos(), que poe estados falsos no array, e
+ * restaurarEstados() devolve o array original depois de cada caso.
  */
 @DisplayName("Level2State - segunda fase do jogo")
 class Level2StateTest {
@@ -58,6 +69,27 @@ class Level2StateTest {
         KeyManager.space = false;
 
         state = new Level2State();
+    }
+
+    // Guardados por usarEstadosFalsos() e devolvidos por restaurarEstados().
+    private State[] estadosOriginais;
+    private int estadoAtualOriginal;
+
+    // Ver nota "ARMADILHA DE ESTADO ESTATICO" no cabecalho da classe.
+    void usarEstadosFalsos() {
+        estadosOriginais = StateManager.states.clone();
+        estadoAtualOriginal = StateManager.currentState;
+        for (int i = 0; i < StateManager.NUMBERSTATES; i++) {
+            StateManager.states[i] = mock(State.class);
+        }
+    }
+
+    @AfterEach
+    void restaurarEstados() {
+        if (estadosOriginais != null) {
+            System.arraycopy(estadosOriginais, 0, StateManager.states, 0, StateManager.NUMBERSTATES);
+            StateManager.currentState = estadoAtualOriginal;
+        }
     }
 
     @Nested
@@ -170,7 +202,7 @@ class Level2StateTest {
         void prepararColisoes() {
             state.init();
             // ver nota "ARMADILHA DE ESTADO ESTATICO" no cabecalho da classe.
-            new StateManager();
+            usarEstadosFalsos();
         }
 
         @Test
@@ -218,6 +250,131 @@ class Level2StateTest {
 
             assertTrue(state.victory);
             assertFalse(state.gameOver);
+        }
+    }
+
+    @Nested
+    @DisplayName("Remocao de aliens e tiros invisiveis (issue #10)")
+    class RemocaoDeInvisiveis {
+
+        private final Graphics g = mock(Graphics.class);
+
+        @BeforeEach
+        void prepararRemocao() {
+            state.init();
+            // a vitoria chama StateManager.setState: ver "ARMADILHA DE ESTADO ESTATICO".
+            usarEstadosFalsos();
+        }
+
+        @Test
+        @DisplayName("dois aliens invisiveis seguidos saem da lista no mesmo frame")
+        void removeAliensInvisiveisConsecutivos() {
+            state.aliens.get(0).setVisible(false);
+            state.aliens.get(1).setVisible(false);
+
+            state.render(g);
+
+            assertEquals(6, state.aliens.size());
+            assertTrue(state.aliens.stream().allMatch(Alien::isVisible));
+        }
+
+        @Test
+        @DisplayName("vitoria no mesmo frame em que todos os aliens ficam invisiveis")
+        void vitoriaNoMesmoFrameQueOsAliensSomem() {
+            state.aliens.forEach(alien -> alien.setVisible(false));
+
+            state.render(g);
+
+            assertTrue(state.aliens.isEmpty());
+            assertTrue(state.victory);
+        }
+
+        @Test
+        @DisplayName("tiro logo depois de um tiro removido continua subindo no mesmo frame")
+        void tiroSeguinteAoRemovidoContinuaSubindo() {
+            state.ship.simpleShot();
+            state.ship.simpleShot();
+            Shot removido = state.shots.get(0);
+            Shot seguinte = state.shots.get(1);
+            removido.setVisible(false);
+            int yAntes = seguinte.getY();
+
+            state.render(g);
+
+            assertFalse(state.shots.contains(removido));
+            assertEquals(yAntes - Shot.getVelocity(), seguinte.getY());
+        }
+    }
+
+    @Nested
+    @DisplayName("Desenho e troca de tela (via render)")
+    class DesenhoETrocaDeTela {
+
+        private final Graphics g = mock(Graphics.class);
+
+        @BeforeEach
+        void prepararDesenho() {
+            state.init();
+            usarEstadosFalsos();
+            StateManager.currentState = StateManager.LEVEL2;
+        }
+
+        @Test
+        @DisplayName("desenha o fundo, a nave, os 8 aliens e o tiro em cada frame")
+        void desenhaTodosOsElementos() {
+            state.ship.simpleShot();
+
+            state.render(g);
+
+            // 1 fundo + 1 nave + 8 aliens + 1 tiro: cada um e uma chamada a drawImage.
+            verify(g, times(11)).drawImage(any(Image.class), anyInt(), anyInt(), anyInt(), anyInt(),
+                    anyInt(), anyInt(), anyInt(), anyInt(), any());
+        }
+
+        @Test
+        @DisplayName("os aliens se movem a cada frame")
+        void aliensSeMovem() {
+            int xAntes = state.aliens.get(0).getX();
+
+            state.render(g);
+
+            assertNotEquals(xAntes, state.aliens.get(0).getX());
+        }
+
+        @Test
+        @DisplayName("sem colisao e com aliens restantes, a partida continua na fase 2")
+        void semColisaoPartidaContinua() {
+            state.render(g);
+
+            assertFalse(state.gameOver);
+            assertFalse(state.victory);
+            assertEquals(StateManager.LEVEL2, StateManager.currentState);
+        }
+
+        @Test
+        @DisplayName("vitoria muda para a tela You Win")
+        void vitoriaMudaParaYouWin() {
+            State telaYouWin = StateManager.states[StateManager.YOUWIN];
+            state.aliens.clear();
+
+            state.render(g);
+
+            assertEquals(StateManager.YOUWIN, StateManager.currentState);
+            verify(telaYouWin).init();
+        }
+
+        @Test
+        @DisplayName("derrota muda para a tela Game Over")
+        void derrotaMudaParaGameOver() {
+            State telaGameOver = StateManager.states[StateManager.GAMEOVER];
+            Alien alienNaNave = spy(state.aliens.get(0));
+            doReturn(state.ship.getBounds()).when(alienNaNave).getBounds();
+            state.aliens.set(0, alienNaNave);
+
+            state.render(g);
+
+            assertEquals(StateManager.GAMEOVER, StateManager.currentState);
+            verify(telaGameOver).init();
         }
     }
 }

@@ -1,0 +1,27 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Space Invaders - SUT de Qualidade e Teste de Software,br,Launch,10,0,0,0,4,0,2,0,2,0
+Space Invaders - SUT de Qualidade e Teste de Software,br,Game,0,154,0,14,0,51,0,14,0,7
+Space Invaders - SUT de Qualidade e Teste de Software,br.display,Display.new MouseAdapter() {...},28,0,0,0,5,0,2,0,2,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.display,Sprites,0,35,0,4,0,9,0,4,0,2
+Space Invaders - SUT de Qualidade e Teste de Software,br.display,Background,6,44,0,0,3,9,0,2,0,2
+Space Invaders - SUT de Qualidade e Teste de Software,br.display,Display,102,0,0,0,24,0,4,0,4,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.input,KeyManager,31,23,8,0,7,6,7,2,3,2
+Space Invaders - SUT de Qualidade e Teste de Software,br.characters,Ship,0,125,0,8,0,30,0,15,0,11
+Space Invaders - SUT de Qualidade e Teste de Software,br.characters,Shot,9,94,1,1,4,23,1,10,0,10
+Space Invaders - SUT de Qualidade e Teste de Software,br.characters,Alien,24,87,2,2,7,22,2,8,0,8
+Space Invaders - SUT de Qualidade e Teste de Software,br.characters,Character,15,12,0,0,4,4,4,3,4,3
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,Level1State,11,143,5,15,4,40,7,10,2,5
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,GameOverState,165,35,17,0,41,6,14,2,5,2
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,YouWinState,165,35,17,0,41,6,14,2,5,2
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,HelpState,170,18,17,0,42,3,15,1,6,1
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,StateManager,15,67,0,0,5,18,3,6,3,6
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,MenuState,75,193,18,8,24,43,16,8,4,6
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,Level2State,2,229,0,34,2,55,2,24,2,7
+Space Invaders - SUT de Qualidade e Teste de Software,br.states,StateSnapshot,150,0,14,0,14,0,10,0,3,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.web,WebGame,372,0,28,0,92,0,28,0,14,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.web,WebLaunch,30,0,2,0,7,0,2,0,1,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.web,WebServer.WrongMethodException,10,0,0,0,3,0,1,0,1,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.web,KeyMapping,41,0,4,0,10,0,4,0,2,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.web,WebGame.new Component() {...},3,0,0,0,1,0,1,0,1,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.web,WebServer,352,0,35,0,83,0,32,0,13,0
+Space Invaders - SUT de Qualidade e Teste de Software,br.audio,AudioPlayer,2,98,1,9,0,34,1,9,0,5

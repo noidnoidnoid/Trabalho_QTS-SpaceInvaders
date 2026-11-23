@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Display.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Space Invaders - SUT de Qualidade e Teste de Software</a> &gt; <a href="index.source.html" class="el_package">br.display</a> &gt; <span class="el_source">Display.java</span></div><h1>Display.java</h1><pre class="source lang-java linenums">package br.display;
+
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferStrategy;
+
+import javax.swing.JFrame;
+
+
+public class Display {
+
+    private JFrame jframe;
+    private Canvas canvas;
+
+    
+<span class="nc" id="L19">    public Display(String title, int width, int height) {</span>
+<span class="nc" id="L20">        canvas = new Canvas();</span>
+<span class="nc" id="L21">        canvas.setPreferredSize(new Dimension(width, height));</span>
+<span class="nc" id="L22">        canvas.setMaximumSize(new Dimension(width, height));</span>
+<span class="nc" id="L23">        canvas.setMinimumSize(new Dimension(width, height));</span>
+        
+        // Garante que o Canvas aceita o foco de entrada
+<span class="nc" id="L26">        canvas.setFocusable(true);</span>
+        
+<span class="nc" id="L28">        jframe = new JFrame(title);</span>
+<span class="nc" id="L29">        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L30">        jframe.setResizable(false);</span>
+        
+<span class="nc" id="L32">        jframe.setFocusable(true); // PARA NÃO ROUBAR A CARACTERÃSTICA DE PRESSIONAMENTO DA TECLA DO KEYLISTENER</span>
+<span class="nc" id="L33">        jframe.add(canvas);</span>
+<span class="nc" id="L34">        jframe.pack();</span>
+
+<span class="nc" id="L36">        jframe.setLocationRelativeTo(null);</span>
+<span class="nc" id="L37">        jframe.setVisible(true);</span>
+
+        // Solicita o foco de entrada imediatamente apÃ³s exibir a janela
+<span class="nc" id="L40">        canvas.requestFocus();</span>
+<span class="nc" id="L41">        jframe.requestFocus();</span>
+
+        // DiagnÃ³stico: ao clicar na janela, forÃ§a o foco e imprime o estado no terminal
+<span class="nc" id="L44">        canvas.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mousePressed(MouseEvent e) {
+<span class="nc" id="L47">                canvas.requestFocusInWindow();</span>
+<span class="nc" id="L48">                jframe.requestFocusInWindow();</span>
+<span class="nc" id="L49">                System.out.println(&quot;Janela clicada - Tem foco? (Canvas: &quot; + canvas.hasFocus() + &quot; | JFrame: &quot; + jframe.hasFocus() + &quot;)&quot;);</span>
+<span class="nc" id="L50">            }</span>
+        });
+<span class="nc" id="L52">    }</span>
+    
+    public BufferStrategy getBufferStrategy() {
+<span class="nc" id="L55">        return canvas.getBufferStrategy();</span>
+    }
+    
+    public void createBufferStrategy() {
+<span class="nc" id="L59">        canvas.createBufferStrategy(3);</span>
+<span class="nc" id="L60">    }</span>
+    
+    // CONTROLE DE TECLADO
+    public void setKeyListener(KeyListener k1) {
+<span class="nc" id="L64">        jframe.addKeyListener(k1); // JFRAME RECEBE OS EVENTOS DE CLIQUE</span>
+<span class="nc" id="L65">        canvas.addKeyListener(k1); // ADICIONADO TAMBÃM AO CANVAS (evita perda de eventos se o Canvas capturar o foco)</span>
+<span class="nc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

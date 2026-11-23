@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebServer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Space Invaders - SUT de Qualidade e Teste de Software</a> &gt; <a href="index.source.html" class="el_package">br.web</a> &gt; <span class="el_source">WebServer.java</span></div><h1>WebServer.java</h1><pre class="source lang-java linenums">package br.web;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.OptionalInt;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+
+import br.states.StateSnapshot;
+
+/**
+ * HTTP layer of the web version, built on the JDK's com.sun.net.httpserver.
+ *
+ * GET  /           the page (resources/web/index.html)
+ * GET  /frame.jpg  latest frame
+ * GET  /state      JSON with the current screen, menu option, ship, aliens, shots and FPS
+ * POST /key        form body code=KeyD&amp;type=down|up
+ *
+ * It listens on localhost only: the game is meant to be played and tested on the
+ * same machine.
+ */
+public class WebServer {
+
+	private static final String PAGE_RESOURCE = &quot;/web/index.html&quot;;
+
+	private final GameSession game;
+	private final HttpServer server;
+<span class="nc" id="L37">	private final ExecutorService executor = Executors.newFixedThreadPool(4);</span>
+
+<span class="nc" id="L39">	public WebServer(GameSession game, int port) throws IOException {</span>
+<span class="nc" id="L40">		this.game = game;</span>
+<span class="nc" id="L41">		this.server = HttpServer.create(new InetSocketAddress(&quot;127.0.0.1&quot;, port), 0);</span>
+<span class="nc" id="L42">		server.createContext(&quot;/&quot;, this::route);</span>
+<span class="nc" id="L43">		server.setExecutor(executor);</span>
+<span class="nc" id="L44">	}</span>
+
+	public void start() {
+<span class="nc" id="L47">		server.start();</span>
+<span class="nc" id="L48">	}</span>
+
+	public void stop() {
+<span class="nc" id="L51">		server.stop(0);</span>
+<span class="nc" id="L52">		executor.shutdownNow();</span>
+<span class="nc" id="L53">	}</span>
+
+	/** Actual port, useful when created with port 0 (any free port). */
+	public int port() {
+<span class="nc" id="L57">		return server.getAddress().getPort();</span>
+	}
+
+	private void route(HttpExchange exchange) throws IOException {
+		try {
+<span class="nc" id="L62">			String path = exchange.getRequestURI().getPath();</span>
+<span class="nc" id="L63">			String method = exchange.getRequestMethod();</span>
+<span class="nc bnc" id="L64" title="All 5 branches missed.">			switch (path) {</span>
+			case &quot;/&quot;:
+<span class="nc" id="L66">				requireMethod(method, &quot;GET&quot;);</span>
+<span class="nc" id="L67">				sendPage(exchange);</span>
+<span class="nc" id="L68">				break;</span>
+			case &quot;/frame.jpg&quot;:
+<span class="nc" id="L70">				requireMethod(method, &quot;GET&quot;);</span>
+<span class="nc" id="L71">				send(exchange, 200, &quot;image/jpeg&quot;, game.frameJpeg());</span>
+<span class="nc" id="L72">				break;</span>
+			case &quot;/state&quot;:
+<span class="nc" id="L74">				requireMethod(method, &quot;GET&quot;);</span>
+<span class="nc" id="L75">				send(exchange, 200, &quot;application/json&quot;, toJson(game.snapshot(), game.framesPerSecond(), game.slowestFrameMicros()).getBytes(StandardCharsets.UTF_8));</span>
+<span class="nc" id="L76">				break;</span>
+			case &quot;/key&quot;:
+<span class="nc" id="L78">				requireMethod(method, &quot;POST&quot;);</span>
+<span class="nc" id="L79">				handleKey(exchange);</span>
+<span class="nc" id="L80">				break;</span>
+			default:
+<span class="nc" id="L82">				sendText(exchange, 404, &quot;not found&quot;);</span>
+			}
+<span class="nc" id="L84">		} catch (WrongMethodException e) {</span>
+<span class="nc" id="L85">			exchange.getResponseHeaders().set(&quot;Allow&quot;, e.allowed);</span>
+<span class="nc" id="L86">			sendText(exchange, 405, &quot;method not allowed&quot;);</span>
+		} finally {
+<span class="nc" id="L88">			exchange.close();</span>
+		}
+<span class="nc" id="L90">	}</span>
+
+	private void sendPage(HttpExchange exchange) throws IOException {
+<span class="nc" id="L93">		try (InputStream page = WebServer.class.getResourceAsStream(PAGE_RESOURCE)) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">			if (page == null) {</span>
+<span class="nc" id="L95">				sendText(exchange, 500, &quot;page resource missing: &quot; + PAGE_RESOURCE);</span>
+<span class="nc" id="L96">				return;</span>
+			}
+<span class="nc" id="L98">			send(exchange, 200, &quot;text/html; charset=utf-8&quot;, page.readAllBytes());</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		}</span>
+<span class="nc" id="L100">	}</span>
+
+	private void handleKey(HttpExchange exchange) throws IOException {
+<span class="nc" id="L103">		Map&lt;String, String&gt; form = parseForm(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));</span>
+<span class="nc" id="L104">		OptionalInt keyCode = KeyMapping.toKeyCode(form.get(&quot;code&quot;));</span>
+<span class="nc" id="L105">		String type = form.get(&quot;type&quot;);</span>
+<span class="nc bnc" id="L106" title="All 6 branches missed.">		if (keyCode.isEmpty() || !(&quot;down&quot;.equals(type) || &quot;up&quot;.equals(type))) {</span>
+<span class="nc" id="L107">			sendText(exchange, 400, &quot;expected code=KeyW|KeyA|KeyS|KeyD|Space|Enter|NumpadEnter and type=down|up&quot;);</span>
+<span class="nc" id="L108">			return;</span>
+		}
+<span class="nc" id="L110">		game.key(keyCode.getAsInt(), &quot;down&quot;.equals(type));</span>
+<span class="nc" id="L111">		exchange.sendResponseHeaders(204, -1);</span>
+<span class="nc" id="L112">	}</span>
+
+	static Map&lt;String, String&gt; parseForm(String body) {
+<span class="nc" id="L115">		Map&lt;String, String&gt; form = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">		if (body == null || body.isEmpty()) {</span>
+<span class="nc" id="L117">			return form;</span>
+		}
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (String pair : body.split(&quot;&amp;&quot;)) {</span>
+<span class="nc" id="L120">			int eq = pair.indexOf('=');</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			if (eq &lt;= 0) {</span>
+<span class="nc" id="L122">				continue;</span>
+			}
+<span class="nc" id="L124">			form.put(URLDecoder.decode(pair.substring(0, eq), StandardCharsets.UTF_8),</span>
+<span class="nc" id="L125">					URLDecoder.decode(pair.substring(eq + 1), StandardCharsets.UTF_8));</span>
+		}
+<span class="nc" id="L127">		return form;</span>
+	}
+
+	/** Hand-written to avoid a JSON dependency. Every value is a known name or a number. */
+	static String toJson(StateSnapshot snapshot, int fps, long slowestFrameMicros) {
+<span class="nc" id="L132">		return &quot;{&quot;</span>
+<span class="nc" id="L133">				+ &quot;\&quot;state\&quot;:&quot; + quoted(snapshot.state()) + &quot;,&quot;</span>
+<span class="nc" id="L134">				+ &quot;\&quot;menuOption\&quot;:&quot; + quoted(snapshot.menuOption()) + &quot;,&quot;</span>
+<span class="nc" id="L135">				+ &quot;\&quot;shipX\&quot;:&quot; + snapshot.shipX() + &quot;,&quot;</span>
+<span class="nc" id="L136">				+ &quot;\&quot;aliens\&quot;:&quot; + snapshot.aliens() + &quot;,&quot;</span>
+<span class="nc" id="L137">				+ &quot;\&quot;shots\&quot;:&quot; + snapshot.shots() + &quot;,&quot;</span>
+				+ &quot;\&quot;fps\&quot;:&quot; + fps + &quot;,&quot;
+<span class="nc" id="L139">				+ &quot;\&quot;slowestFrameMs\&quot;:&quot; + String.format(java.util.Locale.ROOT, &quot;%.1f&quot;, slowestFrameMicros / 1000.0)</span>
+				+ &quot;}&quot;;
+	}
+
+	private static String quoted(String value) {
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		return value == null ? &quot;null&quot; : &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
+	}
+
+	private static void requireMethod(String actual, String expected) {
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		boolean headForGet = &quot;GET&quot;.equals(expected) &amp;&amp; &quot;HEAD&quot;.equals(actual);</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (!expected.equals(actual) &amp;&amp; !headForGet) {</span>
+<span class="nc" id="L150">			throw new WrongMethodException(expected);</span>
+		}
+<span class="nc" id="L152">	}</span>
+
+	private static void sendText(HttpExchange exchange, int status, String text) throws IOException {
+<span class="nc" id="L155">		send(exchange, status, &quot;text/plain; charset=utf-8&quot;, text.getBytes(StandardCharsets.UTF_8));</span>
+<span class="nc" id="L156">	}</span>
+
+	private static void send(HttpExchange exchange, int status, String contentType, byte[] body) throws IOException {
+<span class="nc" id="L159">		exchange.getResponseHeaders().set(&quot;Content-Type&quot;, contentType);</span>
+<span class="nc" id="L160">		exchange.getResponseHeaders().set(&quot;Cache-Control&quot;, &quot;no-store&quot;);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (&quot;HEAD&quot;.equals(exchange.getRequestMethod())) {</span>
+<span class="nc" id="L162">			exchange.sendResponseHeaders(status, -1);</span>
+<span class="nc" id="L163">			return;</span>
+		}
+<span class="nc" id="L165">		exchange.sendResponseHeaders(status, body.length);</span>
+<span class="nc" id="L166">		try (OutputStream out = exchange.getResponseBody()) {</span>
+<span class="nc" id="L167">			out.write(body);</span>
+		}
+<span class="nc" id="L169">	}</span>
+
+	private static final class WrongMethodException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		final String allowed;
+
+		WrongMethodException(String allowed) {
+<span class="nc" id="L176">			super(null, null, false, false);</span>
+<span class="nc" id="L177">			this.allowed = allowed;</span>
+<span class="nc" id="L178">		}</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
