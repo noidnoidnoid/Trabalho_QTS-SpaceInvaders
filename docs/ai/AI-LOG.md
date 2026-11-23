@@ -276,6 +276,16 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** **Alterado.** Pesos trocados pelos do grupo. A segurança operacional passou a 50% (1 de 2 perigos mitigados), e a nota geral foi para **45% antes e 79% depois**; medindo o desktop no "depois", 71%. As 8 outras medidas não mudaram. Arquivos atualizados: `docs/qualidade/iso25010-medidas.md` (com histórico de revisões), README e a seção 2.7 do Plano de Teste. A #017 foi mantida como registro do que foi feito naquele momento.
 * **Validação:** Nota geral recalculada por script, a partir das medidas de cada subcaracterística, com os dois conjuntos de pesos e com a segurança operacional em 100% e em 50%. Conferido que os valores arredondados da tabela levam ao mesmo resultado (1223/27 = 45,3% e 2138/27 = 79,2%). Os links para o `importancia-caracteristicas.md` dependem da publicação do arquivo pelo autor, em `docs/iso25010/`.
 
+### Interação #022: Análise da importância das características da ISO/IEC 25010
+* **Data:** 09/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** Definição do nível de importância (escala de 1 a 5) de cada uma das 9 características de qualidade da ISO/IEC 25010:2023 para o Space Invaders, com justificativa. Esses níveis são os pesos usados nas medidas ISO 25010 do grupo (`docs/qualidade/iso25010-medidas.md`).
+* **Ferramenta:** Claude
+* **Prompt/Instrução Utilizada:** Não preservado. O pedido foi a análise da importância de cada característica da ISO 25010 no contexto do jogo.
+* **Resultado:** `docs/iso25010/importancia-caracteristicas.md`, com o contexto de uso do sistema, o nível e a justificativa de cada característica e a análise de um conflito entre características (Eficiência de Desempenho x Compatibilidade). As justificativas citam evidências do próprio projeto, como o caso de teste CT02, a issue #1 e o loop de `Game.run()`.
+* **Decisão:** Aceito depois da revisão do Roger.
+* **Validação:** Roger conferiu o conteúdo na época da elaboração. Os níveis foram adotados pelo grupo como pesos da nota geral das medidas ISO 25010 (interação #021).
+
 ---
 
 ## Modelo para Novas Entradas (Template)
