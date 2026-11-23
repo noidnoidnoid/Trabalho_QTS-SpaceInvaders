@@ -227,9 +227,14 @@ class Level1StateCoberturaMutacaoTest {
         @DisplayName("tiro no alien marca vitoria e nao marca derrota")
         @SuppressWarnings("unchecked")
         void vitoriaNaoMarcaDerrota() throws Exception {
-            ship().simpleShot();
-            Shot tiro = ((List<Shot>) get("shots")).get(0);
-            alienComRetangulo(tiro.getBounds());
+            // The shot cannot be the one just fired: it spawns inside the ship's
+            // rectangle, so an alien placed on it would also touch the ship and the
+            // game would correctly mark Game Over. A shot far above the ship isolates
+            // the shot-alien collision. The alien's rectangle covers the 7 px the
+            // shot moves during render() before the collision check.
+            Shot tiro = new Shot(400, 300);
+            ((List<Shot>) get("shots")).add(tiro);
+            alienComRetangulo(new Rectangle(390, 250, 50, 100));
 
             state.render(g);
 

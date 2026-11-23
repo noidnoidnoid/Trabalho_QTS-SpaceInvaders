@@ -286,6 +286,17 @@ Este documento registra de forma transparente e auditável as interações subst
 * **Decisão:** Aceito depois da revisão do Roger.
 * **Validação:** Roger conferiu o conteúdo na época da elaboração. Os níveis foram adotados pelo grupo como pesos da nota geral das medidas ISO 25010 (interação #021).
 
+### Interação #023: Correção do teste `vitoriaNaoMarcaDerrota` da `Level1State`
+* **Data:** 23/11/2026
+* **Responsável:** Roger Egito
+* **Atividade:** Correção de um caso de teste que falhava na `main` (commit `9fc1098`) e deixava `mvn test` vermelho para o grupo, o que também impedia o PIT de rodar.
+* **Ferramenta:** Claude (Claude Code)
+* **Prompt/Instrução Utilizada:**
+  > *"Corrija o teste de "vitoriaNaoMarcaDerrota""*
+* **Resultado:** Diagnóstico: o defeito estava no cenário do teste, não no jogo. O tiro recém-disparado nasce dentro do retângulo da nave, então o alien posicionado sobre ele também encostava na nave, e a `Level1State` marcava Game Over corretamente. Correção em `Level1StateCoberturaMutacaoTest`: o tiro passou a ser criado longe da nave (y = 300), e o retângulo do alien cobre os 7 px que o tiro anda dentro de `render()` antes da verificação de colisão.
+* **Decisão:** Aceito. Só o cenário mudou. As duas verificações do caso (vitória marcada e derrota não marcada) continuam as mesmas, e a intenção do teste foi mantida.
+* **Validação:** A falha foi reproduzida no build completo da `main` antes da correção (`expected: <false> but was: <true>` em `gameOver`). Depois da correção, os 17 casos da `Level1State` passam, e a suíte unitária inteira roda com 183 casos e nenhuma falha.
+
 ---
 
 ## Modelo para Novas Entradas (Template)
