@@ -1,0 +1,6 @@
+# Teste da issue #10 contra a Level1State ORIGINAL, 2026-11-23 (branch reserva/level1state)
+
+CASO: removesConsecutiveInvisibleShots
+  FALHOU: shots left after one frame: 1 ==> expected: <true> but was: <false>
+
+Causa: o laco de render() remove com shots.remove(e) e depois faz e++, pulando o tiro seguinte.

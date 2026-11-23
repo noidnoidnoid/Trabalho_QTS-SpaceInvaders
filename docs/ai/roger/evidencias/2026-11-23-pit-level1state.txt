@@ -1,0 +1,13 @@
+# PIT em br.states.Level1State, 2026-11-23 (branch reserva/level1state)
+
+## Suites do Erick (Level1StateTest + Level1StateCoberturaMutacaoTest, depois da correcao de vitoriaNaoMarcaDerrota)
+24 mutantes: 14 mortos, 2 MEMORY_ERROR, 8 sobreviventes. Detectados (mortos + MEMORY_ERROR) = 16/24 = 66,7%
+Sobreviventes: StateManager.setState removido (linhas 86 e 91), condicao negada na linha 89,
+chamadas de desenho e movimento removidas (Background.print 60, Ship.paint 63, Alien.paint 66, Shot.paint 75, Shot.update 76).
+
+## Com Level1StateTransicoesTest (codigo da Level1State ainda sem nenhuma alteracao)
+24 mutantes, 24 mortos = 100%
+
+## Depois da inspecao e da correcao da issue #10 (Level1State alterada)
+21 mutantes, 21 mortos = 100% (o numero de mutantes mudou porque o codigo mudou: o laco de remocao virou removeIf e o for-each).
+JaCoCo: 20/20 arestas, complexidade 18.

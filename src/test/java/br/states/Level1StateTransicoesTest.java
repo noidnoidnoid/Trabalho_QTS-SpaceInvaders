@@ -216,5 +216,21 @@ class Level1StateTransicoesTest {
             verify(shot, never()).update();
             assertFalse(shots().contains(shot));
         }
+
+        @Test
+        @DisplayName("issue #10: dois tiros invisiveis em sequencia saem da lista no mesmo frame")
+        void removesConsecutiveInvisibleShots() throws Exception {
+            alienOutOfTheWay();
+            Shot first = new Shot(100, 600);
+            Shot second = new Shot(200, 600);
+            first.setVisible(false);
+            second.setVisible(false);
+            shots().add(first);
+            shots().add(second);
+
+            renderWithMockedBackground();
+
+            assertTrue(shots().isEmpty(), "shots left after one frame: " + shots().size());
+        }
     }
 }
